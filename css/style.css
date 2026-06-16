@@ -272,10 +272,16 @@ ul { list-style: none; }
   position: relative;
   display: flex;
   align-items: center;
-  min-height: clamp(560px, 90vh, 760px);
-  padding: 4rem 0;
+  min-height: calc(100svh - var(--nav-h));
+  padding: 2rem 0;
   overflow: hidden;
   color: #fff;
+}
+.hero__inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1rem, 4vw, 3.5rem);
 }
 
 .hero__bg {
@@ -287,7 +293,36 @@ ul { list-style: none; }
     radial-gradient(circle at 10% 90%, rgba(255, 122, 69, .35), transparent 45%),
     linear-gradient(135deg, var(--c-primary) 0%, var(--c-primary-dark) 60%, #061f3a 100%);
 }
-.hero__content { max-width: 760px; margin: 0 auto; text-align: center; }
+.hero__content { flex: 0 1 680px; max-width: 680px; text-align: center; }
+
+.hero__side {
+  flex: 0 0 auto;
+  width: clamp(120px, 14vw, 190px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .7rem;
+}
+.hero__side svg {
+  width: 100%;
+  height: auto;
+  padding: 1.5rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .06);
+  border: 1px solid rgba(255, 255, 255, .15);
+  backdrop-filter: blur(4px);
+}
+.hero__side--left svg  { color: #eaf6ff; }
+.hero__side--right svg { color: var(--c-accent); }
+.hero__side__cap {
+  font-size: .85rem;
+  font-weight: 600;
+  letter-spacing: .3px;
+  color: #bcd6ee;
+}
+@media (max-width: 992px) {
+  .hero__side { display: none; }
+}
 
 .hero__eyebrow {
   display: inline-block;
@@ -298,7 +333,7 @@ ul { list-style: none; }
   border-radius: 50px;
   font-weight: 600;
   font-size: .9rem;
-  margin-bottom: 1.4rem;
+  margin-bottom: 1.1rem;
   backdrop-filter: blur(4px);
 }
 .hero__title {
@@ -313,9 +348,9 @@ ul { list-style: none; }
 }
 .hero__subtitle {
   color: #d6e6f5;
-  font-size: clamp(1.05rem, 2.5vw, 1.3rem);
+  font-size: clamp(1.02rem, 2.4vw, 1.25rem);
   max-width: 620px;
-  margin: 0 auto 2rem;
+  margin: 0 auto 1.6rem;
 }
 .hero__subtitle strong { color: #fff; }
 
@@ -336,11 +371,12 @@ ul { list-style: none; }
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 1.2rem;
+  gap: .55rem .9rem;
   color: #bcd6ee;
   font-weight: 600;
-  font-size: .98rem;
+  font-size: .88rem;
 }
+.hero__trust li { white-space: nowrap; }
 
 .section { padding: clamp(3.5rem, 8vw, 6rem) 0; }
 .section--alt { background: var(--c-bg-alt); }
