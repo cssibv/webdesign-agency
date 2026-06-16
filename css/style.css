@@ -306,11 +306,15 @@ ul { list-style: none; }
 .hero__side svg {
   width: 100%;
   height: auto;
-  padding: 1.5rem;
+  padding: 1.2rem;
   border-radius: 50%;
   background: rgba(255, 255, 255, .06);
   border: 1px solid rgba(255, 255, 255, .15);
   backdrop-filter: blur(4px);
+}
+.hero__side svg path,
+.hero__side svg polyline {
+  vector-effect: non-scaling-stroke;
 }
 .hero__side--left svg  { color: #eaf6ff; }
 .hero__side--right svg { color: var(--c-accent); }
