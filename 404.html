@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="robots" content="noindex, follow" />
+  <title>Pagina nu a fost găsită (404) – BrașovWeb</title>
+
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('theme');
+        var dark = saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (dark) document.documentElement.setAttribute('data-theme', 'dark');
+      } catch (e) {}
+    })();
+  </script>
+
+  <link rel="preload" href="assets/fonts/inter-400-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="assets/fonts/fonts.css" />
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .nf { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 2rem; gap: 1rem; }
+    .nf__code { font-size: clamp(4rem, 18vw, 8rem); font-weight: 800; line-height: 1; color: var(--c-primary); letter-spacing: -2px; }
+    .nf__actions { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin-top: 1rem; }
+  </style>
+</head>
+<body>
+  <main class="nf">
+    <a href="/" class="navbar__logo" aria-label="BrașovWeb - Acasă">
+      <span class="navbar__logo-mark" aria-hidden="true">◆</span>
+      Brașov<span class="navbar__logo-accent">Web</span>
+    </a>
+    <p class="nf__code">404</p>
+    <h1>Pagina nu a fost găsită</h1>
+    <p>Se pare că linkul este greșit sau pagina a fost mutată. Hai înapoi la pagina principală.</p>
+    <div class="nf__actions">
+      <a href="/" class="btn btn--primary btn--lg">Înapoi acasă</a>
+      <a href="/#contact" class="btn btn--ghost btn--lg">Cere un site gratuit</a>
+    </div>
+  </main>
+</body>
+</html>

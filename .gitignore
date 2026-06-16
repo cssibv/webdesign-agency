@@ -1,0 +1,13 @@
+# Local agent config / personal
+.claude/
+docs/
+/CLAUDE.md
+
+# OS junk
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
