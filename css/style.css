@@ -470,22 +470,26 @@ ul { list-style: none; }
 .why__points li strong { display: block; color: var(--c-primary); font-size: 1.05rem; }
 .why__points li p { margin: 0; font-size: .95rem; }
 
-.grid--services { grid-template-columns: 1fr; }
-.service { padding: 1.8rem 1.6rem; }
+.grid--services { grid-template-columns: 1fr; gap: 1rem; }
+.service { padding: 1.25rem 1.3rem; }
 .service:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: var(--c-teal); }
 .service__icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 56px;
-  height: 56px;
-  border-radius: 14px;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
   background: var(--c-bg-alt);
-  font-size: 1.7rem;
-  margin-bottom: 1rem;
+  font-size: 1.35rem;
+  margin-bottom: .65rem;
 }
-.service h3 { margin-bottom: .4rem; }
-.service p { margin: 0; font-size: .97rem; }
+.service h3 { margin-bottom: .3rem; font-size: 1.08rem; }
+.service p { margin: 0; font-size: .92rem; line-height: 1.5; }
+
+/* Secțiunea Servicii: compactă, să încapă pe un ecran de laptop */
+#servicii { padding-block: clamp(2.2rem, 4vw, 3.2rem); }
+#servicii .section__head { margin-bottom: clamp(1.2rem, 3vw, 2rem); }
 
 .grid--pricing { grid-template-columns: 1fr; align-items: stretch; }
 .price {
