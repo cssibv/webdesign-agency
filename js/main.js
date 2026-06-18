@@ -114,6 +114,7 @@
           if (response.ok) {
             form.reset();
             setStatus('✓ Mulțumesc! Mesajul a fost trimis. Te contactez în maxim 24h.', 'is-success');
+            if (window.bwTrack) window.bwTrack('trimitere_formular', { method: 'formular_contact' });
           } else {
             return response.json().then(function (d) {
               var msg = (d && d.errors) ? d.errors.map(function (x) { return x.message; }).join(', ')

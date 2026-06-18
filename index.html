@@ -815,6 +815,22 @@
 
   <button class="to-top" id="toTop" aria-label="Înapoi sus" title="Înapoi sus">↑</button>
 
+  <!-- Banner consimțământ cookie (GDPR) — statisticile pornesc doar după Accept -->
+  <div class="cookie-banner" id="cookieBanner" role="dialog" aria-live="polite" aria-label="Consimțământ cookie">
+    <div class="cookie-banner__inner">
+      <p class="cookie-banner__text">
+        Folosim cookie-uri pentru statistici anonime, ca să înțelegem cum este folosit site-ul și să-l îmbunătățim.
+        Le activăm doar cu acordul tău. Detalii în
+        <a href="./politica-de-confidentialitate/">Politica de confidențialitate</a>.
+      </p>
+      <div class="cookie-banner__actions">
+        <button type="button" class="btn btn--ghost" id="cookieReject">Refuz</button>
+        <button type="button" class="btn btn--primary" id="cookieAccept">Accept</button>
+      </div>
+    </div>
+  </div>
+
   <script src="js/main.js" defer></script>
+  <script src="js/analytics.js" defer></script>
 </body>
 </html>
