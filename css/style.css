@@ -345,6 +345,7 @@ ul { list-style: none; }
   font-size: clamp(2.1rem, 6vw, 3.6rem);
   letter-spacing: -.5px;
   margin-bottom: 1.2rem;
+  text-wrap: balance;
 }
 .hero__title .hl {
   color: var(--c-accent);
