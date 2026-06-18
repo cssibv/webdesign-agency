@@ -240,17 +240,53 @@
 
     <section class="hero" id="hero">
       <div class="hero__bg" aria-hidden="true"></div>
-      <div class="container hero__inner">
+
+      <!-- Siluetă Brașov (Tâmpa + turnul bisericii) ca textură subtilă de fundal -->
+      <svg class="hero__skyline" viewBox="0 0 1440 230" preserveAspectRatio="xMidYMax slice" fill="currentColor" aria-hidden="true" focusable="false">
+        <path d="M0,230 L0,150 L170,92 L300,138 L450,70 L600,148 L740,104 L900,158 L1060,96 L1230,150 L1440,116 L1440,230 Z" opacity=".55"/>
+        <path d="M0,230 L0,182 L66,182 L66,162 L128,162 L128,188 L210,188 L210,150 L242,140 L274,150 L274,188 L350,188 L350,166 L368,166 L368,116 L380,104 L392,116 L392,166 L430,166 L430,188 L540,188 L540,172 L620,172 L620,188 L1440,188 L1440,230 Z"/>
+      </svg>
+
+      <div class="container hero__inner hero__inner--centered">
+
+        <!-- Card stânga: mai mulți clienți -->
+        <div class="hero__aside hero__aside--left reveal" aria-hidden="true">
+          <div class="hero__card">
+            <div class="hcard__head">
+              <span class="hcard__ic hcard__ic--green">👥</span>
+              <span class="hcard__title">Mai mulți clienți<small>luna aceasta</small></span>
+            </div>
+            <svg class="hcard__chart" viewBox="0 0 200 76" preserveAspectRatio="none" role="img" aria-label="Creștere clienți">
+              <defs>
+                <linearGradient id="hiBars" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#16a34a"/>
+                  <stop offset="1" stop-color="#16a34a" stop-opacity=".55"/>
+                </linearGradient>
+              </defs>
+              <rect x="8"   y="50" width="26" height="20" rx="5" fill="#16a34a" opacity=".25"/>
+              <rect x="46"  y="40" width="26" height="30" rx="5" fill="#16a34a" opacity=".4"/>
+              <rect x="84"  y="44" width="26" height="26" rx="5" fill="#16a34a" opacity=".55"/>
+              <rect x="122" y="26" width="26" height="44" rx="5" fill="url(#hiBars)"/>
+              <rect x="160" y="12" width="26" height="58" rx="5" fill="url(#hiBars)"/>
+            </svg>
+            <div class="hcard__metric">
+              <span class="hcard__value"><b>+38%</b> <em>▲</em></span>
+              <span class="hcard__label">clienți noi</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Conținut centrat -->
         <div class="hero__content reveal">
-          <p class="hero__eyebrow">🚀 Aducem clienți afacerilor din județul Brașov</p>
+          <p class="hero__eyebrow">🚀 Creștem afacerile din județul Brașov în online</p>
           <h1 class="hero__title">
-            Îți aducem <span class="hl">clienți</span> și dezvoltăm afacerea!<br>
-            Creștem împreună!
+            Mai mulți <span class="hl">clienți</span><br>
+            pentru afacerea ta din Brașov
           </h1>
           <p class="hero__subtitle">
-            Construim și optimizăm prezența ta online ca să-ți aducă <strong>clienți reali</strong>, nu doar vizite.
-            Pornim fără cost — iar dacă rezultatele te mulțumesc, continuăm printr-un <strong>parteneriat lunar bazat
-            pe performanță și creștere</strong>. Câștigăm doar atât timp cât tu câștigi.
+            Te punem în fața oamenilor care caută exact ce oferi. Construim și optimizăm prezența ta online
+            ca să atragă <strong>clienți reali</strong>, nu doar vizite. Pornim fără cost și
+            <strong>creștem împreună</strong>.
           </p>
           <div class="hero__actions">
             <a href="#contact" class="btn btn--primary btn--lg">Vreau mai mulți clienți</a>
@@ -262,6 +298,34 @@
             <li>✓ Parteneriat de performanță</li>
           </ul>
         </div>
+
+        <!-- Card dreapta: impact / vizibilitate online -->
+        <div class="hero__aside hero__aside--right reveal" aria-hidden="true">
+          <div class="hero__card">
+            <div class="hcard__head">
+              <span class="hcard__ic hcard__ic--blue">📈</span>
+              <span class="hcard__title">Impact online<small>vizibilitate în creștere</small></span>
+            </div>
+            <svg class="hcard__chart" viewBox="0 0 200 76" preserveAspectRatio="none" role="img" aria-label="Creștere vizibilitate online">
+              <defs>
+                <linearGradient id="hiArea" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#1d6fb8" stop-opacity=".34"/>
+                  <stop offset="1" stop-color="#1d6fb8" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path d="M6,64 L40,58 L74,62 L108,44 L142,50 L176,22 L194,12 L194,76 L6,76 Z" fill="url(#hiArea)"/>
+              <polyline points="6,64 40,58 74,62 108,44 142,50 176,22 194,12"
+                        fill="none" stroke="#1d6fb8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle class="mockup__dot-pulse" cx="194" cy="12" r="5" fill="#1d6fb8"/>
+              <circle cx="194" cy="12" r="4.5" fill="#1d6fb8" stroke="#fff" stroke-width="2"/>
+            </svg>
+            <div class="hcard__metric">
+              <span class="hcard__value"><b>+56%</b> <em>▲</em></span>
+              <span class="hcard__label">vizibilitate online</span>
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
 
