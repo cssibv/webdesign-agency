@@ -1,0 +1,23 @@
+Options -Indexes
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteRule ^private(/|$) - [F]
+</IfModule>
+
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  Header set X-Frame-Options "DENY"
+  Header set Referrer-Policy "no-referrer"
+  Header set X-Robots-Tag "noindex, nofollow"
+</IfModule>
+
+<FilesMatch "\.(sql|md|example\.php)$">
+  Require all denied
+</FilesMatch>
+
+# Strat extra (opțional): generează private/.htpasswd, apoi decomentează.
+# AuthType Basic
+# AuthName "Zona privata"
+# AuthUserFile "/cale/absoluta/catre/administrare/private/.htpasswd"
+# Require valid-user

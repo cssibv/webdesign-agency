@@ -93,11 +93,6 @@
         return;
       }
 
-      if (form.action.indexOf('CHEIE_FORMSPREE_AICI') !== -1) {
-        setStatus('⚠️ Formularul nu este încă configurat. Vezi docs/README.md (cheia Formspree).', 'is-error');
-        return;
-      }
-
       var btn = form.querySelector('button[type="submit"]');
       var originalText = btn ? btn.textContent : '';
       if (btn) { btn.disabled = true; btn.textContent = 'Se trimite...'; }
