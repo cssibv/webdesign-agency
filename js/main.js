@@ -108,7 +108,7 @@
         .then(function (response) {
           if (response.ok) {
             form.reset();
-            setStatus('✓ Mulțumesc! Mesajul a fost trimis. Te contactez în maxim 24h.', 'is-success');
+            setStatus('✓ Gata! Ți-am trimis un email de confirmare — dă click pe link ca să continuăm.', 'is-success');
             if (window.bwTrack) window.bwTrack('trimitere_formular', { method: 'formular_contact' });
           } else {
             return response.json().then(function (d) {

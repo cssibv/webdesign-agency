@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
   <div class="login-box panel">
-    <h1>SmartWeb Admin</h1>
+    <h1>Smart<span style="color:#ff7a45">Web</span> Admin</h1>
     <?php if ($err): ?><div class="err"><?= e($err) ?></div><?php endif; ?>
     <form method="post">
       <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">

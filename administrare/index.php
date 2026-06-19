@@ -36,8 +36,8 @@ function alertBox($titlu, $list) {
 
 head('Panou');
 ?>
-<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
-  <h1 style="margin:0">Clienți</h1>
+<div class="page-head">
+  <h1>Clienți</h1>
   <a class="btn btn--primary" href="client.php?id=0">+ Client nou</a>
 </div>
 
@@ -52,7 +52,7 @@ head('Panou');
 
 <div class="board">
   <?php foreach ($STATUSES as $key => $label): ?>
-    <div class="col">
+    <div class="col col--<?= e($key) ?>">
       <div class="col__head"><span><?= e($label) ?></span><span class="count"><?= count($byStatus[$key]) ?></span></div>
       <?php foreach ($byStatus[$key] as $r): $nume = $r['firma'] ?: $r['nume']; ?>
         <a class="card" href="client.php?id=<?= (int)$r['id'] ?>">
