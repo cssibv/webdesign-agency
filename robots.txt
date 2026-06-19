@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://brasovweb.ro/sitemap.xml
+Sitemap: https://smart-web.ro/sitemap.xml
