@@ -70,6 +70,10 @@
   if (acceptBtn) acceptBtn.addEventListener('click', grant);
   if (rejectBtn) rejectBtn.addEventListener('click', deny);
 
+  // Buton persistent „cookie" — redeschide banner-ul ca să-ți poți schimba alegerea oricând.
+  var reopenBtn = document.getElementById('cookieReopen');
+  if (reopenBtn) reopenBtn.addEventListener('click', showBanner);
+
   /* ---- Tracking conversii (click-uri importante) ---- */
   function bindConversion(selector, eventName, params) {
     var els = document.querySelectorAll(selector);
