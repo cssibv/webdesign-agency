@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /administrare/
 
 Sitemap: https://smart-web.ro/sitemap.xml
