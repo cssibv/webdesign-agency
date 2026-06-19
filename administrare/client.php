@@ -65,18 +65,49 @@ if ($id > 0) {
   $ev = db()->prepare('SELECT * FROM evenimente WHERE client_id=? ORDER BY data DESC');
   $ev->execute([$id]);
   $events = $ev->fetchAll();
+  $bf = db()->prepare('SELECT * FROM brief WHERE client_id=? ORDER BY id DESC LIMIT 1');
+  $bf->execute([$id]);
+  $brief = $bf->fetch();
 } else {
   $c = ['nume' => '', 'firma' => '', 'email' => '', 'telefon' => '', 'sursa' => '', 'status' => 'lead_nou',
         'plan' => '', 'domeniu' => '', 'data_lead' => date('Y-m-d'), 'data_livrare' => '', 'data_start_abonament' => '',
-        'status_plata' => 'neinceput', 'observatii' => '', 'data_expira_gratis' => '', 'data_expira_minim6' => '', 'ziua_reinnoire' => ''];
+        'status_plata' => 'neinceput', 'observatii' => '', 'data_expira_gratis' => '', 'data_expira_minim6' => '', 'ziua_reinnoire' => '',
+        'email_confirmat' => 'nu', 'confirmat_la' => ''];
   $events = [];
+  $brief = null;
 }
+
+$BRIEF_LABELS = [
+  'domeniu_activitate' => 'Domeniu de activitate',
+  'servicii'           => 'Servicii / produse',
+  'public_tinta'       => 'Client ideal',
+  'referinte'          => 'Referințe / concurenți',
+  'brand'              => 'Logo & brand',
+  'continut'           => 'Texte & poze',
+  'scop'               => 'Scopul site-ului',
+  'pagini'             => 'Pagini dorite',
+  'domeniu_dorit'      => 'Domeniu dorit',
+  'date_afisare'       => 'Date de afișat',
+  'termen'             => 'Termen / urgență',
+  'plan_vizat'         => 'Plan vizat',
+  'alte_detalii'       => 'Alte detalii',
+];
 
 head($id ? ($c['firma'] ?: $c['nume']) : 'Client nou');
 ?>
 <p><a href="index.php">&larr; Înapoi la panou</a></p>
 <?php if ($ok): ?><div class="ok">Salvat.</div><?php endif; ?>
 <?php if ($err): ?><div class="err"><?= e($err) ?></div><?php endif; ?>
+
+<?php if ($id): ?>
+  <p style="margin:.2rem 0 1rem">Email:
+    <?php if ($c['email_confirmat'] === 'da'): ?>
+      <strong style="color:#16a34a">confirmat ✓</strong><?= $c['confirmat_la'] ? ' (' . e($c['confirmat_la']) . ')' : '' ?>
+    <?php else: ?>
+      <strong style="color:#d64545">neconfirmat ✗</strong>
+    <?php endif; ?>
+  </p>
+<?php endif; ?>
 
 <div class="panel">
   <form method="post">
@@ -146,5 +177,15 @@ head($id ? ($c['firma'] ?: $c['nume']) : 'Client nou');
       </li>
     <?php endforeach; ?>
   </ul>
+<?php endif; ?>
+
+<?php if ($brief): ?>
+  <h2>Brief client</h2>
+  <div class="panel">
+    <?php foreach ($BRIEF_LABELS as $k => $lbl): if (empty($brief[$k])) continue; ?>
+      <p><strong><?= e($lbl) ?>:</strong><br><?= nl2br(e($brief[$k])) ?></p>
+    <?php endforeach; ?>
+    <p class="readonly">Completat: <?= e($brief['creat_la']) ?></p>
+  </div>
 <?php endif; ?>
 <?php foot(); ?>

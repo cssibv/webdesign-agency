@@ -7,4 +7,5 @@ return [
   'db_pass'   => 'PAROLA_BAZA',
   'site_name' => 'SmartWeb Admin',
   'notify_email' => 'contact@smart-web.ro',
+  'base_url'     => 'https://smart-web.ro',
 ];
