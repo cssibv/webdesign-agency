@@ -1008,18 +1008,18 @@ a.work .work__body p { color: var(--c-teal-dark); font-weight: 600; }
   grid-template-columns:minmax(0,1fr) minmax(auto,560px) minmax(0,1fr);
   grid-template-areas:"left content right";
   align-items:center;
-  gap:clamp(1rem,2.4vw,2rem);
+  gap:clamp(2rem,5.5vw,6rem);
   position:relative;
   z-index:1;
-  max-width:1320px;
+  max-width:1440px;
   margin-inline:auto;
 }
 .hero__inner--centered .hero__content{ grid-area:content; text-align:center; margin-inline:auto; }
 .hero__inner--centered .hero__actions{ justify-content:center; }
 .hero__inner--centered .hero__trust{ justify-content:center; flex-wrap:wrap; }
-.hero__aside--left{ grid-area:left; }
-.hero__aside--right{ grid-area:right; }
-.hero__aside{ position:relative; display:flex; justify-content:center; }
+.hero__aside--left{ grid-area:left; justify-content:flex-start; }
+.hero__aside--right{ grid-area:right; justify-content:flex-end; }
+.hero__aside{ position:relative; display:flex; }
 
 /* Cardurile laterale */
 .hero__card{
