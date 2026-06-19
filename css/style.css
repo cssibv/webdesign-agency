@@ -830,6 +830,28 @@ a.work .work__body p { color: var(--c-teal-dark); font-weight: 600; }
 .to-top.is-visible { opacity: 1; visibility: visible; transform: translateY(0); }
 .to-top:hover { background: var(--c-primary-dark); }
 
+.cookie-fab {
+  position: fixed;
+  left: 18px;
+  bottom: 18px;
+  z-index: 90;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 159, 67, .55);
+  border-radius: 50%;
+  background: rgba(255, 159, 67, .18);
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: var(--shadow-md);
+  transition: transform var(--t-fast), box-shadow var(--t-fast);
+}
+.cookie-fab:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+.cookie-banner.is-visible ~ .cookie-fab { display: none; }
+
 .cookie-banner {
   position: fixed;
   left: 1rem;
