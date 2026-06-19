@@ -808,30 +808,6 @@ a.work .work__body p { color: var(--c-teal-dark); font-weight: 600; }
   100% { box-shadow: 0 10px 26px rgba(37, 211, 102, .45), 0 0 0 0 rgba(37, 211, 102, 0); }
 }
 
-.meeting-float {
-  position: fixed;
-  left: 18px;
-  bottom: 18px;
-  z-index: 90;
-  display: inline-flex;
-  align-items: center;
-  gap: .6rem;
-  padding: .8rem 1.3rem;
-  background: linear-gradient(135deg, var(--c-teal), var(--c-primary));
-  color: #fff;
-  font-weight: 700;
-  font-size: .98rem;
-  border-radius: 50px;
-  box-shadow: 0 10px 26px rgba(13, 59, 102, .4);
-  transition: transform var(--t-fast), box-shadow var(--t-fast);
-}
-.meeting-float:hover {
-  color: #fff;
-  transform: translateY(-3px);
-  box-shadow: 0 14px 32px rgba(13, 59, 102, .5);
-}
-.meeting-float__icon { font-size: 1.2rem; line-height: 1; }
-
 .to-top {
   position: fixed;
   right: 18px;
@@ -952,12 +928,6 @@ a.work .work__body p { color: var(--c-teal-dark); font-weight: 600; }
   .grid--services    { grid-template-columns: repeat(4, 1fr); }
   .grid--portfolio   { grid-template-columns: repeat(3, 1fr); }
   .grid--testimonials{ grid-template-columns: repeat(3, 1fr); }
-}
-
-@media (max-width: 480px) {
-  .meeting-float { padding: 0; width: 54px; height: 54px; justify-content: center; border-radius: 50%; }
-  .meeting-float__text { display: none; }
-  .meeting-float__icon { font-size: 1.4rem; }
 }
 
 /* Ecrane foarte înguste: micșorăm logo-ul și butonul din antet ca să încapă (mai ales pe paginile de blog) */
