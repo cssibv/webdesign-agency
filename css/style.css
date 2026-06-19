@@ -273,7 +273,7 @@ ul { list-style: none; }
   display: flex;
   align-items: center;
   min-height: calc(100svh - var(--nav-h));
-  padding: 2rem 0;
+  padding: 1.75rem 0;
   overflow: hidden;
   color: #fff;
 }
@@ -337,34 +337,49 @@ ul { list-style: none; }
   border-radius: 50px;
   font-weight: 600;
   font-size: .9rem;
-  margin-bottom: 1.1rem;
+  margin-bottom: 1.75rem;
   backdrop-filter: blur(4px);
 }
 .hero__title {
   color: #fff;
-  font-size: clamp(2.1rem, 6vw, 3.6rem);
+  font-size: clamp(1.8rem, 4.2vw, 2.5rem);
   letter-spacing: -.5px;
-  margin-bottom: 1.2rem;
-  text-wrap: balance;
+  margin-bottom: 2rem;
+  text-wrap: pretty;
 }
-.hero__title .hl {
+.hero__content .hl {
   color: var(--c-accent);
   text-shadow: 0 2px 16px rgba(255, 122, 69, .4);
 }
+.hero__lead {
+  color: #fff;
+  font-weight: 700;
+  font-size: clamp(1rem, 2.3vw, 1.2rem);
+  line-height: 1.4;
+  max-width: 640px;
+  margin: 0 auto 1.2rem;
+  text-wrap: balance;
+}
 .hero__subtitle {
   color: #d6e6f5;
-  font-size: clamp(1.02rem, 2.4vw, 1.25rem);
-  max-width: 620px;
-  margin: 0 auto 1.6rem;
+  font-size: clamp(.98rem, 2.2vw, 1.15rem);
+  max-width: 640px;
+  margin: 0 auto .9rem;
 }
 .hero__subtitle strong { color: #fff; }
+.hero__closer {
+  color: #fff;
+  font-weight: 700;
+  font-size: clamp(1.05rem, 2.4vw, 1.3rem);
+  margin: 0 auto 2.5rem;
+}
 
 .hero__actions {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 1rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1.2rem;
 }
 .hero__actions .btn--ghost {
   color: #fff;
@@ -382,6 +397,7 @@ ul { list-style: none; }
   font-size: .88rem;
 }
 .hero__trust li { white-space: nowrap; }
+[data-theme="dark"] .hero__trust { color: #eaf2ff; }
 
 .section { padding: clamp(3.5rem, 8vw, 6rem) 0; }
 .section--alt { background: var(--c-bg-alt); }
@@ -1016,7 +1032,7 @@ a.work .work__body p { color: var(--c-teal-dark); font-weight: 600; }
 }
 .hero__inner--centered .hero__content{ grid-area:content; text-align:center; margin-inline:auto; }
 .hero__inner--centered .hero__actions{ justify-content:center; }
-.hero__inner--centered .hero__trust{ justify-content:center; flex-wrap:wrap; }
+.hero__inner--centered .hero__trust{ justify-content:center; flex-wrap:nowrap; }
 .hero__aside--left{ grid-area:left; justify-content:flex-start; }
 .hero__aside--right{ grid-area:right; justify-content:flex-end; }
 .hero__aside{ position:relative; display:flex; }
@@ -1076,9 +1092,9 @@ a.work .work__body p { color: var(--c-teal-dark); font-weight: 600; }
 /* Siluetă Brașov în fundalul hero-ului */
 .hero__skyline{
   position:absolute;left:0;right:0;bottom:0;width:100%;height:auto;
-  color:var(--hi-navy);opacity:.05;pointer-events:none;z-index:0;
+  color:#bcd6ee;opacity:.18;pointer-events:none;z-index:0;
 }
-[data-theme="dark"] .hero__skyline{ color:#9fc2ff;opacity:.10; }
+[data-theme="dark"] .hero__skyline{ color:#c2d9ff;opacity:.34; }
 
 @keyframes hi-float-l{ 0%,100%{ transform:translateY(0) rotate(-2deg); } 50%{ transform:translateY(-10px) rotate(-2deg); } }
 @keyframes hi-float-r{ 0%,100%{ transform:translateY(0) rotate(2deg); } 50%{ transform:translateY(-10px) rotate(2deg); } }
@@ -1095,6 +1111,7 @@ a.work .work__body p { color: var(--c-teal-dark); font-weight: 600; }
   .hero__card{ max-width:360px; }
 }
 @media (max-width:560px){
+  .hero__inner--centered .hero__trust{ flex-wrap:wrap; }
   .hero__card{ max-width:none; padding:13px 13px 15px; }
   .hcard__title{ font-size:.9rem;white-space:normal; }
   .hcard__title small{ display:none; }
