@@ -34,11 +34,25 @@ function alertBox($titlu, $list) {
   echo '</div>';
 }
 
+$totalClienti = count($rows);
+$nrLeaduri    = count($byStatus['lead_nou']);
+$nrConstr     = count($byStatus['in_constructie']);
+$nrContracte  = count($byStatus['contract_semnat']);
+$nrRestante   = count($a_plata);
+
 head('Panou');
 ?>
 <div class="page-head">
   <h1>Clienți</h1>
   <a class="btn btn--primary" href="client.php?id=0">+ Client nou</a>
+</div>
+
+<div class="stats">
+  <div class="stat"><span class="stat__num"><?= $totalClienti ?></span><span class="stat__label">Clienți total</span></div>
+  <div class="stat stat--accent"><span class="stat__num"><?= $nrLeaduri ?></span><span class="stat__label">Lead-uri noi</span></div>
+  <div class="stat stat--warn"><span class="stat__num"><?= $nrConstr ?></span><span class="stat__label">În construcție</span></div>
+  <div class="stat stat--good"><span class="stat__num"><?= $nrContracte ?></span><span class="stat__label">Contracte semnate</span></div>
+  <div class="stat stat--bad"><span class="stat__num"><?= $nrRestante ?></span><span class="stat__label">Plăți restante</span></div>
 </div>
 
 <div class="alerts">

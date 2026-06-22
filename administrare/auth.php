@@ -1,4 +1,5 @@
 <?php
+ini_set('display_errors', '0'); // nu expune stack-trace / structură DB în producție
 $secure = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off');
 session_set_cookie_params([
   'lifetime' => 0,

@@ -100,11 +100,12 @@ head($id ? ($c['firma'] ?: $c['nume']) : 'Client nou');
 <?php if ($err): ?><div class="err"><?= e($err) ?></div><?php endif; ?>
 
 <?php if ($id): ?>
-  <p style="margin:.2rem 0 1rem">Email:
+  <p style="display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin:.2rem 0 1.1rem">
+    <span class="badge badge--<?= e($c['status']) ?>"><?= e($STATUSES[$c['status']] ?? $c['status']) ?></span>
     <?php if ($c['email_confirmat'] === 'da'): ?>
-      <strong style="color:#16a34a">confirmat ✓</strong><?= $c['confirmat_la'] ? ' (' . e($c['confirmat_la']) . ')' : '' ?>
+      <span class="badge badge--ok">Email confirmat<?= $c['confirmat_la'] ? ' · ' . e($c['confirmat_la']) : '' ?></span>
     <?php else: ?>
-      <strong style="color:#d64545">neconfirmat ✗</strong>
+      <span class="badge badge--bad">Email neconfirmat</span>
     <?php endif; ?>
   </p>
 <?php endif; ?>
@@ -155,7 +156,10 @@ head($id ? ($c['firma'] ?: $c['nume']) : 'Client nou');
     <label>Adaugă o notă în istoric</label>
     <input name="nota" placeholder="ex. discuție telefonică, a cerut ofertă...">
 
-    <p style="margin-top:1rem"><button class="btn btn--primary" type="submit">Salvează</button></p>
+    <div class="form-actions">
+      <button class="btn btn--primary" type="submit">Salvează</button>
+      <a class="btn btn--ghost btn--sm" href="index.php" style="background:#f1f5f9;color:#475569;border-color:#cbd5e1">Anulează</a>
+    </div>
   </form>
 
   <?php if ($id): ?>
