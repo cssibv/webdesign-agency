@@ -29,4 +29,4 @@ Options -Indexes
 </FilesMatch>
 
 # Blochează directoare de uz local (nu ar trebui urcate, dar defense-in-depth)
-RedirectMatch 404 ^/(docs|\.claude|\.git)(/|$)
+#RedirectMatch 404 ^/(docs|\.claude|\.git)(/|$)
