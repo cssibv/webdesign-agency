@@ -11,7 +11,7 @@ function pagina($titlu, $continut) {
   echo '<!DOCTYPE html><html lang="ro"><head><meta charset="UTF-8">';
   echo '<meta name="viewport" content="width=device-width, initial-scale=1.0">';
   echo '<meta name="robots" content="noindex, nofollow">';
-  echo '<title>' . e($titlu) . ' - SmartWeb</title>';
+  echo '<title>' . e($titlu) . ' - Smart-Web</title>';
   echo '<link rel="stylesheet" href="css/style.css">';
   echo '<style>.cf{max-width:720px;margin:0 auto}.cf label{display:block;font-weight:600;margin:1.1rem 0 .3rem}'
      . '.cf input,.cf textarea{width:100%;padding:.6rem .7rem;border:1px solid #cdd6e0;border-radius:8px;font:inherit;background:#fff;color:#1c2733}'
@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['brief'])) {
     db()->prepare($sql)->execute($vals);
     db()->prepare('INSERT INTO evenimente (client_id, tip, text) VALUES (?, ?, ?)')->execute([$cid, 'brief', 'A completat chestionarul de brief']);
     $to = $cfg['notify_email'] ?? 'contact@smart-web.ro';
-    @mail($to, '[SmartWeb] Brief completat: ' . hdr($client['nume']), 'Clientul ' . $client['nume'] . ' a completat chestionarul. Vezi detaliile în panou.', 'From: noreply@smart-web.ro' . "\r\n");
+    @mail($to, '[Smart-Web] Brief completat: ' . hdr($client['nume']), 'Clientul ' . $client['nume'] . ' a completat chestionarul. Vezi detaliile în panou.', 'From: noreply@smart-web.ro' . "\r\n");
   }
   pagina('Mulțumim', '<h2>Mulțumim! 🎉</h2><p>Am primit toate detaliile. Te contactăm în cel mai scurt timp ca să pornim.</p><p><a class="btn btn--primary" href="/">Înapoi pe site</a></p>');
 }

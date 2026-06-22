@@ -77,18 +77,18 @@ $to = $cfg['notify_email'] ?? 'contact@smart-web.ro';
 $corp = "Lead nou de pe site:\n\nNume: $nume\nFirmă: $firma\nEmail: $email\nTelefon: $telefon\n\nMesaj:\n$mesaj";
 $hInt = $from;
 if ($email !== '' && filter_var($email, FILTER_VALIDATE_EMAIL)) $hInt .= 'Reply-To: ' . $email . "\r\n";
-@mail($to, '[SmartWeb] Lead nou: ' . hdr($nume), $corp, $hInt);
+@mail($to, '[Smart-Web] Lead nou: ' . hdr($nume), $corp, $hInt);
 
 // Email de confirmare către client (un singur email: click -> pagina cu brief)
 if ($email !== '') {
   $base = rtrim($cfg['base_url'] ?? ('https://' . $host), '/');
   $link = $base . '/confirma.php?token=' . $token;
-  $subiect = 'Confirmă-ți adresa - SmartWeb';
+  $subiect = 'Confirmă-ți adresa - Smart-Web';
   $body = "Salut, $nume!\n\n"
         . "Am primit cererea ta. Confirmă-ți adresa de email accesând link-ul de mai jos, ca să continuăm:\n\n"
         . "$link\n\n"
         . "Link-ul e valabil 7 zile. Dacă nu tu ai trimis această cerere, ignoră acest mesaj.\n\n"
-        . "— Echipa SmartWeb";
+        . "— Echipa Smart-Web";
   @mail($email, $subiect, $body, $from);
 }
 

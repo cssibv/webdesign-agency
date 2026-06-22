@@ -5,7 +5,7 @@ return [
   'db_name'   => 'NUMELE_BAZEI',
   'db_user'   => 'USER_BAZA',
   'db_pass'   => 'PAROLA_BAZA',
-  'site_name' => 'SmartWeb Admin',
+  'site_name' => 'Smart-Web Admin',
   'notify_email' => 'contact@smart-web.ro',
   'base_url'     => 'https://smart-web.ro',
 ];
