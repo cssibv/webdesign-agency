@@ -1,8 +1,11 @@
 <?php
+ini_set('display_errors', '0'); // nu expune detalii de eroare vizitatorilor
 require __DIR__ . '/administrare/db.php';
 $cfg = require __DIR__ . '/administrare/private/config.php';
 
 function e($s) { return htmlspecialchars((string)$s, ENT_QUOTES, 'UTF-8'); }
+// Curăță CRLF din valorile ce ajung în header-e de email (anti header injection).
+function hdr($s) { return trim(preg_replace('/[\r\n]+/', ' ', (string)$s)); }
 
 function pagina($titlu, $continut) {
   echo '<!DOCTYPE html><html lang="ro"><head><meta charset="UTF-8">';
@@ -53,13 +56,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['brief'])) {
     db()->prepare($sql)->execute($vals);
     db()->prepare('INSERT INTO evenimente (client_id, tip, text) VALUES (?, ?, ?)')->execute([$cid, 'brief', 'A completat chestionarul de brief']);
     $to = $cfg['notify_email'] ?? 'contact@smart-web.ro';
-    @mail($to, '[SmartWeb] Brief completat: ' . $client['nume'], 'Clientul ' . $client['nume'] . ' a completat chestionarul. Vezi detaliile în panou.', 'From: noreply@smart-web.ro' . "\r\n");
+    @mail($to, '[SmartWeb] Brief completat: ' . hdr($client['nume']), 'Clientul ' . $client['nume'] . ' a completat chestionarul. Vezi detaliile în panou.', 'From: noreply@smart-web.ro' . "\r\n");
   }
   pagina('Mulțumim', '<h2>Mulțumim! 🎉</h2><p>Am primit toate detaliile. Te contactăm în cel mai scurt timp ca să pornim.</p><p><a class="btn btn--primary" href="/">Înapoi pe site</a></p>');
 }
 
 // Dacă a completat deja brief-ul, nu-l mai arătăm
-$areBrief = (int) db()->query('SELECT COUNT(*) FROM brief WHERE client_id = ' . $cid)->fetchColumn();
+$stB = db()->prepare('SELECT COUNT(*) FROM brief WHERE client_id = ?');
+$stB->execute([$cid]);
+$areBrief = (int) $stB->fetchColumn();
 $nume = e($client['firma'] ?: $client['nume']);
 
 if ($areBrief > 0) {

@@ -1,17 +1,18 @@
 <?php
 require __DIR__ . '/auth.php';
 require __DIR__ . '/db.php';
+require __DIR__ . '/throttle.php';
 
 if (!empty($_SESSION['user_id'])) redirect('index.php');
 
 $err = '';
-$now = time();
-$_SESSION['login_lock_until'] = $_SESSION['login_lock_until'] ?? 0;
-$_SESSION['login_attempts']   = $_SESSION['login_attempts'] ?? 0;
+// Lockout pe IP (nu pe sesiune): atacatorul nu poate ocoli contorul pur și simplu
+// renunțând la cookie-ul de sesiune. Max 5 încercări eșuate / 5 minute / IP.
+$lockKey = 'login_' . client_ip();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   csrf_check();
-  if ($now < $_SESSION['login_lock_until']) {
+  if (rate_blocked($lockKey, 5, 300)) {
     $err = 'Prea multe încercări. Reîncearcă peste câteva minute.';
   } else {
     $email  = trim($_POST['email'] ?? '');
@@ -21,16 +22,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $u = $st->fetch();
     if ($u && password_verify($parola, $u['parola_hash'])) {
       session_regenerate_id(true);
-      $_SESSION['user_id']        = $u['id'];
-      $_SESSION['user_nume']      = $u['nume'];
-      $_SESSION['login_attempts'] = 0;
+      $_SESSION['user_id']   = $u['id'];
+      $_SESSION['user_nume'] = $u['nume'];
+      rate_clear($lockKey);
       redirect('index.php');
     } else {
-      $_SESSION['login_attempts']++;
-      if ($_SESSION['login_attempts'] >= 5) {
-        $_SESSION['login_lock_until'] = $now + 300;
-        $_SESSION['login_attempts']   = 0;
-      }
+      // Verificare dummy când userul nu există, ca timpul de răspuns să nu trădeze
+      // dacă emailul e înregistrat (anti user-enumeration prin timing).
+      if (!$u) password_verify($parola, '$2y$10$usesomesillystringforsalttocompare000000000000000000000');
+      rate_register($lockKey, 300);
       $err = 'Email sau parolă greșite.';
     }
   }
@@ -43,6 +43,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
   <title>Autentificare - SmartWeb Admin</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/img/favicon.svg">
+  <link rel="stylesheet" href="../assets/fonts/fonts.css">
   <link rel="stylesheet" href="admin.css">
 </head>
 <body>
