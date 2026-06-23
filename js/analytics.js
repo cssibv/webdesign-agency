@@ -6,7 +6,7 @@
    *     Îl iei gratuit de pe analytics.google.com (forma G-XXXXXXXXXX).
    *     Cât timp rămâne placeholder-ul de mai jos, GA NU se încarcă.
    * ============================================================ */
-  var GA_MEASUREMENT_ID = 'G-XXXXXXXXXX';
+  var GA_MEASUREMENT_ID = 'G-QNJCL221JH';
 
   var STORAGE_KEY = 'cookie-consent'; // valori: 'granted' | 'denied'
   var banner = document.getElementById('cookieBanner');
