@@ -1,6 +1,7 @@
 <?php
 ini_set('display_errors', '0'); // nu expune detalii de eroare vizitatorilor
 require __DIR__ . '/administrare/db.php';
+require __DIR__ . '/administrare/mailer.php';
 $cfg = require __DIR__ . '/administrare/private/config.php';
 
 function e($s) { return htmlspecialchars((string)$s, ENT_QUOTES, 'UTF-8'); }
@@ -56,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['brief'])) {
     db()->prepare($sql)->execute($vals);
     db()->prepare('INSERT INTO evenimente (client_id, tip, text) VALUES (?, ?, ?)')->execute([$cid, 'brief', 'A completat chestionarul de brief']);
     $to = $cfg['notify_email'] ?? 'contact@smart-web.ro';
-    @mail($to, '[Smart-Web] Brief completat: ' . hdr($client['nume']), 'Clientul ' . $client['nume'] . ' a completat chestionarul. Vezi detaliile în panou.', 'From: noreply@smart-web.ro' . "\r\n");
+    smtp_send($cfg, $to, '[Smart-Web] Brief completat: ' . hdr($client['nume']), 'Clientul ' . $client['nume'] . ' a completat chestionarul. Vezi detaliile în panou.');
   }
   pagina('Mulțumim', '<h2>Mulțumim! 🎉</h2><p>Am primit toate detaliile. Te contactăm în cel mai scurt timp ca să pornim.</p><p><a class="btn btn--primary" href="/">Înapoi pe site</a></p>');
 }

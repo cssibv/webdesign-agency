@@ -69,33 +69,25 @@ try {
   fail('A apărut o eroare la salvare. Încearcă din nou sau scrie-ne pe WhatsApp.', 500);
 }
 
+require __DIR__ . '/administrare/mailer.php';
 $host = preg_replace('/[^a-z0-9.\-]/i', '', ($_SERVER['HTTP_HOST'] ?? 'smart-web.ro'));
-$maildom = parse_url($cfg['base_url'] ?? '', PHP_URL_HOST) ?: $host;
-$from = "From: noreply@$maildom\r\n"
-      . "MIME-Version: 1.0\r\n"
-      . "Content-Type: text/plain; charset=UTF-8\r\n"
-      . "Content-Transfer-Encoding: 8bit\r\n";
-$subj = function ($s) { return '=?UTF-8?B?' . base64_encode($s) . '?='; };
-$envelope = '-fnoreply@' . $maildom;
 
 // Notificare internă (către agenție)
 $to = $cfg['notify_email'] ?? 'contact@smart-web.ro';
 $corp = "Lead nou de pe site:\n\nNume: $nume\nFirmă: $firma\nEmail: $email\nTelefon: $telefon\n\nMesaj:\n$mesaj";
-$hInt = $from;
-if ($email !== '' && filter_var($email, FILTER_VALIDATE_EMAIL)) $hInt .= 'Reply-To: ' . $email . "\r\n";
-@mail($to, $subj('[Smart-Web] Lead nou: ' . hdr($nume)), $corp, $hInt, $envelope);
+$replyTo = ($email !== '' && filter_var($email, FILTER_VALIDATE_EMAIL)) ? $email : '';
+smtp_send($cfg, $to, '[Smart-Web] Lead nou: ' . hdr($nume), $corp, $replyTo);
 
 // Email de confirmare către client (un singur email: click -> pagina cu brief)
 if ($email !== '') {
   $base = rtrim($cfg['base_url'] ?? ('https://' . $host), '/');
   $link = $base . '/confirma.php?token=' . $token;
-  $subiect = 'Confirmă-ți adresa - Smart-Web';
   $body = "Salut, $nume!\n\n"
         . "Am primit cererea ta. Confirmă-ți adresa de email accesând link-ul de mai jos, ca să continuăm:\n\n"
         . "$link\n\n"
         . "Link-ul e valabil 7 zile. Dacă nu tu ai trimis această cerere, ignoră acest mesaj.\n\n"
-        . "— Echipa Smart-Web";
-  @mail($email, $subj($subiect), $body, $from, $envelope);
+        . "- Echipa Smart-Web";
+  smtp_send($cfg, $email, 'Confirmă-ți adresa - Smart-Web', $body);
 }
 
 echo json_encode(['ok' => true]);
