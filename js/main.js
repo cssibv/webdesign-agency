@@ -108,7 +108,7 @@
         .then(function (response) {
           if (response.ok) {
             form.reset();
-            setStatus('✓ Gata! Ți-am trimis un email de confirmare — dă click pe link ca să continuăm.', 'is-success');
+            setStatus('✓ Gata! Ți-am trimis un email de confirmare - dă click pe link ca să continuăm.', 'is-success');
             if (window.bwTrack) window.bwTrack('trimitere_formular', { method: 'formular_contact' });
           } else {
             return response.json().then(function (d) {
