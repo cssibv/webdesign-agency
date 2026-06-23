@@ -57,7 +57,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['brief'])) {
     db()->prepare($sql)->execute($vals);
     db()->prepare('INSERT INTO evenimente (client_id, tip, text) VALUES (?, ?, ?)')->execute([$cid, 'brief', 'A completat chestionarul de brief']);
     $to = $cfg['notify_email'] ?? 'contact@smart-web.ro';
-    smtp_send($cfg, $to, '[Smart-Web] Brief completat: ' . hdr($client['nume']), 'Clientul ' . $client['nume'] . ' a completat chestionarul. Vezi detaliile în panou.');
+    $base = rtrim($cfg['base_url'] ?? 'https://smart-web.ro', '/');
+    $briefInner = email_h('Brief completat')
+      . email_p('Clientul <strong>' . email_esc($client['nume']) . '</strong> a completat chestionarul.')
+      . email_button('Vezi în panou &rarr;', $base . '/administrare/index.php');
+    smtp_send($cfg, $to, '[SmartWeb] Brief completat: ' . hdr($client['nume']), 'Clientul ' . $client['nume'] . ' a completat chestionarul. Vezi detaliile în panou.', '', email_layout($cfg, $briefInner));
   }
   pagina('Mulțumim', '<h2>Mulțumim! 🎉</h2><p>Am primit toate detaliile. Te contactăm în cel mai scurt timp ca să pornim.</p><p><a class="btn btn--primary" href="/">Înapoi pe site</a></p>');
 }

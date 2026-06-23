@@ -71,23 +71,34 @@ try {
 
 require __DIR__ . '/administrare/mailer.php';
 $host = preg_replace('/[^a-z0-9.\-]/i', '', ($_SERVER['HTTP_HOST'] ?? 'smart-web.ro'));
+$base = rtrim($cfg['base_url'] ?? ('https://' . $host), '/');
 
 // Notificare internă (către agenție)
 $to = $cfg['notify_email'] ?? 'contact@smart-web.ro';
 $corp = "Lead nou de pe site:\n\nNume: $nume\nFirmă: $firma\nEmail: $email\nTelefon: $telefon\n\nMesaj:\n$mesaj";
 $replyTo = ($email !== '' && filter_var($email, FILTER_VALIDATE_EMAIL)) ? $email : '';
-smtp_send($cfg, $to, '[Smart-Web] Lead nou: ' . hdr($nume), $corp, $replyTo);
+$internInner = email_h('Lead nou de pe site')
+  . email_p('<strong>Nume:</strong> ' . email_esc($nume)
+          . '<br><strong>Firmă:</strong> ' . (email_esc($firma) ?: '-')
+          . '<br><strong>Email:</strong> ' . (email_esc($email) ?: '-')
+          . '<br><strong>Telefon:</strong> ' . (email_esc($telefon) ?: '-'))
+  . ($mesaj !== '' ? email_p('<strong>Mesaj:</strong><br>' . nl2br(email_esc($mesaj))) : '')
+  . email_button('Vezi în panou &rarr;', $base . '/administrare/index.php');
+smtp_send($cfg, $to, '[SmartWeb] Lead nou: ' . hdr($nume), $corp, $replyTo, email_layout($cfg, $internInner));
 
 // Email de confirmare către client (un singur email: click -> pagina cu brief)
 if ($email !== '') {
-  $base = rtrim($cfg['base_url'] ?? ('https://' . $host), '/');
   $link = $base . '/confirma.php?token=' . $token;
   $body = "Salut, $nume!\n\n"
         . "Am primit cererea ta. Confirmă-ți adresa de email accesând link-ul de mai jos, ca să continuăm:\n\n"
         . "$link\n\n"
         . "Link-ul e valabil 7 zile. Dacă nu tu ai trimis această cerere, ignoră acest mesaj.\n\n"
-        . "- Echipa Smart-Web";
-  smtp_send($cfg, $email, 'Confirmă-ți adresa - Smart-Web', $body);
+        . "- Echipa SmartWeb";
+  $confirmInner = email_h('Salut, ' . email_esc($nume) . '! 👋')
+    . email_p('Am primit cererea ta. Confirmă-ți adresa de email apăsând butonul de mai jos, ca să continuăm și să-ți pregătim site-ul.')
+    . email_button('Confirmă adresa &rarr;', $link)
+    . email_small('Link-ul e valabil 7 zile. Dacă nu tu ai trimis această cerere, ignoră acest mesaj.');
+  smtp_send($cfg, $email, 'Confirmă-ți adresa - SmartWeb', $body, '', email_layout($cfg, $confirmInner));
 }
 
 echo json_encode(['ok' => true]);
