@@ -1,7 +1,4 @@
 <?php
-// Trimite email prin SMTP autentificat. Pe shared hosting mail() nu poate trimite
-// extern fără autentificare. Credențialele vin din private/config.php (smtp_*).
-// Dacă $html e furnizat, trimite multipart/alternative (text + HTML).
 function smtp_send(array $cfg, $to, $subject, $text, $replyTo = '', $html = '') {
   $host = $cfg['smtp_host'] ?? '';
   $user = $cfg['smtp_user'] ?? '';

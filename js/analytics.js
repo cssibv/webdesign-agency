@@ -1,14 +1,10 @@
 (function () {
   'use strict';
 
-  /* ============================================================
-   * ⚙️  CONFIGURARE — pune aici ID-ul tău din Google Analytics 4.
-   *     Îl iei gratuit de pe analytics.google.com (forma G-XXXXXXXXXX).
-   *     Cât timp rămâne placeholder-ul de mai jos, GA NU se încarcă.
-   * ============================================================ */
+  // ID Google Analytics 4
   var GA_MEASUREMENT_ID = 'G-QNJCL221JH';
 
-  var STORAGE_KEY = 'cookie-consent'; // valori: 'granted' | 'denied'
+  var STORAGE_KEY = 'cookie-consent';
   var banner = document.getElementById('cookieBanner');
   var gaLoaded = false;
 
@@ -23,12 +19,10 @@
   function showBanner() { if (banner) banner.classList.add('is-visible'); }
   function hideBanner() { if (banner) banner.classList.remove('is-visible'); }
 
-  // Verifică dacă ID-ul a fost configurat (nu mai e placeholder-ul).
   function idIsConfigured() {
     return GA_MEASUREMENT_ID && GA_MEASUREMENT_ID.indexOf('XXXX') === -1;
   }
 
-  // Încarcă Google Analytics 4 — doar după consimțământ și doar dacă ID-ul e setat.
   function loadGA() {
     if (gaLoaded || !idIsConfigured()) return;
     gaLoaded = true;
@@ -44,20 +38,17 @@
     window.gtag('config', GA_MEASUREMENT_ID);
   }
 
-  // Trimite un eveniment către GA (no-op dacă userul nu a acceptat).
   function trackEvent(name, params) {
     if (typeof window.gtag === 'function') {
       window.gtag('event', name, params || {});
     }
   }
 
-  // Expus global, ca să poată fi apelat și din main.js (ex. la trimiterea formularului).
   window.bwTrack = trackEvent;
 
   function grant() { setConsent('granted'); hideBanner(); loadGA(); }
   function deny()  { setConsent('denied');  hideBanner(); }
 
-  // La încărcare: respectă alegerea anterioară, altfel arată banner-ul.
   var consent = getConsent();
   if (consent === 'granted') {
     loadGA();
@@ -70,11 +61,9 @@
   if (acceptBtn) acceptBtn.addEventListener('click', grant);
   if (rejectBtn) rejectBtn.addEventListener('click', deny);
 
-  // Buton persistent „cookie" — redeschide banner-ul ca să-ți poți schimba alegerea oricând.
   var reopenBtn = document.getElementById('cookieReopen');
   if (reopenBtn) reopenBtn.addEventListener('click', showBanner);
 
-  /* ---- Tracking conversii (click-uri importante) ---- */
   function bindConversion(selector, eventName, params) {
     var els = document.querySelectorAll(selector);
     for (var i = 0; i < els.length; i++) {
