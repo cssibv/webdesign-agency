@@ -3,3 +3,4 @@ deployment:
   tasks:
     - export DEPLOYPATH=/home/r101042brea/smart-web.ro
     - /bin/cp -R * $DEPLOYPATH
+    - /bin/cp -R ./.htaccess $DEPLOYPATH
