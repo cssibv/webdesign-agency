@@ -19,7 +19,7 @@ function head($title) {
   echo '<title>' . e($title) . ' - Smart-Web Admin</title>';
   echo '<link rel="icon" type="image/svg+xml" href="../assets/img/favicon.svg">';
   echo '<link rel="stylesheet" href="../assets/fonts/fonts.css">';
-  echo '<link rel="stylesheet" href="admin.css"></head><body>';
+  echo '<link rel="stylesheet" href="admin.css?v=' . filemtime(__DIR__ . '/admin.css') . '"></head><body>';
   echo '<header class="topbar"><a class="topbar__logo" href="index.php">Smart <span>Web</span> <small>Admin</small></a>';
   echo '<div class="topbar__right"><span class="topbar__user">' . e(current_user()) . '</span>';
   echo '<a class="btn btn--ghost btn--sm" href="logout.php">Ieșire</a></div></header>';
