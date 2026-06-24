@@ -16,7 +16,7 @@ function head($title) {
   echo '<!DOCTYPE html><html lang="ro"><head><meta charset="UTF-8">';
   echo '<meta name="viewport" content="width=device-width, initial-scale=1.0">';
   echo '<meta name="robots" content="noindex, nofollow">';
-  echo '<title>' . e($title) . ' - Smart-Web Admin</title>';
+  echo '<title>' . e($title) . ' · Smart Web Admin</title>';
   echo '<link rel="icon" type="image/svg+xml" href="../assets/img/favicon.svg">';
   echo '<link rel="stylesheet" href="../assets/fonts/fonts.css">';
   echo '<link rel="stylesheet" href="admin.css?v=' . filemtime(__DIR__ . '/admin.css') . '"></head><body>';

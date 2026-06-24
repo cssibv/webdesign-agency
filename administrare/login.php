@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
-  <title>Autentificare - Smart-Web Admin</title>
+  <title>Autentificare · Smart Web Admin</title>
   <link rel="icon" type="image/svg+xml" href="../assets/img/favicon.svg">
   <link rel="stylesheet" href="../assets/fonts/fonts.css">
   <link rel="stylesheet" href="admin.css">
