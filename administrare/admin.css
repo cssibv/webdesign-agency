@@ -119,7 +119,8 @@ h2 { font-size: 1.15rem; margin: 1.8rem 0 .7rem; letter-spacing: -.3px; }
 .col--livrat_luna_gratis  { --st: #22c55e; }
 .col--decizie_dupa_gratis { --st: #a855f7; }
 .col--contract_semnat     { --st: #16a34a; }
-.col--pierdut_arhivat     { --st: #cbd5e1; }
+.col--pierdut             { --st: #cbd5e1; }
+.col--client_plecat       { --st: #fb7185; }
 
 /* Status badges */
 .badge {
@@ -135,7 +136,8 @@ h2 { font-size: 1.15rem; margin: 1.8rem 0 .7rem; letter-spacing: -.3px; }
 .badge--livrat_luna_gratis  { background: #f0fdf4; color: #16a34a; }
 .badge--decizie_dupa_gratis { background: #faf5ff; color: #9333ea; }
 .badge--contract_semnat     { background: #f0fdf4; color: #15803d; }
-.badge--pierdut_arhivat     { background: #f1f5f9; color: #94a3b8; }
+.badge--pierdut             { background: #f1f5f9; color: #94a3b8; }
+.badge--client_plecat       { background: #fff1f2; color: #be123c; }
 .badge--ok  { background: #f0fdf4; color: #16a34a; }
 .badge--bad { background: #fef2f2; color: #dc2626; }
 
