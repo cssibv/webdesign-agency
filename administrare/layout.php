@@ -4,13 +4,19 @@ $STATUSES = [
   'in_discutie'          => 'În discuție',
   'acceptat'             => 'Acceptat',
   'in_constructie'       => 'În construcție',
-  'livrat_luna_gratis'   => 'Livrat - luna gratis',
+  'livrat_luna_gratis'   => 'Livrat (luna gratis)',
   'decizie_dupa_gratis'  => 'Decizie după luna gratis',
   'contract_semnat'      => 'Contract semnat',
   'pierdut_arhivat'      => 'Pierdut / Arhivat',
 ];
 $PLANS = ['start' => 'Start', 'business' => 'Business', 'pro' => 'Pro'];
 $PLATA = ['neinceput' => 'Neînceput', 'la_zi' => 'La zi', 'restant' => 'Restant'];
+
+function val($v, $bold = true) {
+  $v = trim((string)$v);
+  if ($v === '') return '<span class="unset">nestabilit</span>';
+  return $bold ? '<strong>' . e($v) . '</strong>' : e($v);
+}
 
 function head($title) {
   echo '<!DOCTYPE html><html lang="ro"><head><meta charset="UTF-8">';
