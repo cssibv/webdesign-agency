@@ -9,20 +9,28 @@
   var navbar = document.getElementById('navbar');
   var toTop = document.getElementById('toTop');
 
-  function onScroll() {
-    var y = window.scrollY || window.pageYOffset;
+  var scrollTicking = false;
 
+  function applyScroll() {
+    scrollTicking = false;
+    var y = window.scrollY || window.pageYOffset;
     if (navbar) {
       navbar.classList.toggle('is-scrolled', y > 20);
     }
-
     if (toTop) {
       toTop.classList.toggle('is-visible', y > 400);
     }
   }
 
+  function onScroll() {
+    if (!scrollTicking) {
+      scrollTicking = true;
+      window.requestAnimationFrame(applyScroll);
+    }
+  }
+
   window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
+  window.requestAnimationFrame(applyScroll);
 
   var navToggle = document.getElementById('navToggle');
   var navMenu = document.getElementById('navMenu');
@@ -108,7 +116,7 @@
         .then(function (response) {
           if (response.ok) {
             form.reset();
-            setStatus('✓ Gata! Ți-am trimis un email de confirmare - dă click pe link ca să continuăm.', 'is-success');
+            setStatus('✓ Gata! Ți-am trimis un email de confirmare, dă click pe link ca să continuăm.', 'is-success');
             if (window.bwTrack) window.bwTrack('trimitere_formular', { method: 'formular_contact' });
           } else {
             return response.json().then(function (d) {
