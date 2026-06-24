@@ -185,44 +185,42 @@ head($id ? ($c['firma'] ?: $c['nume']) : 'Client nou');
 
 <?php if ($brief):
   $BRIEF_GROUPS = [
-    'Despre afacere'         => ['domeniu_activitate', 'servicii', 'public_tinta', 'referinte'],
-    'Conținut și identitate' => ['brand', 'continut'],
-    'Site-ul dorit'          => ['scop', 'pagini', 'domeniu_dorit', 'date_afisare'],
-    'Livrare și plan'        => ['termen', 'plan_vizat', 'alte_detalii'],
+    ['titlu' => 'Despre afacere',         'color' => '#1aa9a0', 'keys' => ['domeniu_activitate', 'servicii', 'public_tinta', 'referinte']],
+    ['titlu' => 'Conținut și identitate', 'color' => '#ff7a45', 'keys' => ['brand', 'continut']],
+    ['titlu' => 'Site-ul dorit',          'color' => '#3b82f6', 'keys' => ['scop', 'pagini', 'domeniu_dorit', 'date_afisare']],
+    ['titlu' => 'Livrare și plan',        'color' => '#a855f7', 'keys' => ['termen', 'plan_vizat', 'alte_detalii']],
   ];
   $briefTagFields   = ['public_tinta', 'scop', 'pagini'];
   $briefSplitFields = ['brand', 'continut'];
 ?>
   <h2>Brief client</h2>
-  <div class="panel">
-    <?php foreach ($BRIEF_GROUPS as $titlu => $keys):
-      $has = false;
-      foreach ($keys as $k) { if (!empty($brief[$k])) { $has = true; break; } }
-      if (!$has) continue;
-    ?>
-      <div class="brief-sec">
-        <h3 class="brief-sec__title"><?= e($titlu) ?></h3>
-        <?php foreach ($keys as $k): if (empty($brief[$k])) continue; ?>
-          <div class="brief-item">
-            <div class="brief-dt"><?= e($BRIEF_LABELS[$k]) ?></div>
-            <div class="brief-dd">
-              <?php if (in_array($k, $briefTagFields, true)): ?>
-                <div class="brief-tags">
-                  <?php foreach (array_filter(array_map('trim', explode(',', $brief[$k]))) as $t): ?>
-                    <span class="brief-tag"><?= e($t) ?></span>
-                  <?php endforeach; ?>
-                </div>
-              <?php elseif (in_array($k, $briefSplitFields, true)): ?>
-                <?= nl2br(e(str_replace('; ', "\n", $brief[$k]))) ?>
-              <?php else: ?>
-                <?= nl2br(e($brief[$k])) ?>
-              <?php endif; ?>
-            </div>
+  <?php foreach ($BRIEF_GROUPS as $g):
+    $has = false;
+    foreach ($g['keys'] as $k) { if (!empty($brief[$k])) { $has = true; break; } }
+    if (!$has) continue;
+  ?>
+    <div class="brief-sec" style="--sc:<?= e($g['color']) ?>">
+      <h3 class="brief-sec__title"><?= e($g['titlu']) ?></h3>
+      <?php foreach ($g['keys'] as $k): if (empty($brief[$k])) continue; ?>
+        <div class="brief-item">
+          <div class="brief-dt"><?= e($BRIEF_LABELS[$k]) ?></div>
+          <div class="brief-dd">
+            <?php if (in_array($k, $briefTagFields, true)): ?>
+              <div class="brief-tags">
+                <?php foreach (array_filter(array_map('trim', explode(',', $brief[$k]))) as $t): ?>
+                  <span class="brief-tag"><?= e($t) ?></span>
+                <?php endforeach; ?>
+              </div>
+            <?php elseif (in_array($k, $briefSplitFields, true)): ?>
+              <?= nl2br(e(str_replace('; ', "\n", $brief[$k]))) ?>
+            <?php else: ?>
+              <?= nl2br(e($brief[$k])) ?>
+            <?php endif; ?>
           </div>
-        <?php endforeach; ?>
-      </div>
-    <?php endforeach; ?>
-    <p class="readonly">Completat: <?= e($brief['creat_la']) ?></p>
-  </div>
+        </div>
+      <?php endforeach; ?>
+    </div>
+  <?php endforeach; ?>
+  <p class="brief-meta">Completat: <?= e($brief['creat_la']) ?></p>
 <?php endif; ?>
 <?php foot(); ?>
