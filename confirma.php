@@ -19,7 +19,7 @@ function pagina($titlu, $continut) {
   echo '<style>'
      . 'body.cf-page{background:var(--c-bg-alt)}'
      . '.cf{max-width:680px;margin:2.4rem auto;background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--radius);box-shadow:var(--shadow-md);padding:clamp(1.5rem,4vw,2.7rem)}'
-     . '.cf__brand{display:flex;align-items:center;gap:.45rem;font-weight:800;font-size:1.3rem;color:var(--c-primary);margin-bottom:1.3rem}'
+     . '.cf__brand{display:flex;align-items:center;gap:.5rem;font-weight:800;font-size:1.75rem;color:var(--c-primary);margin-bottom:1.4rem}'
      . '.cf__mark{color:var(--c-teal)}.cf__accent{color:var(--c-accent)}'
      . '.cf h2{margin:.2rem 0 .5rem;font-size:1.55rem}.cf>p{color:var(--c-text-soft);margin:0 0 1rem;line-height:1.55}'
      . '.cf .err{background:#fdecea;border:1px solid #f5b7b1;color:#922b21;padding:.85rem 1rem;border-radius:var(--radius-sm);margin-bottom:1.3rem;font-weight:600}'
