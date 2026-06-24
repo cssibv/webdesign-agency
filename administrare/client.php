@@ -35,8 +35,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $dmin6   = $dstart ? date('Y-m-d', strtotime($dstart . ' +6 months')) : null;
   $ziua    = $dstart ? (int)date('j', strtotime($dstart))               : null;
 
+  $STATUS_RANK = ['lead_nou' => 1, 'in_discutie' => 2, 'acceptat' => 3, 'in_constructie' => 4, 'livrat_luna_gratis' => 5, 'decizie_dupa_gratis' => 6, 'contract_semnat' => 7];
+  $rank = $STATUS_RANK[$status] ?? 0;
+  $statusNume = $STATUSES[$status] ?? $status;
+  $areBrief = false;
+  if ($id > 0) {
+    $bc = db()->prepare('SELECT COUNT(*) FROM brief WHERE client_id = ?');
+    $bc->execute([$id]);
+    $areBrief = (int) $bc->fetchColumn() > 0;
+  }
+
   if ($nume === '') {
     $err = 'Numele e obligatoriu.';
+  } elseif ($rank >= 2 && $email === null && $telefon === null) {
+    $err = 'Adaugă un email sau un telefon ca să poți trece clientul în „' . $statusNume . '".';
+  } elseif ($rank >= 4 && !$areBrief) {
+    $err = 'Clientul nu a completat încă brief-ul (logo, texte, imagini, pagini). Ai nevoie de el ca să treci în „' . $statusNume . '".';
+  } elseif ($rank >= 5 && $dlivr === null) {
+    $err = 'Completează data livrării ca să poți marca „' . $statusNume . '".';
+  } elseif ($rank >= 7 && ($plan === null || $dstart === null)) {
+    $err = 'Pentru „Contract semnat" ai nevoie de plan ales și de data de start a abonamentului.';
   } else {
     $vals = [$nume, $firma, $email, $telefon, $sursa, $status, $plan, $domeniu, $dlead, $dlivr, $dgratis, $dstart, $ziua, $dmin6, $plata, $obs];
     if ($id > 0) {
@@ -75,6 +93,12 @@ if ($id > 0) {
         'email_confirmat' => 'nu', 'confirmat_la' => ''];
   $events = [];
   $brief = null;
+}
+
+if ($err !== '') {
+  foreach (['nume','firma','email','telefon','sursa','status','plan','domeniu','data_lead','data_livrare','data_start_abonament','status_plata','observatii'] as $k) {
+    if (isset($_POST[$k])) $c[$k] = $_POST[$k];
+  }
 }
 
 $BRIEF_LABELS = [
