@@ -962,6 +962,7 @@ a.work .work__body p { color: var(--c-teal-dark); font-weight: 600; }
 
 @media (max-width: 860px) {
   .navbar__toggle { display: flex; }
+  .navbar__actions { gap: .9rem; }
 
   .navbar__nav {
     position: absolute;
