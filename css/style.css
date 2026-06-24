@@ -879,6 +879,7 @@ a.work .work__body p { color: var(--c-teal-dark); font-weight: 600; }
   flex-wrap: wrap;
 }
 .cookie-banner__text { flex: 1 1 280px; margin: 0; font-size: .92rem; line-height: 1.5; }
+.cookie-banner__text a { text-decoration: underline; }
 .cookie-banner__actions { display: flex; gap: .6rem; flex-shrink: 0; }
 .cookie-banner__actions .btn { padding: .6rem 1.3rem; font-size: .95rem; }
 @media (max-width: 540px) {
