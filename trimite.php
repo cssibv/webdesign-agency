@@ -90,17 +90,17 @@ smtp_send($cfg, $to, '[SmartWeb] Lead nou: ' . hdr($nume), $corp, $replyTo, emai
 if ($email !== '') {
   $link = $base . '/confirma.php?token=' . $token;
   $body = "Salut, $nume!\n\n"
-        . "Am primit cererea ta - mulțumim! Mai e un pas: confirmă-ți adresa de email accesând link-ul de mai jos.\n\n"
+        . "Am primit cererea ta, mulțumim! Mai e un pas: confirmă-ți adresa de email accesând link-ul de mai jos.\n\n"
         . "$link\n\n"
-        . "Imediat după confirmare se deschide un formular scurt (~2 minute) cu câteva întrebări despre afacerea ta - ne ajută să-ți pregătim mai repede un site care chiar îți aduce rezultate.\n\n"
+        . "Imediat după confirmare se deschide un formular scurt cu câteva întrebări despre afacerea ta, ca să-ți pregătim mai repede un site care chiar îți aduce rezultate.\n\n"
         . "Link-ul e valabil 7 zile. Dacă nu tu ai trimis această cerere, ignoră acest mesaj.\n\n"
-        . "- Echipa SmartWeb";
+        . "Cu drag, Echipa Smart Web";
   $confirmInner = email_h('Salut, ' . email_esc($nume) . '! 👋')
-    . email_p('Am primit cererea ta - mulțumim! Mai e un pas: confirmă-ți adresa de email apăsând butonul de mai jos.')
-    . email_p('Imediat după confirmare se deschide un formular scurt (~2 minute) cu câteva întrebări despre afacerea ta - ne ajută să-ți pregătim mai repede un site care chiar îți aduce rezultate.')
+    . email_p('Am primit cererea ta, mulțumim! Mai e un pas: confirmă-ți adresa de email apăsând butonul de mai jos.')
+    . email_p('Imediat după confirmare se deschide un formular scurt cu câteva întrebări despre afacerea ta, ca să-ți pregătim mai repede un site care chiar îți aduce rezultate.')
     . email_button('Confirmă adresa &rarr;', $link)
     . email_small('Link-ul e valabil 7 zile. Dacă nu tu ai trimis această cerere, ignoră acest mesaj.');
-  smtp_send($cfg, $email, 'Confirmă-ți adresa - SmartWeb', $body, '', email_layout($cfg, $confirmInner));
+  smtp_send($cfg, $email, 'Confirmă-ți adresa la Smart Web', $body, '', email_layout($cfg, $confirmInner));
 }
 
 echo json_encode(['ok' => true]);

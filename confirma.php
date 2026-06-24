@@ -13,7 +13,7 @@ function pagina($titlu, $continut) {
   echo '<meta name="viewport" content="width=device-width, initial-scale=1.0">';
   echo '<meta name="robots" content="noindex, nofollow">';
   echo '<meta name="color-scheme" content="light dark">';
-  echo '<title>' . e($titlu) . ' - Smart-Web</title>';
+  echo '<title>' . e($titlu) . ' · Smart Web</title>';
   echo '<script>(function(){try{var s=localStorage.getItem("theme");var d=s?s==="dark":window.matchMedia("(prefers-color-scheme: dark)").matches;if(d)document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>';
   echo '<link rel="stylesheet" href="css/style.css">';
   echo '<style>'
@@ -87,7 +87,7 @@ $fields = ['domeniu_activitate','servicii','public_tinta','referinte','brand','c
 $PUBLIC = ['Persoane fizice (B2C)', 'Firme (B2B)', 'Clienți locali (Brașov / județ)', 'Clienți din toată țara'];
 $SCOP   = ['Prezență online / credibilitate', 'Clienți noi / cereri de ofertă', 'Programări / rezervări', 'Vânzări online (magazin)', 'Promovare servicii / produse'];
 $PAGINI = ['Acasă', 'Servicii', 'Despre noi', 'Contact', 'Portofoliu / Galerie', 'Blog', 'Prețuri', 'Întrebări frecvente'];
-$PLANURI = ['Start', 'Business', 'Pro', 'Nu sunt sigur - recomandați voi'];
+$PLANURI = ['Start', 'Business', 'Pro', 'Nu sunt sigur, recomandați voi'];
 
 // Citirea valorilor anterioare (pentru repopularea formularului la eroare)
 function old_v($k) { return e((string)($_POST[$k] ?? '')); }
@@ -222,7 +222,7 @@ $termenField = '<div class="field"><span class="field__label">Până când ai vr
 
 $form = $errHtml
   . '<h2>Adresă confirmată ✓</h2>'
-  . '<p>Mulțumim, ' . $nume . '! Ca să-ți pregătim site-ul mai repede, completează detaliile de mai jos - durează ~2 minute. Câmpurile cu <span class="req">*</span> sunt obligatorii.</p>'
+  . '<p>Mulțumim, ' . $nume . '! Ca să-ți pregătim site-ul mai repede, completează detaliile de mai jos. Câmpurile cu <span class="req">*</span> sunt obligatorii.</p>'
   . '<form method="post">'
   . '<input type="hidden" name="brief" value="1">'
   . '<input type="hidden" name="token" value="' . $tok . '">'
