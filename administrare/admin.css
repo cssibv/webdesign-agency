@@ -155,6 +155,7 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--t
 select { cursor: pointer; }
 textarea { min-height: 84px; resize: vertical; }
 .readonly { color: var(--muted); font-size: .88rem; margin-top: 1.1rem; border-top: 1px solid var(--line); padding-top: .85rem; }
+.unset { color: #94a3b8; font-weight: 400; }
 .form-actions { margin-top: 1.4rem; padding-top: 1.2rem; border-top: 1px solid var(--line); display: flex; gap: .7rem; align-items: center; }
 
 /* Messages */

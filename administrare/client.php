@@ -131,7 +131,7 @@ head($id ? ($c['firma'] ?: $c['nume']) : 'Client nou');
       <div>
         <label>Plan</label>
         <select name="plan">
-          <option value="">—</option>
+          <option value="">Nestabilit</option>
           <?php foreach ($PLANS as $k => $v): ?>
             <option value="<?= e($k) ?>" <?= $c['plan'] === $k ? 'selected' : '' ?>><?= e($v) ?></option>
           <?php endforeach; ?>
@@ -164,9 +164,9 @@ head($id ? ($c['firma'] ?: $c['nume']) : 'Client nou');
 
   <?php if ($id): ?>
     <p class="readonly">
-      Luna gratis expiră: <strong><?= e($c['data_expira_gratis'] ?: '—') ?></strong> &nbsp;|&nbsp;
-      Minim 6 luni până la: <strong><?= e($c['data_expira_minim6'] ?: '—') ?></strong> &nbsp;|&nbsp;
-      Zi reînnoire: <strong><?= e($c['ziua_reinnoire'] ?: '—') ?></strong>
+      Luna gratis expiră: <?= val($c['data_expira_gratis']) ?> &nbsp;|&nbsp;
+      Minim 6 luni până la: <?= val($c['data_expira_minim6']) ?> &nbsp;|&nbsp;
+      Zi reînnoire: <?= val($c['ziua_reinnoire']) ?>
     </p>
   <?php endif; ?>
 </div>
