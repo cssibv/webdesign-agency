@@ -88,7 +88,7 @@ $BRIEF_LABELS = [
   'pagini'             => 'Pagini dorite',
   'domeniu_dorit'      => 'Domeniu dorit',
   'date_afisare'       => 'Date de afișat',
-  'termen'             => 'Termen / urgență',
+  'termen'             => 'Termen dorit',
   'plan_vizat'         => 'Plan vizat',
   'alte_detalii'       => 'Alte detalii',
 ];
@@ -183,11 +183,44 @@ head($id ? ($c['firma'] ?: $c['nume']) : 'Client nou');
   </ul>
 <?php endif; ?>
 
-<?php if ($brief): ?>
+<?php if ($brief):
+  $BRIEF_GROUPS = [
+    'Despre afacere'         => ['domeniu_activitate', 'servicii', 'public_tinta', 'referinte'],
+    'Conținut și identitate' => ['brand', 'continut'],
+    'Site-ul dorit'          => ['scop', 'pagini', 'domeniu_dorit', 'date_afisare'],
+    'Livrare și plan'        => ['termen', 'plan_vizat', 'alte_detalii'],
+  ];
+  $briefTagFields   = ['public_tinta', 'scop', 'pagini'];
+  $briefSplitFields = ['brand', 'continut'];
+?>
   <h2>Brief client</h2>
   <div class="panel">
-    <?php foreach ($BRIEF_LABELS as $k => $lbl): if (empty($brief[$k])) continue; ?>
-      <p><strong><?= e($lbl) ?>:</strong><br><?= nl2br(e($brief[$k])) ?></p>
+    <?php foreach ($BRIEF_GROUPS as $titlu => $keys):
+      $has = false;
+      foreach ($keys as $k) { if (!empty($brief[$k])) { $has = true; break; } }
+      if (!$has) continue;
+    ?>
+      <div class="brief-sec">
+        <h3 class="brief-sec__title"><?= e($titlu) ?></h3>
+        <?php foreach ($keys as $k): if (empty($brief[$k])) continue; ?>
+          <div class="brief-item">
+            <div class="brief-dt"><?= e($BRIEF_LABELS[$k]) ?></div>
+            <div class="brief-dd">
+              <?php if (in_array($k, $briefTagFields, true)): ?>
+                <div class="brief-tags">
+                  <?php foreach (array_filter(array_map('trim', explode(',', $brief[$k]))) as $t): ?>
+                    <span class="brief-tag"><?= e($t) ?></span>
+                  <?php endforeach; ?>
+                </div>
+              <?php elseif (in_array($k, $briefSplitFields, true)): ?>
+                <?= nl2br(e(str_replace('; ', "\n", $brief[$k]))) ?>
+              <?php else: ?>
+                <?= nl2br(e($brief[$k])) ?>
+              <?php endif; ?>
+            </div>
+          </div>
+        <?php endforeach; ?>
+      </div>
     <?php endforeach; ?>
     <p class="readonly">Completat: <?= e($brief['creat_la']) ?></p>
   </div>
