@@ -12,20 +12,46 @@ function pagina($titlu, $continut) {
   echo '<!DOCTYPE html><html lang="ro"><head><meta charset="UTF-8">';
   echo '<meta name="viewport" content="width=device-width, initial-scale=1.0">';
   echo '<meta name="robots" content="noindex, nofollow">';
+  echo '<meta name="color-scheme" content="light dark">';
   echo '<title>' . e($titlu) . ' - Smart-Web</title>';
+  echo '<script>(function(){try{var s=localStorage.getItem("theme");var d=s?s==="dark":window.matchMedia("(prefers-color-scheme: dark)").matches;if(d)document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>';
   echo '<link rel="stylesheet" href="css/style.css">';
-  echo '<style>.cf{max-width:720px;margin:0 auto}.cf label{display:block;font-weight:600;margin:1.1rem 0 .3rem}'
-     . '.cf input,.cf textarea{width:100%;padding:.6rem .7rem;border:1px solid #cdd6e0;border-radius:8px;font:inherit;background:#fff;color:#1c2733}'
-     . '.cf textarea{min-height:80px;resize:vertical}.cf .hp{position:absolute;left:-9999px}'
-     . '.cf fieldset{border:0;padding:0;margin:0}.cf legend{display:block;font-weight:600;margin:1.1rem 0 .45rem;padding:0}'
-     . '.cf .opts{display:flex;flex-direction:column;gap:.45rem}'
-     . '.cf .opt{display:flex;align-items:center;gap:.55rem;font-weight:400;margin:0;cursor:pointer}'
-     . '.cf .opt input{width:auto;margin:0;flex:0 0 auto}'
-     . '.cf input[type=date]{max-width:240px}.cf input:disabled{background:#eef2f6;color:#90a0b0}'
-     . '.cf .req{color:#c0392b}.cf .hint{font-weight:400;color:#65758a;font-size:.9rem}'
-     . '.cf .err{background:#fdecea;border:1px solid #f5b7b1;color:#922b21;padding:.75rem .9rem;border-radius:8px;margin-bottom:1rem}'
-     . '.cf fieldset.err-fs{outline:2px solid #e74c3c;outline-offset:8px;border-radius:8px}</style>';
-  echo '</head><body><main class="section"><div class="container cf">' . $continut . '</div></main></body></html>';
+  echo '<style>'
+     . 'body.cf-page{background:var(--c-bg-alt)}'
+     . '.cf{max-width:680px;margin:2.4rem auto;background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--radius);box-shadow:var(--shadow-md);padding:clamp(1.5rem,4vw,2.7rem)}'
+     . '.cf__brand{display:flex;align-items:center;gap:.45rem;font-weight:800;font-size:1.3rem;color:var(--c-primary);margin-bottom:1.3rem}'
+     . '.cf__mark{color:var(--c-teal)}.cf__accent{color:var(--c-accent)}'
+     . '.cf h2{margin:.2rem 0 .5rem;font-size:1.55rem}.cf>p{color:var(--c-text-soft);margin:0 0 1rem;line-height:1.55}'
+     . '.cf .err{background:#fdecea;border:1px solid #f5b7b1;color:#922b21;padding:.85rem 1rem;border-radius:var(--radius-sm);margin-bottom:1.3rem;font-weight:600}'
+     . '.grp{margin-top:2.4rem;padding-top:1.7rem;border-top:1px solid var(--c-border)}'
+     . '.grp:first-of-type{margin-top:1.6rem;padding-top:0;border-top:0}'
+     . '.grp__title{font-size:.78rem;letter-spacing:.09em;text-transform:uppercase;color:var(--c-teal-dark);font-weight:700;margin:0 0 1.3rem}'
+     . '.field{margin-bottom:1.8rem}.field:last-child{margin-bottom:0}'
+     . '.field__label{display:block;font-weight:600;color:var(--c-text);margin-bottom:.6rem}'
+     . '.field__hint{display:block;color:var(--c-text-soft);font-size:.88rem;margin:-.35rem 0 .65rem}'
+     . '.req{color:var(--c-accent)}.hint{font-weight:400;color:var(--c-text-soft);font-size:.9rem}'
+     . '.cf input[type=text],.cf textarea{width:100%;padding:.72rem .9rem;border:1px solid var(--c-border);border-radius:var(--radius-sm);font:inherit;background:var(--c-bg-alt);color:var(--c-text);transition:border-color .15s,box-shadow .15s}'
+     . '.cf textarea{min-height:92px;resize:vertical}'
+     . '.cf input[type=text]:focus,.cf textarea:focus{outline:0;border-color:var(--c-teal);box-shadow:0 0 0 3px rgba(26,169,160,.18)}'
+     . '.cf input[type=date]{padding:.6rem .8rem;border:1px solid var(--c-border);border-radius:var(--radius-sm);font:inherit;background:var(--c-bg-alt);color:var(--c-text);max-width:260px}'
+     . '.cf input[type=date]:focus{outline:0;border-color:var(--c-teal);box-shadow:0 0 0 3px rgba(26,169,160,.18)}'
+     . '.cf input[type=date]:disabled{opacity:.45;cursor:not-allowed}'
+     . '.choices{display:flex;flex-wrap:wrap;gap:.6rem}'
+     . '.choice{position:relative;display:inline-flex}'
+     . '.choice input{position:absolute;opacity:0;width:0;height:0}'
+     . '.choice__b{display:inline-flex;align-items:center;padding:.6rem 1.05rem;border:1.5px solid var(--c-border);border-radius:999px;background:var(--c-surface);color:var(--c-text);font-weight:600;font-size:.95rem;cursor:pointer;transition:background .15s,border-color .15s,color .15s}'
+     . '.choice__b:hover{border-color:var(--c-teal);color:var(--c-teal-dark)}'
+     . '.choice input:checked+.choice__b{background:var(--c-accent);border-color:var(--c-accent);color:#fff;box-shadow:var(--shadow-sm)}'
+     . '.choice input:checked+.choice__b:hover{color:#fff}'
+     . '.choice input:focus-visible+.choice__b{outline:3px solid var(--c-teal);outline-offset:2px}'
+     . '.choice input:disabled+.choice__b{opacity:.4;cursor:not-allowed}'
+     . '.hp{position:absolute;left:-9999px}'
+     . '.field.err-field .field__label{color:#c0392b}'
+     . '.field.err-field .choices{outline:2px dashed #e8a39a;outline-offset:8px;border-radius:14px}'
+     . '</style>';
+  echo '</head><body class="cf-page"><main class="section"><div class="container"><div class="cf">'
+     . '<div class="cf__brand"><span class="cf__mark">&#9670;</span> Smart <span class="cf__accent">Web</span></div>'
+     . $continut . '</div></div></main></body></html>';
   exit;
 }
 
@@ -54,58 +80,100 @@ if ($client['email_confirmat'] !== 'da') {
   db()->prepare('INSERT INTO evenimente (client_id, tip, text) VALUES (?, ?, ?)')->execute([$cid, 'email_confirmat', 'Adresa de email confirmată']);
 }
 
-// Opțiunile pentru întrebările cu bife / radio
-$OPT = [
-  'public_tinta' => ['Persoane fizice (B2C)', 'Firme (B2B)', 'Clienți locali (Brașov / județ)', 'Clienți din toată țara'],
-  'brand'        => ['Am logo', 'Am culori de brand', 'Le creați voi'],
-  'continut'     => ['Am textele', 'Am pozele', 'Am nevoie de ajutor la texte', 'Am nevoie de poze'],
-  'scop'         => ['Prezență online / credibilitate', 'Clienți noi / cereri de ofertă', 'Programări / rezervări', 'Vânzări online (magazin)', 'Promovare servicii / produse'],
-  'pagini'       => ['Acasă', 'Servicii', 'Despre noi', 'Contact', 'Portofoliu / Galerie', 'Blog', 'Prețuri', 'Întrebări frecvente'],
-];
-$PLANURI   = ['Start', 'Business', 'Pro', 'Nu sunt sigur — recomandați voi'];
-$fields    = ['domeniu_activitate','servicii','public_tinta','referinte','brand','continut','scop','pagini','domeniu_dorit','date_afisare','termen','plan_vizat','alte_detalii'];
-$arrFields = array_keys($OPT);
-$required  = ['domeniu_activitate','servicii','public_tinta','brand','continut','scop','pagini','domeniu_dorit','date_afisare','termen','plan_vizat'];
+// Ordinea coloanelor din tabela brief (rămâne neschimbată)
+$fields = ['domeniu_activitate','servicii','public_tinta','referinte','brand','continut','scop','pagini','domeniu_dorit','date_afisare','termen','plan_vizat','alte_detalii'];
 
-function colecteaza_brief(array $fields, array $arrFields) {
-  $nz = function ($v) { $v = trim((string)$v); return $v === '' ? null : $v; };
-  $out = [];
-  foreach ($fields as $f) {
-    if ($f === 'termen') {
-      $out[$f] = !empty($_POST['termen_flexibil']) ? 'Flexibil' : $nz($_POST['termen'] ?? '');
-    } elseif (in_array($f, $arrFields, true)) {
-      $a = $_POST[$f] ?? [];
-      if (!is_array($a)) $a = [$a];
-      $a = array_values(array_filter(array_map('trim', $a), function ($x) { return $x !== ''; }));
-      $out[$f] = $a ? implode(', ', $a) : null;
+// Opțiuni multi-choice (pastile)
+$PUBLIC = ['Persoane fizice (B2C)', 'Firme (B2B)', 'Clienți locali (Brașov / județ)', 'Clienți din toată țara'];
+$SCOP   = ['Prezență online / credibilitate', 'Clienți noi / cereri de ofertă', 'Programări / rezervări', 'Vânzări online (magazin)', 'Promovare servicii / produse'];
+$PAGINI = ['Acasă', 'Servicii', 'Despre noi', 'Contact', 'Portofoliu / Galerie', 'Blog', 'Prețuri', 'Întrebări frecvente'];
+$PLANURI = ['Start', 'Business', 'Pro', 'Nu sunt sigur - recomandați voi'];
+
+// Citirea valorilor anterioare (pentru repopularea formularului la eroare)
+function old_v($k) { return e((string)($_POST[$k] ?? '')); }
+function old_in($k, $v) { $a = $_POST[$k] ?? []; if (!is_array($a)) $a = [$a]; return in_array($v, $a, true); }
+function old_is($k, $v) { return (string)($_POST[$k] ?? '') === $v; }
+
+// Câmp text / textarea
+function f_text($name, $label, $req, $textarea = false, $ph = '') {
+  $mark = $req ? ' <span class="req">*</span>' : ' <span class="hint">(opțional)</span>';
+  $r = $req ? ' required' : '';
+  $p = $ph !== '' ? ' placeholder="' . e($ph) . '"' : '';
+  $h = '<div class="field"><label class="field__label" for="f_' . e($name) . '">' . e($label) . $mark . '</label>';
+  if ($textarea) {
+    $h .= '<textarea id="f_' . e($name) . '" name="' . e($name) . '"' . $r . $p . '>' . old_v($name) . '</textarea>';
+  } else {
+    $h .= '<input type="text" id="f_' . e($name) . '" name="' . e($name) . '" value="' . old_v($name) . '"' . $r . $p . '>';
+  }
+  return $h . '</div>';
+}
+
+// Grup de pastile selectabile (multi = checkbox, single = radio)
+function f_pills($name, $label, array $optiuni, $multi, $hint = '') {
+  $h = '<div class="field"><span class="field__label">' . e($label) . ' <span class="req">*</span></span>';
+  if ($hint !== '') $h .= '<span class="field__hint">' . e($hint) . '</span>';
+  $h .= '<div class="choices" data-req-group="1">';
+  foreach ($optiuni as $o) {
+    if ($multi) {
+      $inp = '<input type="checkbox" name="' . e($name) . '[]" value="' . e($o) . '"' . (old_in($name, $o) ? ' checked' : '') . '>';
     } else {
-      $out[$f] = $nz($_POST[$f] ?? '');
+      $inp = '<input type="radio" name="' . e($name) . '" value="' . e($o) . '"' . (old_is($name, $o) ? ' checked' : '') . '>';
     }
+    $h .= '<label class="choice">' . $inp . '<span class="choice__b">' . e($o) . '</span></label>';
   }
-  return $out;
+  return $h . '</div></div>';
 }
 
-function cb_group($name, $label, array $optiuni, $valoare) {
-  $sel = array_filter(array_map('trim', explode(',', (string)$valoare)), function ($x) { return $x !== ''; });
-  $h = '<fieldset data-req="1"><legend>' . e($label) . ' <span class="req">*</span></legend><div class="opts">';
-  foreach ($optiuni as $o) {
-    $ck = in_array($o, $sel, true) ? ' checked' : '';
-    $h .= '<label class="opt"><input type="checkbox" name="' . e($name) . '[]" value="' . e($o) . '"' . $ck . '> ' . e($o) . '</label>';
-  }
-  return $h . '</div></fieldset>';
+// Strânge valorile pentru salvare (combină sub-întrebările Da/Nu într-o singură coloană)
+function colecteaza_brief() {
+  $nz = function ($v) { $v = trim((string)$v); return $v === '' ? null : $v; };
+  $multi = function ($k) {
+    $a = $_POST[$k] ?? [];
+    if (!is_array($a)) $a = [$a];
+    $a = array_values(array_filter(array_map('trim', $a), function ($x) { return $x !== ''; }));
+    return $a ? implode(', ', $a) : null;
+  };
+  $logo = $nz($_POST['brand_logo'] ?? '');
+  $culori = $nz($_POST['brand_culori'] ?? '');
+  $brand = ($logo === null && $culori === null) ? null : ('Logo: ' . ($logo ?? '-') . '; Culori de brand: ' . ($culori ?? '-'));
+  $texte = $nz($_POST['cont_texte'] ?? '');
+  $poze = $nz($_POST['cont_poze'] ?? '');
+  $continut = ($texte === null && $poze === null) ? null : ('Texte: ' . ($texte ?? '-') . '; Poze/imagini: ' . ($poze ?? '-'));
+  return [
+    'domeniu_activitate' => $nz($_POST['domeniu_activitate'] ?? ''),
+    'servicii'           => $nz($_POST['servicii'] ?? ''),
+    'public_tinta'       => $multi('public_tinta'),
+    'referinte'          => $nz($_POST['referinte'] ?? ''),
+    'brand'              => $brand,
+    'continut'           => $continut,
+    'scop'               => $multi('scop'),
+    'pagini'             => $multi('pagini'),
+    'domeniu_dorit'      => $nz($_POST['domeniu_dorit'] ?? ''),
+    'date_afisare'       => $nz($_POST['date_afisare'] ?? ''),
+    'termen'             => !empty($_POST['termen_flexibil']) ? 'Flexibil' : $nz($_POST['termen'] ?? ''),
+    'plan_vizat'         => $nz($_POST['plan_vizat'] ?? ''),
+    'alte_detalii'       => $nz($_POST['alte_detalii'] ?? ''),
+  ];
 }
 
-function radio_group($name, $label, array $optiuni, $valoare) {
-  $h = '<fieldset><legend>' . e($label) . ' <span class="req">*</span></legend><div class="opts">';
-  foreach ($optiuni as $o) {
-    $ck = ((string)$valoare === $o) ? ' checked' : '';
-    $h .= '<label class="opt"><input type="radio" name="' . e($name) . '" value="' . e($o) . '"' . $ck . ' required> ' . e($o) . '</label>';
+// Validare server-side a câmpurilor obligatorii
+function brief_valid() {
+  $nz = function ($v) { return trim((string)$v) === '' ? null : trim((string)$v); };
+  $hasMulti = function ($k) {
+    $a = $_POST[$k] ?? [];
+    return is_array($a) && count(array_filter($a, function ($x) { return trim((string)$x) !== ''; })) > 0;
+  };
+  foreach (['domeniu_activitate','servicii','domeniu_dorit','date_afisare','plan_vizat','brand_logo','brand_culori','cont_texte','cont_poze'] as $k) {
+    if ($nz($_POST[$k] ?? '') === null) return false;
   }
-  return $h . '</div></fieldset>';
+  foreach (['public_tinta','scop','pagini'] as $k) {
+    if (!$hasMulti($k)) return false;
+  }
+  if (empty($_POST['termen_flexibil']) && $nz($_POST['termen'] ?? '') === null) return false;
+  return true;
 }
 
 $nume = e($client['firma'] ?: $client['nume']);
-$vals = array_fill_keys($fields, null);
 $briefError = '';
 
 // Salvarea brief-ului
@@ -113,12 +181,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['brief'])) {
   if (!empty($_POST['_gotcha'])) {
     pagina('Mulțumim', '<h2>Mulțumim! 🎉</h2><p>Am primit toate detaliile. Te contactăm în cel mai scurt timp ca să pornim.</p><p><a class="btn btn--primary" href="/">Înapoi pe site</a></p>');
   }
-  $vals = colecteaza_brief($fields, $arrFields);
-  $lipsa = [];
-  foreach ($required as $f) { if (($vals[$f] ?? null) === null) $lipsa[] = $f; }
-  if ($lipsa) {
+  if (!brief_valid()) {
     $briefError = 'Te rugăm completează toate câmpurile obligatorii (cele marcate cu *).';
   } else {
+    $vals = colecteaza_brief();
     $row = [$cid];
     foreach ($fields as $f) $row[] = $vals[$f];
     $sql = 'INSERT INTO brief (client_id, ' . implode(', ', $fields) . ') VALUES (?' . str_repeat(', ?', count($fields)) . ')';
@@ -145,36 +211,52 @@ if ($areBrief > 0) {
 
 $tok = e($token);
 $today = date('Y-m-d');
-$flexChecked = ($vals['termen'] === 'Flexibil') ? ' checked' : '';
-$termenDate  = ($vals['termen'] && $vals['termen'] !== 'Flexibil') ? e($vals['termen']) : '';
+$flexChecked = !empty($_POST['termen_flexibil']) ? ' checked' : '';
+$termenVal = (isset($_POST['termen']) && empty($_POST['termen_flexibil'])) ? e($_POST['termen']) : '';
 $errHtml = $briefError !== '' ? '<div class="err">' . e($briefError) . '</div>' : '';
-$v = function ($k) use ($vals) { return e((string)($vals[$k] ?? '')); };
+
+$termenField = '<div class="field"><span class="field__label">Până când ai vrea să fie gata? <span class="req">*</span></span>'
+  . '<input type="date" name="termen" min="' . $today . '" value="' . $termenVal . '">'
+  . '<div class="choices" style="margin-top:.7rem"><label class="choice"><input type="checkbox" name="termen_flexibil" value="1"' . $flexChecked . '><span class="choice__b">Nu mă grăbesc / sunt flexibil</span></label></div>'
+  . '</div>';
 
 $form = $errHtml
   . '<h2>Adresă confirmată ✓</h2>'
-  . '<p>Mulțumim, ' . $nume . '! Ca să-ți pregătim site-ul mai repede, completează detaliile de mai jos — durează ~2 minute. Câmpurile cu <span class="req">*</span> sunt obligatorii.</p>'
-  . '<form method="post" class="cf">'
+  . '<p>Mulțumim, ' . $nume . '! Ca să-ți pregătim site-ul mai repede, completează detaliile de mai jos - durează ~2 minute. Câmpurile cu <span class="req">*</span> sunt obligatorii.</p>'
+  . '<form method="post">'
   . '<input type="hidden" name="brief" value="1">'
   . '<input type="hidden" name="token" value="' . $tok . '">'
   . '<div class="hp"><label>Nu completa</label><input name="_gotcha" tabindex="-1" autocomplete="off"></div>'
-  . '<label>Cu ce se ocupă firma ta? <span class="req">*</span></label><input name="domeniu_activitate" value="' . $v('domeniu_activitate') . '" required>'
-  . '<label>Ce servicii/produse oferi? (cele mai importante de promovat) <span class="req">*</span></label><textarea name="servicii" required>' . $v('servicii') . '</textarea>'
-  . cb_group('public_tinta', 'Cine e clientul tău ideal?', $OPT['public_tinta'], $vals['public_tinta'])
-  . '<label>Site-uri care îți plac / concurenți, linkuri <span class="hint">(opțional)</span></label><textarea name="referinte">' . $v('referinte') . '</textarea>'
-  . cb_group('brand', 'Ai logo și culori de brand?', $OPT['brand'], $vals['brand'])
-  . cb_group('continut', 'Ai texte și poze pentru site?', $OPT['continut'], $vals['continut'])
-  . cb_group('scop', 'Ce vrei să obții cu site-ul?', $OPT['scop'], $vals['scop'])
-  . cb_group('pagini', 'Ce pagini vrei pe site?', $OPT['pagini'], $vals['pagini'])
-  . '<label>Ce nume de domeniu ți-ar plăcea? (ex: firma-mea.ro) <span class="req">*</span></label><input name="domeniu_dorit" value="' . $v('domeniu_dorit') . '" required>'
-  . '<label>Date de afișat pe site (telefon, adresă, program, social media) <span class="req">*</span></label><textarea name="date_afisare" required>' . $v('date_afisare') . '</textarea>'
-  . '<fieldset><legend>Până când ai vrea să fie gata? <span class="req">*</span></legend>'
-    . '<input type="date" name="termen" min="' . $today . '" value="' . $termenDate . '">'
-    . '<label class="opt" style="margin-top:.5rem"><input type="checkbox" name="termen_flexibil" value="1"' . $flexChecked . '> Nu mă grăbesc / sunt flexibil</label>'
-  . '</fieldset>'
-  . radio_group('plan_vizat', 'Ce plan ai în vedere?', $PLANURI, $vals['plan_vizat'])
-  . '<label>Alte detalii <span class="hint">(opțional)</span></label><textarea name="alte_detalii">' . $v('alte_detalii') . '</textarea>'
-  . '<p style="margin-top:1.3rem"><button type="submit" class="btn btn--primary btn--lg">Trimite detaliile</button></p>'
+
+  . '<section class="grp"><h3 class="grp__title">Despre afacerea ta</h3>'
+  . f_text('domeniu_activitate', 'Cu ce se ocupă firma ta?', true, false, 'ex: cabinet stomatologic, firmă de instalații...')
+  . f_text('servicii', 'Ce servicii sau produse oferi? (cele mai importante de promovat)', true, true)
+  . f_pills('public_tinta', 'Cine e clientul tău ideal?', $PUBLIC, true, 'Poți alege mai multe.')
+  . f_text('referinte', 'Site-uri care îți plac sau concurenți (linkuri)', false, true)
+  . '</section>'
+
+  . '<section class="grp"><h3 class="grp__title">Conținut și identitate vizuală</h3>'
+  . f_pills('brand_logo', 'Ai un logo?', ['Da', 'Nu, îl creați voi'], false)
+  . f_pills('brand_culori', 'Ai culori sau identitate de brand?', ['Da', 'Nu, alegeți voi'], false)
+  . f_pills('cont_texte', 'Ai textele pentru site?', ['Da, le am', 'Nu, mă ajutați voi'], false)
+  . f_pills('cont_poze', 'Ai pozele sau imaginile?', ['Da, le am', 'Nu, mă ajutați voi'], false)
+  . '</section>'
+
+  . '<section class="grp"><h3 class="grp__title">Site-ul dorit</h3>'
+  . f_pills('scop', 'Ce vrei să obții cu site-ul?', $SCOP, true, 'Poți alege mai multe.')
+  . f_pills('pagini', 'Ce pagini vrei pe site?', $PAGINI, true, 'Poți alege mai multe.')
+  . f_text('domeniu_dorit', 'Ce nume de domeniu ți-ar plăcea?', true, false, 'ex: firma-mea.ro')
+  . f_text('date_afisare', 'Date de afișat pe site (telefon, adresă, program, social media)', true, true)
+  . '</section>'
+
+  . '<section class="grp"><h3 class="grp__title">Livrare și plan</h3>'
+  . $termenField
+  . f_pills('plan_vizat', 'Ce plan ai în vedere?', $PLANURI, false)
+  . f_text('alte_detalii', 'Alte detalii', false, true)
+  . '</section>'
+
+  . '<div class="field" style="margin-top:2.2rem"><button type="submit" class="btn btn--primary btn--lg">Trimite detaliile</button></div>'
   . '</form>'
-  . '<script>(function(){var f=document.querySelector("form.cf");if(!f)return;var flex=f.querySelector("input[name=termen_flexibil]"),dt=f.querySelector("input[name=termen]");function sync(){if(flex&&dt){dt.disabled=flex.checked;if(flex.checked)dt.value="";}}if(flex){flex.addEventListener("change",sync);sync();}f.addEventListener("submit",function(ev){var fss=f.querySelectorAll("fieldset[data-req]");for(var i=0;i<fss.length;i++){var bx=fss[i].querySelectorAll("input[type=checkbox]"),ok=false;for(var j=0;j<bx.length;j++){if(bx[j].checked)ok=true;}if(bx.length&&!ok){ev.preventDefault();fss[i].classList.add("err-fs");fss[i].scrollIntoView({block:"center"});return;}}if(dt&&!dt.disabled&&!dt.value){ev.preventDefault();var fs=dt.closest("fieldset");fs.classList.add("err-fs");fs.scrollIntoView({block:"center"});return;}});})();</script>';
+  . '<script>(function(){var f=document.querySelector(".cf form");if(!f)return;var flex=f.querySelector("input[name=termen_flexibil]"),dt=f.querySelector("input[name=termen]");function sync(){if(flex&&dt){dt.disabled=flex.checked;if(flex.checked)dt.value="";}}if(flex){flex.addEventListener("change",sync);sync();}f.addEventListener("change",function(e){var fl=e.target.closest(".field");if(fl)fl.classList.remove("err-field");});f.addEventListener("submit",function(ev){var bad=null,g=f.querySelectorAll(".choices[data-req-group]");for(var i=0;i<g.length;i++){if(!g[i].querySelector("input:checked")){var fl=g[i].closest(".field");fl.classList.add("err-field");if(!bad)bad=fl;}}if(dt){var tf=dt.closest(".field");if(!(flex&&flex.checked)&&!dt.value){tf.classList.add("err-field");if(!bad)bad=tf;}}if(bad){ev.preventDefault();bad.scrollIntoView({block:"center",behavior:"smooth"});}});})();</script>';
 
 pagina('Confirmă datele', $form);
