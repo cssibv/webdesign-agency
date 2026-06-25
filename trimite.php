@@ -16,6 +16,10 @@ function hdr($s) { return trim(preg_replace('/[\r\n]+/', ' ', (string)$s)); }
 // Plafonează lungimea inputurilor (anti bloat / abuz).
 function cap($s, $n) { return mb_substr((string)$s, 0, $n); }
 
+function strip_ctrl($s, $nl = false) {
+  return preg_replace($nl ? '/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/' : '/[\x00-\x1F\x7F]/', '', (string)$s);
+}
+
 function turnstile_ok($secret, $token, $ip, $hosts = [], $action = '') {
   if ($secret === '') return true;
   if ($token === '') return false;
@@ -50,16 +54,17 @@ if (rate_blocked('form_' . client_ip(), 10, 3600)) {
 }
 rate_register('form_' . client_ip(), 3600);
 
-$nume    = cap(trim($_POST['nume'] ?? ''), 150);
-$email   = cap(trim($_POST['email'] ?? ''), 254);
-$telefon = cap(trim($_POST['telefon'] ?? ''), 40);
-$firma   = cap(trim($_POST['firma'] ?? ''), 80);
-$mesaj   = cap(trim($_POST['mesaj'] ?? ''), 300);
+$nume    = cap(trim(strip_ctrl($_POST['nume'] ?? '')), 80);
+$email   = cap(trim(strip_ctrl($_POST['email'] ?? '')), 254);
+$telefon = cap(trim(strip_ctrl($_POST['telefon'] ?? '')), 40);
+$firma   = cap(trim(strip_ctrl($_POST['firma'] ?? '')), 80);
+$mesaj   = cap(trim(strip_ctrl($_POST['mesaj'] ?? '', true)), 300);
 $consimt = $_POST['consimtamant'] ?? '';
 
 if ($nume === '')    fail('Te rugăm să completezi numele.');
+if (!preg_match('/^[\p{L} .\'-]+$/u', $nume)) fail('Numele conține caractere nepermise.');
 if ($telefon === '') fail('Te rugăm să completezi numărul de telefon.');
-if (!preg_match('/^(0\d{9}|(\+|00)\d{8,14})$/', preg_replace('/[\s().\-]/', '', $telefon))) {
+if (!preg_match('/^(0\d{9}|(\+|00)\d{8,15})$/', $telefon)) {
   fail('Numărul de telefon nu pare valid. Verifică-l, te rugăm.');
 }
 if ($email === '')   fail('Te rugăm să completezi adresa de email.');
@@ -68,6 +73,8 @@ $dom = substr(strrchr($email, '@'), 1);
 if ($dom === '' || $dom === false || !checkdnsrr($dom, 'MX')) {
   fail('Domeniul emailului nu pare să existe. Verifică adresa.');
 }
+if ($firma !== '' && !preg_match('/^[\p{L}\p{N} .,&\'()\/-]+$/u', $firma)) fail('Numele firmei conține caractere nepermise.');
+if ($mesaj !== '' && !preg_match('/^[\p{L}\p{N}\p{P}\p{S}\s]*$/u', $mesaj)) fail('Mesajul conține caractere nepermise.');
 if ($consimt !== 'da') fail('Te rugăm să accepți prelucrarea datelor.');
 
 $cfg    = require __DIR__ . '/administrare/private/config.php';
@@ -103,8 +110,7 @@ try {
 }
 
 require __DIR__ . '/administrare/mailer.php';
-$host = preg_replace('/[^a-z0-9.\-]/i', '', ($_SERVER['HTTP_HOST'] ?? 'smart-web.ro'));
-$base = rtrim($cfg['base_url'] ?? ('https://' . $host), '/');
+$base = rtrim($cfg['base_url'] ?? 'https://smart-web.ro', '/');
 
 // Notificare internă (către agenție)
 $to = $cfg['notify_email'] ?? 'contact@smart-web.ro';
@@ -113,8 +119,8 @@ $replyTo = $email;
 $internInner = email_h('Lead nou de pe site')
   . email_p('<strong>Nume:</strong> ' . email_esc($nume)
           . '<br><strong>Firmă:</strong> ' . (email_esc($firma) ?: '-')
-          . '<br><strong>Email:</strong> ' . (email_esc($email) ?: '-')
-          . '<br><strong>Telefon:</strong> ' . (email_esc($telefon) ?: '-'))
+          . '<br><strong>Email:</strong> ' . email_esc($email)
+          . '<br><strong>Telefon:</strong> ' . email_esc($telefon))
   . ($mesaj !== '' ? email_p('<strong>Mesaj:</strong><br>' . nl2br(email_esc($mesaj))) : '')
   . email_button('Vezi în panou &rarr;', $base . '/administrare/index.php');
 smtp_send($cfg, $to, '[SmartWeb] Lead nou: ' . hdr($nume), $corp, $replyTo, email_layout($cfg, $internInner));

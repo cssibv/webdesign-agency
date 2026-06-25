@@ -739,24 +739,29 @@
               novalidate>
           <div class="field">
             <label for="nume">Nume *</label>
-            <input type="text" id="nume" name="nume" autocomplete="name" required placeholder="Numele tău" />
+            <input type="text" id="nume" name="nume" maxlength="80" autocomplete="name" required placeholder="Numele tău" />
+            <p class="field__error" id="numeError" aria-live="polite" hidden>Introduceți un nume valid (minim 2 litere, fără cifre sau simboluri).</p>
           </div>
           <div class="field">
             <label for="telefon">Telefon *</label>
-            <input type="tel" id="telefon" name="telefon" autocomplete="tel" required placeholder="07xx xxx xxx" />
+            <input type="tel" id="telefon" name="telefon" maxlength="20" inputmode="tel" autocomplete="tel" required placeholder="Ex: 0712345678 sau +40712345678" />
+            <p class="field__error" id="telefonError" aria-live="polite" hidden>Introduceți un număr de telefon valid (doar cifre și +, ex. 0712345678).</p>
           </div>
           <div class="field">
             <label for="email">Email *</label>
-            <input type="email" id="email" name="email" autocomplete="email" required placeholder="email@exemplu.ro" />
+            <input type="email" id="email" name="email" maxlength="254" autocomplete="email" required placeholder="email@exemplu.ro" />
+            <p class="field__error" id="emailError" aria-live="polite" hidden>Introduceți o adresă de email validă.</p>
           </div>
           <div class="field">
             <label for="firma">Numele firmei</label>
             <input type="text" id="firma" name="firma" maxlength="80" autocomplete="organization" placeholder="Firma / afacerea ta" />
+            <p class="field__error" id="firmaError" aria-live="polite" hidden>Numele firmei conține caractere nepermise.</p>
           </div>
           <div class="field">
             <label for="mesaj">Mesaj</label>
             <textarea id="mesaj" name="mesaj" rows="4" maxlength="300" placeholder="Spune-ne pe scurt cu ce te ocupi..."></textarea>
-            <p class="field__counter"><span id="mesajCount">0/300</span><span class="field__limit" id="mesajLimit" aria-live="polite" hidden> — Ai atins limita maximă de caractere!</span></p>
+            <p class="field__counter"><span id="mesajCount">0/300</span><span class="field__limit" id="mesajLimit" aria-live="polite" hidden> · Ai atins limita maximă de caractere!</span></p>
+            <p class="field__error" id="mesajError" aria-live="polite" hidden>Mesajul conține caractere nepermise.</p>
           </div>
 
           <div class="field field--hp" aria-hidden="true">
