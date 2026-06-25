@@ -94,8 +94,53 @@
   var formLoaded = Date.now();
 
   if (form) {
+    var emailInput = form.querySelector('#email');
+    var phoneInput = form.querySelector('#telefon');
+    var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    var PHONE_RE = /^(0\d{9}|(\+|00)\d{8,14})$/;
+
+    function mark(input, valid) {
+      var f = input.closest('.field');
+      if (f) f.classList.toggle('field--invalid', !valid);
+      return valid;
+    }
+
+    function checkFormats() {
+      if (!emailInput || !phoneInput) return true;
+      var okPhone = mark(phoneInput, PHONE_RE.test(phoneInput.value.replace(/[\s().-]/g, '')));
+      var okEmail = mark(emailInput, EMAIL_RE.test(emailInput.value.trim()));
+      if (!okPhone || !okEmail) {
+        setStatus('✗ ' + (!okPhone ? 'Numărul de telefon nu pare valid (ex: 07xx xxx xxx sau +40…).' : 'Adresa de email nu pare validă.'), 'is-error');
+        (!okPhone ? phoneInput : emailInput).focus();
+      }
+      return okPhone && okEmail;
+    }
+
+    [emailInput, phoneInput].filter(Boolean).forEach(function (inp) {
+      inp.addEventListener('input', function () {
+        var f = inp.closest('.field');
+        if (f) f.classList.remove('field--invalid');
+      });
+    });
+
+    var mesaj = form.querySelector('#mesaj');
+    var mesajCount = document.getElementById('mesajCount');
+    var mesajLimit = document.getElementById('mesajLimit');
+    if (mesaj && mesajCount) {
+      var mesajMax = parseInt(mesaj.getAttribute('maxlength'), 10) || 300;
+      var updateCount = function () {
+        var len = mesaj.value.length;
+        mesajCount.textContent = len + '/' + mesajMax;
+        if (mesajLimit) mesajLimit.hidden = len < mesajMax;
+      };
+      mesaj.addEventListener('input', updateCount);
+      updateCount();
+    }
+
     form.addEventListener('submit', function (e) {
       e.preventDefault();
+
+      if (!checkFormats()) return;
 
       if (!form.checkValidity()) {
         form.reportValidity();
@@ -120,6 +165,7 @@
         .then(function (response) {
           if (response.ok) {
             form.reset();
+            if (mesaj) mesaj.dispatchEvent(new Event('input'));
             if (window.turnstile) window.turnstile.reset();
             setStatus('✓ Gata! Ți-am trimis un email de confirmare, dă click pe link ca să continuăm.', 'is-success');
             if (window.bwTrack) window.bwTrack('trimitere_formular', { method: 'formular_contact' });
