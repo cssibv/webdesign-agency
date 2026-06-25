@@ -751,6 +751,7 @@
             <label for="website">Nu completa acest câmp</label>
             <input type="text" id="website" name="_gotcha" tabindex="-1" autocomplete="off" />
           </div>
+          <input type="hidden" name="ts" id="formTs" value="0" />
 
           <div class="field field--consent">
             <label class="consent">
@@ -758,6 +759,8 @@
               <span>Sunt de acord cu prelucrarea datelor mele personale conform <a href="./politica-de-confidentialitate/" target="_blank" rel="noopener">Politicii de confidențialitate</a>. *</span>
             </label>
           </div>
+
+          <div class="cf-turnstile" data-sitekey="0x4AAAAAADquTG-QLjdh3LOC" data-theme="auto"></div>
 
           <button type="submit" class="btn btn--primary btn--block btn--lg">Trimite cererea</button>
           <p class="contact__formnote" id="formStatus" role="status" aria-live="polite"></p>
@@ -835,6 +838,7 @@
 
   <button class="cookie-fab" id="cookieReopen" type="button" aria-label="Setări cookie" title="Setări cookie">🍪</button>
 
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   <script src="js/main.js" defer></script>
   <script src="js/analytics.js" defer></script>
 </body>
