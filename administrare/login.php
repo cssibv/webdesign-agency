@@ -2,18 +2,23 @@
 require __DIR__ . '/auth.php';
 require __DIR__ . '/db.php';
 require __DIR__ . '/throttle.php';
+require __DIR__ . '/turnstile.php';
+$cfg = require __DIR__ . '/private/config.php';
 
 if (!empty($_SESSION['user_id'])) redirect('index.php');
 
 $err = '';
-// Lockout pe IP (nu pe sesiune): atacatorul nu poate ocoli contorul pur și simplu
-// renunțând la cookie-ul de sesiune. Max 5 încercări eșuate / 5 minute / IP.
+// Lockout pe IP.
 $lockKey = 'login_' . client_ip();
+$thost   = strtolower(parse_url($cfg['base_url'] ?? 'https://smart-web.ro', PHP_URL_HOST) ?: 'smart-web.ro');
+$thosts  = [$thost, 'www.' . $thost, 'localhost', '127.0.0.1'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   csrf_check();
   if (rate_blocked($lockKey, 5, 300)) {
     $err = 'Prea multe încercări. Reîncearcă peste câteva minute.';
+  } elseif (!turnstile_ok($cfg['turnstile_secret'] ?? '', $_POST['cf-turnstile-response'] ?? '', client_ip(), $thosts, 'login')) {
+    $err = 'Verificarea anti-bot a eșuat. Reîncarcă pagina și încearcă din nou.';
   } else {
     $email  = trim($_POST['email'] ?? '');
     $parola = $_POST['parola'] ?? '';
@@ -46,6 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <link rel="icon" type="image/svg+xml" href="../assets/img/favicon.svg">
   <link rel="stylesheet" href="../assets/fonts/fonts.css">
   <link rel="stylesheet" href="admin.css">
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
   <div class="login-box panel">
@@ -57,6 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <input type="email" name="email" required autofocus>
       <label>Parolă</label>
       <input type="password" name="parola" required>
+      <div class="cf-turnstile" data-sitekey="0x4AAAAAADquTG-QLjdh3LOC" data-action="login" data-theme="auto" style="margin:1rem 0"></div>
       <p><button class="btn btn--primary" type="submit">Intră</button></p>
     </form>
   </div>
