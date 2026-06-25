@@ -8,6 +8,7 @@ $cfg = require __DIR__ . '/private/config.php';
 if (!empty($_SESSION['user_id'])) redirect('index.php');
 
 $err = '';
+if (($_GET['expirat'] ?? '') === '1') $err = 'Sesiune expirată din inactivitate. Autentifică-te din nou.';
 // Lockout pe IP.
 $lockKey = 'login_' . client_ip();
 $thost   = strtolower(parse_url($cfg['base_url'] ?? 'https://smart-web.ro', PHP_URL_HOST) ?: 'smart-web.ro');
