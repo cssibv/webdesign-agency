@@ -138,6 +138,25 @@
           if (btn) { btn.disabled = false; btn.textContent = originalText; }
         });
     });
+
+    function loadTurnstile() {
+      if (window.tsLoaded) return;
+      window.tsLoaded = true;
+      var s = document.createElement('script');
+      s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+      s.async = true;
+      s.defer = true;
+      document.head.appendChild(s);
+    }
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        if (entries[0].isIntersecting) { loadTurnstile(); io.disconnect(); }
+      }, { rootMargin: '400px' });
+      io.observe(form);
+    } else {
+      loadTurnstile();
+    }
+    form.addEventListener('focusin', loadTurnstile, { once: true });
   }
 
   function setStatus(message, cls) {
