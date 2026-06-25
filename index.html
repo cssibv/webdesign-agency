@@ -751,11 +751,12 @@
           </div>
           <div class="field">
             <label for="firma">Numele firmei</label>
-            <input type="text" id="firma" name="firma" autocomplete="organization" placeholder="Firma / afacerea ta" />
+            <input type="text" id="firma" name="firma" maxlength="80" autocomplete="organization" placeholder="Firma / afacerea ta" />
           </div>
           <div class="field">
             <label for="mesaj">Mesaj</label>
-            <textarea id="mesaj" name="mesaj" rows="4" placeholder="Spune-ne pe scurt cu ce te ocupi..."></textarea>
+            <textarea id="mesaj" name="mesaj" rows="4" maxlength="300" placeholder="Spune-ne pe scurt cu ce te ocupi..."></textarea>
+            <p class="field__counter"><span id="mesajCount">0/300</span><span class="field__limit" id="mesajLimit" aria-live="polite" hidden> — Ai atins limita maximă de caractere!</span></p>
           </div>
 
           <div class="field field--hp" aria-hidden="true">

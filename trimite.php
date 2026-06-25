@@ -53,12 +53,15 @@ rate_register('form_' . client_ip(), 3600);
 $nume    = cap(trim($_POST['nume'] ?? ''), 150);
 $email   = cap(trim($_POST['email'] ?? ''), 254);
 $telefon = cap(trim($_POST['telefon'] ?? ''), 40);
-$firma   = cap(trim($_POST['firma'] ?? ''), 150);
-$mesaj   = cap(trim($_POST['mesaj'] ?? ''), 5000);
+$firma   = cap(trim($_POST['firma'] ?? ''), 80);
+$mesaj   = cap(trim($_POST['mesaj'] ?? ''), 300);
 $consimt = $_POST['consimtamant'] ?? '';
 
 if ($nume === '')    fail('Te rugăm să completezi numele.');
 if ($telefon === '') fail('Te rugăm să completezi numărul de telefon.');
+if (!preg_match('/^(0\d{9}|(\+|00)\d{8,14})$/', preg_replace('/[\s().\-]/', '', $telefon))) {
+  fail('Numărul de telefon nu pare valid. Verifică-l, te rugăm.');
+}
 if ($email === '')   fail('Te rugăm să completezi adresa de email.');
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) fail('Adresa de email nu pare validă.');
 $dom = substr(strrchr($email, '@'), 1);
