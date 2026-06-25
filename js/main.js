@@ -94,33 +94,54 @@
   var formLoaded = Date.now();
 
   if (form) {
-    var emailInput = form.querySelector('#email');
-    var phoneInput = form.querySelector('#telefon');
-    var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    var PHONE_RE = /^(0\d{9}|(\+|00)\d{8,14})$/;
+    var EMAIL_RE = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+    var PHONE_RE = /^(0\d{9}|(\+|00)\d{8,15})$/;
+    var NAME_RE  = /^[\p{L} .'-]+$/u;
+    var FIRMA_RE = /^[\p{L}\p{N} .,&'()\/-]+$/u;
+    var MSG_RE   = /^[\p{L}\p{N}\p{P}\p{S}\s]*$/u;
 
-    function mark(input, valid) {
-      var f = input.closest('.field');
-      if (f) f.classList.toggle('field--invalid', !valid);
+    function emailValid(v) {
+      v = v.trim();
+      if (v.length > 254 || !EMAIL_RE.test(v)) return false;
+      var labels = v.split('@')[1].split('.');
+      for (var i = 1; i < labels.length; i++) {
+        if (labels[i].toLowerCase() === labels[i - 1].toLowerCase()) return false;
+      }
+      return true;
+    }
+
+    var checks = [
+      { el: form.querySelector('#nume'),    err: document.getElementById('numeError'),    ok: function (v) { v = v.trim(); return v.length >= 2 && NAME_RE.test(v); } },
+      { el: form.querySelector('#telefon'), err: document.getElementById('telefonError'), clean: function (v) { return v.replace(/[^0-9+]/g, ''); }, ok: function (v) { return PHONE_RE.test(v); } },
+      { el: form.querySelector('#email'),   err: document.getElementById('emailError'),   ok: function (v) { return emailValid(v); } },
+      { el: form.querySelector('#firma'),   err: document.getElementById('firmaError'),   ok: function (v) { v = v.trim(); return v === '' || FIRMA_RE.test(v); } },
+      { el: form.querySelector('#mesaj'),   err: document.getElementById('mesajError'),   ok: function (v) { return MSG_RE.test(v); } }
+    ].filter(function (c) { return c.el; });
+
+    function checkField(c, force) {
+      var valid = c.ok(c.el.value);
+      var show = !valid && (force || c.el.value.trim() !== '');
+      var f = c.el.closest('.field');
+      if (f) f.classList.toggle('field--invalid', show);
+      if (c.err) c.err.hidden = !show;
       return valid;
     }
 
-    function checkFormats() {
-      if (!emailInput || !phoneInput) return true;
-      var okPhone = mark(phoneInput, PHONE_RE.test(phoneInput.value.replace(/[\s().-]/g, '')));
-      var okEmail = mark(emailInput, EMAIL_RE.test(emailInput.value.trim()));
-      if (!okPhone || !okEmail) {
-        setStatus('✗ ' + (!okPhone ? 'Numărul de telefon nu pare valid (ex: 07xx xxx xxx sau +40…).' : 'Adresa de email nu pare validă.'), 'is-error');
-        (!okPhone ? phoneInput : emailInput).focus();
-      }
-      return okPhone && okEmail;
+    function validateAll() {
+      var allOk = true, firstBad = null;
+      checks.forEach(function (c) {
+        if (!checkField(c, true)) { allOk = false; if (!firstBad) firstBad = c.el; }
+      });
+      if (firstBad) firstBad.focus();
+      return allOk;
     }
 
-    [emailInput, phoneInput].filter(Boolean).forEach(function (inp) {
-      inp.addEventListener('input', function () {
-        var f = inp.closest('.field');
-        if (f) f.classList.remove('field--invalid');
+    checks.forEach(function (c) {
+      c.el.addEventListener('input', function () {
+        if (c.clean) { var cl = c.clean(c.el.value); if (cl !== c.el.value) c.el.value = cl; }
+        checkField(c, false);
       });
+      c.el.addEventListener('blur', function () { checkField(c, false); });
     });
 
     var mesaj = form.querySelector('#mesaj');
@@ -140,7 +161,7 @@
     form.addEventListener('submit', function (e) {
       e.preventDefault();
 
-      if (!checkFormats()) return;
+      if (!validateAll()) return;
 
       if (!form.checkValidity()) {
         form.reportValidity();
