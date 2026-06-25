@@ -91,6 +91,7 @@
 
   var form = document.getElementById('contactForm');
   var status = document.getElementById('formStatus');
+  var formLoaded = Date.now();
 
   if (form) {
     form.addEventListener('submit', function (e) {
@@ -106,6 +107,9 @@
       if (btn) { btn.disabled = true; btn.textContent = 'Se trimite...'; }
       setStatus('', '');
 
+      var tsField = document.getElementById('formTs');
+      if (tsField) tsField.value = Date.now() - formLoaded;
+
       var data = new FormData(form);
 
       fetch(form.action, {
@@ -116,6 +120,7 @@
         .then(function (response) {
           if (response.ok) {
             form.reset();
+            if (window.turnstile) window.turnstile.reset();
             setStatus('✓ Gata! Ți-am trimis un email de confirmare, dă click pe link ca să continuăm.', 'is-success');
             if (window.bwTrack) window.bwTrack('trimitere_formular', { method: 'formular_contact' });
           } else {
