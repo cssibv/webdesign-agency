@@ -16,7 +16,7 @@ function hdr($s) { return trim(preg_replace('/[\r\n]+/', ' ', (string)$s)); }
 // Plafonează lungimea inputurilor (anti bloat / abuz).
 function cap($s, $n) { return mb_substr((string)$s, 0, $n); }
 
-function turnstile_ok($secret, $token, $ip) {
+function turnstile_ok($secret, $token, $ip, $hosts = [], $action = '') {
   if ($secret === '') return true;
   if ($token === '') return false;
   $post = http_build_query(['secret' => $secret, 'response' => $token, 'remoteip' => $ip]);
@@ -34,7 +34,10 @@ function turnstile_ok($secret, $token, $ip) {
   }
   if ($raw === false) return true;
   $res = json_decode($raw, true);
-  return is_array($res) && !empty($res['success']);
+  if (!is_array($res) || empty($res['success'])) return false;
+  if ($hosts && !in_array(strtolower($res['hostname'] ?? ''), $hosts, true)) return false;
+  if ($action !== '' && ($res['action'] ?? '') !== $action) return false;
+  return true;
 }
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') fail('Metodă invalidă.', 405);
@@ -66,7 +69,9 @@ if ($consimt !== 'da') fail('Te rugăm să accepți prelucrarea datelor.');
 
 $cfg    = require __DIR__ . '/administrare/private/config.php';
 
-if (!turnstile_ok($cfg['turnstile_secret'] ?? '', $_POST['cf-turnstile-response'] ?? '', client_ip())) {
+$thost  = strtolower(parse_url($cfg['base_url'] ?? 'https://smart-web.ro', PHP_URL_HOST) ?: 'smart-web.ro');
+$thosts = [$thost, 'www.' . $thost, 'localhost', '127.0.0.1'];
+if (!turnstile_ok($cfg['turnstile_secret'] ?? '', $_POST['cf-turnstile-response'] ?? '', client_ip(), $thosts, 'contact')) {
   fail('Verificarea anti-spam a eșuat. Reîncarcă pagina și încearcă din nou.');
 }
 
