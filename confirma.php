@@ -181,6 +181,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['brief'])) {
   if (!empty($_POST['_gotcha'])) {
     pagina('Mulțumim', '<h2>Mulțumim! 🎉</h2><p>Am primit toate detaliile. Te contactăm în cel mai scurt timp ca să pornim.</p><p><a class="btn btn--primary" href="/">Înapoi pe site</a></p>');
   }
+  $stDup = db()->prepare('SELECT COUNT(*) FROM brief WHERE client_id = ?');
+  $stDup->execute([$cid]);
+  if ((int) $stDup->fetchColumn() > 0) {
+    pagina('Mulțumim', '<h2>Mulțumim! 🎉</h2><p>Am primit deja detaliile tale. Te contactăm în cel mai scurt timp ca să pornim.</p><p><a class="btn btn--primary" href="/">Înapoi pe site</a></p>');
+  }
   if (!brief_valid()) {
     $briefError = 'Te rugăm completează toate câmpurile obligatorii (cele marcate cu *).';
   } else {
