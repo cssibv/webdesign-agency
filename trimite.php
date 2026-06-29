@@ -99,7 +99,9 @@ $internInner = email_h('Lead nou de pe site')
           . '<br><strong>Telefon:</strong> ' . email_esc($telefon))
   . ($mesaj !== '' ? email_p('<strong>Mesaj:</strong><br>' . nl2br(email_esc($mesaj))) : '')
   . email_button('Vezi în panou &rarr;', $base . '/administrare/index.php');
-smtp_send($cfg, $to, '[SmartWeb] Lead nou: ' . hdr($nume), $corp, $replyTo, email_layout($cfg, $internInner));
+if (!smtp_send($cfg, $to, '[SmartWeb] Lead nou: ' . hdr($nume), $corp, $replyTo, email_layout($cfg, $internInner))) {
+  mail_log("Notificare internă EȘUATĂ pentru lead #$cid ($email). Lead salvat în DB — verifică panoul.");
+}
 
 // Email de confirmare către client (un singur email: click -> pagina cu brief)
 $link = $base . '/confirma.php?token=' . $token;
@@ -114,6 +116,8 @@ $confirmInner = email_h('Salut, ' . email_esc($nume) . '! 👋')
   . email_p('Imediat după confirmare se deschide un formular scurt cu câteva întrebări despre afacerea ta, ca să-ți pregătim mai repede un site care chiar îți aduce rezultate.')
   . email_button('Confirmă adresa &rarr;', $link)
   . email_small('Link-ul e valabil 7 zile. Dacă nu tu ai trimis această cerere, ignoră acest mesaj.');
-smtp_send($cfg, $email, 'Confirmă-ți adresa la Smart Web', $body, '', email_layout($cfg, $confirmInner));
+if (!smtp_send($cfg, $email, 'Confirmă-ți adresa la Smart Web', $body, '', email_layout($cfg, $confirmInner))) {
+  mail_log("Email de confirmare EȘUAT către $email (lead #$cid). Clientul NU a primit link-ul — contactează-l manual.");
+}
 
 echo json_encode(['ok' => true]);
