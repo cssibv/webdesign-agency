@@ -48,16 +48,19 @@ function pagina($titlu, $continut) {
      . '.hp{position:absolute;left:-9999px}'
      . '.field.err-field .field__label{color:#c0392b}'
      . '.field.err-field .choices{outline:2px dashed #e8a39a;outline-offset:8px;border-radius:14px}'
-     . '.color-row{display:flex;align-items:center;gap:.6rem;margin:.5rem 0}'
-     . '.color-row input[type=color]{width:48px;height:34px;border:1px solid var(--c-border);border-radius:8px;background:none;cursor:pointer;padding:2px}'
-     . '.color-row input[type=color]:disabled{opacity:.4;cursor:not-allowed}'
-     . '.color-row span{font-weight:600;color:var(--c-text)}'
-     . '.social-list{display:flex;flex-direction:column;gap:.55rem}'
-     . '.social-row{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem}'
-     . '.social-row .social-check{min-width:150px;display:flex;align-items:center;gap:.45rem;font-weight:600;color:var(--c-text)}'
-     . '.social-row input[type=text]{flex:1;min-width:180px;padding:.55rem .8rem;border:1px solid var(--c-border);border-radius:var(--radius-sm);font:inherit;background:var(--c-bg-alt);color:var(--c-text)}'
-     . '.social-row input[type=text]:disabled{opacity:.45}'
-     . '.field.err-field .social-list,.field.err-field .color-row{outline:2px dashed #e8a39a;outline-offset:6px;border-radius:12px}'
+     . '.color-list{display:flex;flex-direction:column;gap:.5rem;margin:.2rem 0 .7rem}'
+     . '.color-slot{display:flex;align-items:center;gap:.7rem}'
+     . '.color-slot input[type=color]{width:54px;height:40px;border:1px solid var(--c-border);border-radius:10px;background:none;cursor:pointer;padding:3px}'
+     . '.color-slot .hex{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.95rem;color:var(--c-text-soft);letter-spacing:.03em}'
+     . '.color-del{margin-left:auto;width:32px;height:32px;border:1px solid var(--c-border);background:var(--c-surface);color:var(--c-text-soft);border-radius:8px;font-size:1.15rem;line-height:1;cursor:pointer}'
+     . '.color-del:hover{border-color:#e8a39a;color:#c0392b}'
+     . '.color-add{display:inline-flex;align-items:center;gap:.3rem;background:none;border:1px dashed var(--c-border);color:var(--c-teal-dark);font-weight:600;font-size:.92rem;padding:.5rem .95rem;border-radius:999px;cursor:pointer}'
+     . '.color-add:hover{border-color:var(--c-teal);color:var(--c-teal)}'
+     . '.social-inputs{display:flex;flex-direction:column;gap:.6rem;margin-top:.85rem}'
+     . '.social-in{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}'
+     . '.social-in .field__label{min-width:120px;margin:0}'
+     . '.social-in input{flex:1;min-width:200px;padding:.55rem .8rem;border:1px solid var(--c-border);border-radius:var(--radius-sm);font:inherit;background:var(--c-bg-alt);color:var(--c-text)}'
+     . '.field.err-field .color-list,.field.err-field .social-inputs,.field.err-field .choices{outline:2px dashed #e8a39a;outline-offset:6px;border-radius:12px}'
      . '</style>';
   echo '</head><body class="cf-page"><main class="section"><div class="container"><div class="cf">'
      . '<div class="cf__brand"><span class="cf__mark">&#9670;</span> Smart <span class="cf__accent">Web</span></div>'
@@ -134,25 +137,13 @@ function f_pills($name, $label, array $optiuni, $multi, $hint = '') {
   return $h . '</div></div>';
 }
 
-// Slot de culoare cu pipetă (checkbox „folosesc" + input type=color)
-function color_row($key, $label, $default, $onDefault) {
-  $resubmit = isset($_POST['brand_culori']);
-  $on  = $resubmit ? !empty($_POST['culoare_on'][$key]) : $onDefault;
-  $val = $_POST['culoare'][$key] ?? $default;
-  if (!preg_match('/^#[0-9a-fA-F]{6}$/', (string)$val)) $val = $default;
-  return '<label class="color-row">'
-    . '<input type="checkbox" name="culoare_on[' . e($key) . ']" value="1"' . ($on ? ' checked' : '') . '>'
-    . '<input type="color" name="culoare[' . e($key) . ']" value="' . e($val) . '"' . ($on ? '' : ' disabled') . '>'
-    . '<span>' . e($label) . '</span></label>';
-}
-
-// Rând platformă social media (checkbox + handle/link)
-function social_row($key, $label) {
-  $on  = !empty($_POST['social']) && in_array($key, (array)$_POST['social'], true);
-  $val = $_POST['social_h'][$key] ?? '';
-  return '<div class="social-row">'
-    . '<label class="social-check"><input type="checkbox" name="social[]" value="' . e($key) . '"' . ($on ? ' checked' : '') . '> ' . e($label) . '</label>'
-    . '<input type="text" name="social_h[' . e($key) . ']" value="' . e($val) . '" placeholder="@nume sau link"' . ($on ? ' required' : '') . '>'
+// Slot de culoare: pătrat cu pipetă + hex + buton de ștergere
+function color_slot($hex) {
+  $hex = preg_match('/^#[0-9a-fA-F]{6}$/', (string)$hex) ? strtoupper($hex) : '#1A4D8F';
+  return '<div class="color-slot">'
+    . '<input type="color" name="culoare[]" value="' . e($hex) . '">'
+    . '<span class="hex">' . e($hex) . '</span>'
+    . '<button type="button" class="color-del" aria-label="Șterge culoarea">&times;</button>'
     . '</div>';
 }
 
@@ -182,10 +173,13 @@ function colecteaza_brief() {
     $bp[] = 'Culori: ' . $culori;
     if ($culori === 'Da, le am') {
       $pal = [];
-      foreach (['principala' => 'Principală', 'secundara' => 'Secundară', 'accent' => 'Accent'] as $k => $lbl) {
-        if (!empty($_POST['culoare_on'][$k])) {
-          $hex = (string)($_POST['culoare'][$k] ?? '');
-          if (preg_match('/^#[0-9a-fA-F]{6}$/', $hex)) $pal[] = $lbl . ' ' . strtoupper($hex);
+      $labels = ['Principală', 'Secundară'];
+      $i = 0;
+      foreach ((array)($_POST['culoare'] ?? []) as $hex) {
+        $hex = (string)$hex;
+        if (preg_match('/^#[0-9a-fA-F]{6}$/', $hex)) {
+          $pal[] = ($labels[$i] ?? ('Culoarea ' . ($i + 1))) . ' ' . strtoupper($hex);
+          $i++;
         }
       }
       if ($pal) $bp[] = 'Paletă: ' . implode(', ', $pal);
@@ -197,7 +191,14 @@ function colecteaza_brief() {
   $texte = $nz($_POST['cont_texte'] ?? '');
   $poze = $nz($_POST['cont_poze'] ?? '');
   $continut = ($texte === null && $poze === null) ? null : ('Texte: ' . ($texte ?? '-') . '; Poze/imagini: ' . ($poze ?? '-'));
-  $contact = $nz($_POST['date_afisare'] ?? '');
+  $ct = $nz($_POST['contact_telefon'] ?? '');
+  $ca = $nz($_POST['contact_adresa'] ?? '');
+  $cprog = $nz($_POST['contact_program'] ?? '');
+  $cl = [];
+  if ($ct !== null)    $cl[] = 'Telefon: ' . $ct;
+  if ($ca !== null)    $cl[] = 'Adresă: ' . $ca;
+  if ($cprog !== null) $cl[] = 'Program: ' . $cprog;
+  $contact = $cl ? implode("\n", $cl) : null;
   if (!empty($_POST['social_none'])) {
     $social = 'Social media: nu are conturi încă.';
   } else {
@@ -236,7 +237,7 @@ function brief_valid() {
     $a = $_POST[$k] ?? [];
     return is_array($a) && count(array_filter($a, function ($x) { return trim((string)$x) !== ''; })) > 0;
   };
-  foreach (['domeniu_activitate','servicii','domeniu_dorit','date_afisare','plan_vizat','brand_logo','brand_culori','cont_texte','cont_poze'] as $k) {
+  foreach (['domeniu_activitate','servicii','domeniu_dorit','contact_telefon','contact_adresa','contact_program','plan_vizat','brand_logo','brand_culori','cont_texte','cont_poze'] as $k) {
     if ($nz($_POST[$k] ?? '') === null) return false;
   }
   foreach (['public_tinta','scop','pagini'] as $k) {
@@ -246,10 +247,13 @@ function brief_valid() {
 
   // Logo: dacă îl creăm noi, descrierea e obligatorie
   if (($_POST['brand_logo'] ?? '') === 'Nu, îl creați voi' && $nz($_POST['logo_descriere'] ?? '') === null) return false;
-  // Culori: dacă „le am", cel puțin un slot bifat
+  // Culori: dacă „le am", cel puțin o culoare validă aleasă
   if (($_POST['brand_culori'] ?? '') === 'Da, le am') {
-    $on = $_POST['culoare_on'] ?? [];
-    if (!is_array($on) || count(array_filter($on)) === 0) return false;
+    $any = false;
+    foreach ((array)($_POST['culoare'] ?? []) as $hex) {
+      if (preg_match('/^#[0-9a-fA-F]{6}$/', (string)$hex)) { $any = true; break; }
+    }
+    if (!$any) return false;
   }
   // Social: ori „nu am conturi", ori cel puțin o platformă bifată cu handle completat
   if (empty($_POST['social_none'])) {
@@ -314,6 +318,31 @@ $termenField = '<div class="field"><span class="field__label">Până când ai vr
   . '<div class="choices" style="margin-top:.7rem"><label class="choice"><input type="checkbox" name="termen_flexibil" value="1"' . $flexChecked . '><span class="choice__b">Nu mă grăbesc / sunt flexibil</span></label></div>'
   . '</div>';
 
+// Sloturi de culoare (din POST la reîncărcare după eroare, altfel două implicite)
+$initColors = [];
+if (isset($_POST['brand_culori'])) {
+  foreach ((array)($_POST['culoare'] ?? []) as $hx) {
+    if (preg_match('/^#[0-9a-fA-F]{6}$/', (string)$hx)) $initColors[] = strtoupper($hx);
+  }
+}
+if (!$initColors) $initColors = ['#1A4D8F', '#FF7A45'];
+$colorSlots = '';
+foreach ($initColors as $hx) $colorSlots .= color_slot($hx);
+
+// Pastile + câmpuri pentru social media
+$SOCIAL = ['facebook' => 'Facebook', 'instagram' => 'Instagram', 'tiktok' => 'TikTok', 'linkedin' => 'LinkedIn', 'youtube' => 'YouTube', 'google' => 'Google Business'];
+$selSocial = (array)($_POST['social'] ?? []);
+$socialPills = '';
+$socialInputs = '';
+foreach ($SOCIAL as $k => $lbl) {
+  $on = in_array($k, $selSocial, true);
+  $socialPills .= '<label class="choice"><input type="checkbox" class="social-pill" name="social[]" value="' . e($k) . '"' . ($on ? ' checked' : '') . '><span class="choice__b">' . e($lbl) . '</span></label>';
+  $socialInputs .= '<div class="social-in" id="socin_' . e($k) . '"' . ($on ? '' : ' hidden') . '>'
+    . '<label class="field__label" for="soch_' . e($k) . '">' . e($lbl) . '</label>'
+    . '<input type="text" id="soch_' . e($k) . '" name="social_h[' . e($k) . ']" value="' . e($_POST['social_h'][$k] ?? '') . '" placeholder="@nume sau link"' . ($on ? '' : ' disabled') . '>'
+    . '</div>';
+}
+
 $form = $errHtml
   . '<h2>Adresă confirmată ✓</h2>'
   . '<p>Mulțumim, ' . $nume . '! Ca să-ți pregătim site-ul mai repede, completează detaliile de mai jos. Câmpurile cu <span class="req">*</span> sunt obligatorii.</p>'
@@ -344,11 +373,10 @@ $form = $errHtml
   . f_pills('brand_culori', 'Ai culori sau identitate de brand?', ['Da, le am', 'Nu, alegeți voi'], false)
   . '<div class="field cond" id="culori_box"' . ((($_POST['brand_culori'] ?? '') === 'Da, le am') ? '' : ' hidden') . '>'
     . '<span class="field__label">Culorile tale de brand</span>'
-    . '<span class="field__hint">Bifează și alege cu pipeta. Lasă bifate doar culorile pe care chiar le folosești.</span>'
-    . color_row('principala', 'Principală', '#1A4D8F', true)
-    . color_row('secundara', 'Secundară', '#FF7A45', true)
-    . color_row('accent', 'Accent', '#1AA9A0', false)
-    . '<input type="text" name="culori_note" value="' . old_v('culori_note') . '" placeholder="Note (opțional): unde le folosești, nume de culori..." style="margin-top:.7rem;width:100%">'
+    . '<span class="field__hint">Apasă pătratul ca să alegi culoarea. Adaugă câte ai nevoie, șterge cu ×.</span>'
+    . '<div class="color-list" id="color_list">' . $colorSlots . '</div>'
+    . '<button type="button" class="color-add" id="color_add">+ adaugă o culoare</button>'
+    . '<input type="text" name="culori_note" value="' . old_v('culori_note') . '" placeholder="Note (opțional): unde le folosești, nume de culori..." style="margin-top:.8rem;width:100%">'
   . '</div>'
   . f_pills('cont_texte', 'Ai textele pentru site?', ['Da, le am', 'Nu, mă ajutați voi'], false)
   . f_pills('cont_poze', 'Ai pozele sau imaginile?', ['Da, le am', 'Nu, mă ajutați voi'], false)
@@ -358,14 +386,15 @@ $form = $errHtml
   . f_pills('scop', 'Ce vrei să obții cu site-ul?', $SCOP, true, 'Poți alege mai multe.')
   . f_pills('pagini', 'Ce pagini vrei pe site?', $PAGINI, true, 'Poți alege mai multe.')
   . f_text('domeniu_dorit', 'Ce nume de domeniu ți-ar plăcea?', true, false, 'ex: firma-mea.ro')
-  . f_text('date_afisare', 'Telefon, adresă și program de lucru', true, true, 'ex: 0727 959 331 · Str. Lungă nr. 1, Brașov · Luni–Vineri 9–17')
+  . f_text('contact_telefon', 'Telefon', true, false, 'ex: 0727 959 331')
+  . f_text('contact_adresa', 'Adresă', true, false, 'ex: Str. Lungă nr. 1, Brașov')
+  . f_text('contact_program', 'Program de lucru', true, false, 'ex: Luni–Vineri 9–17, Sâmbătă 9–13')
   . '<div class="field"><span class="field__label">Conturi de social media</span>'
-    . '<span class="field__hint">Bifează ce ai și pune link-ul sau numele contului. Dacă nu ai încă, bifează ultima opțiune.</span>'
-    . '<div class="social-list">'
-    . social_row('facebook', 'Facebook') . social_row('instagram', 'Instagram') . social_row('tiktok', 'TikTok')
-    . social_row('linkedin', 'LinkedIn') . social_row('youtube', 'YouTube') . social_row('google', 'Google Business')
+    . '<span class="field__hint">Apasă rețelele pe care le ai și scrie link-ul. Dacă nu ai încă, apasă „Nu am conturi încă".</span>'
+    . '<div class="choices">' . $socialPills
+      . '<label class="choice"><input type="checkbox" id="social_none" name="social_none" value="1"' . (!empty($_POST['social_none']) ? ' checked' : '') . '><span class="choice__b">Nu am conturi încă</span></label>'
     . '</div>'
-    . '<label class="choice" style="margin-top:.8rem"><input type="checkbox" id="social_none" name="social_none" value="1"' . (!empty($_POST['social_none']) ? ' checked' : '') . '><span class="choice__b">Nu am conturi de social media încă</span></label>'
+    . '<div class="social-inputs">' . $socialInputs . '</div>'
   . '</div>'
   . '</section>'
 
@@ -386,18 +415,24 @@ $form = $errHtml
     . 'var cb=document.getElementById("culori_box");'
     . 'function syncCul(){var c=f.querySelector("input[name=brand_culori]:checked"),v=c?c.value:"";if(cb)cb.hidden=(v!=="Da, le am");}'
     . 'Array.prototype.forEach.call(f.querySelectorAll("input[name=brand_culori]"),function(r){r.addEventListener("change",syncCul);});syncCul();'
-    . 'Array.prototype.forEach.call(f.querySelectorAll(".color-row"),function(row){var ck=row.querySelector("input[type=checkbox]"),col=row.querySelector("input[type=color]");function s(){if(col)col.disabled=!ck.checked;}ck.addEventListener("change",s);s();});'
+    . 'var clist=document.getElementById("color_list"),cadd=document.getElementById("color_add");'
+    . 'if(clist){clist.addEventListener("input",function(e){if(e.target.type==="color"){var h=e.target.parentNode.querySelector(".hex");if(h)h.textContent=e.target.value.toUpperCase();}});'
+    . 'clist.addEventListener("click",function(e){var b=e.target.closest?e.target.closest(".color-del"):null;if(b&&clist.querySelectorAll(".color-slot").length>1)b.parentNode.remove();});}'
+    . 'if(cadd&&clist){cadd.addEventListener("click",function(){var d=document.createElement("div");d.className="color-slot";d.innerHTML="<input type=\\"color\\" name=\\"culoare[]\\" value=\\"#1AA9A0\\"><span class=\\"hex\\">#1AA9A0</span><button type=\\"button\\" class=\\"color-del\\" aria-label=\\"Sterge\\">&times;</button>";clist.appendChild(d);});}'
     . 'var sn=document.getElementById("social_none");'
-    . 'function syncSocial(){var off=!!(sn&&sn.checked);Array.prototype.forEach.call(f.querySelectorAll(".social-row input"),function(i){i.disabled=off;if(off&&i.type==="checkbox")i.checked=false;});}'
-    . 'if(sn)sn.addEventListener("change",syncSocial);syncSocial();'
-    . 'Array.prototype.forEach.call(f.querySelectorAll(".social-row"),function(row){var ck=row.querySelector("input[type=checkbox]"),tx=row.querySelector("input[type=text]");function s(){if(tx)tx.required=ck.checked;}ck.addEventListener("change",s);s();});'
+    . 'var pills=f.querySelectorAll(".social-pill");'
+    . 'function showInput(key,on){var row=document.getElementById("socin_"+key);if(!row)return;var inp=row.querySelector("input");row.hidden=!on;if(inp)inp.disabled=!on;}'
+    . 'function socialNone(on){Array.prototype.forEach.call(pills,function(ck){if(on){ck.checked=false;showInput(ck.value,false);}});}'
+    . 'Array.prototype.forEach.call(pills,function(ck){ck.addEventListener("change",function(){if(ck.checked&&sn&&sn.checked)sn.checked=false;showInput(ck.value,ck.checked);if(ck.checked){var row=document.getElementById("socin_"+ck.value);var inp=row&&row.querySelector("input");if(inp)inp.focus();}});});'
+    . 'if(sn)sn.addEventListener("change",function(){socialNone(sn.checked);});'
+    . 'Array.prototype.forEach.call(pills,function(ck){showInput(ck.value,ck.checked);});if(sn&&sn.checked)socialNone(true);'
     . 'f.addEventListener("change",function(e){var fl=e.target.closest(".field");if(fl)fl.classList.remove("err-field");});'
     . 'f.addEventListener("submit",function(ev){var bad=null;function mark(el){if(!el)return;var fl=el.closest?el.closest(".field"):el;if(fl){fl.classList.add("err-field");if(!bad)bad=fl;}}'
     . 'var g=f.querySelectorAll(".choices[data-req-group]");for(var i=0;i<g.length;i++){if(!g[i].querySelector("input:checked"))mark(g[i]);}'
     . 'if(dt&&!(flex&&flex.checked)&&!dt.value)mark(dt);'
     . 'if(lm&&!lm.hidden){var ld=lm.querySelector("textarea");if(ld&&!ld.value.trim())mark(lm);}'
-    . 'if(cb&&!cb.hidden){if(!cb.querySelector(".color-row input[type=checkbox]:checked"))mark(cb);}'
-    . 'if(!(sn&&sn.checked)){var any=false,sbad=false;Array.prototype.forEach.call(f.querySelectorAll(".social-row"),function(row){var ck=row.querySelector("input[type=checkbox]"),tx=row.querySelector("input[type=text]");if(ck.checked){any=true;if(!tx.value.trim())sbad=true;}});if(!any||sbad)mark(sn?sn.closest(".field"):null);}'
+    . 'if(cb&&!cb.hidden){if(!clist||!clist.querySelector(".color-slot"))mark(cb);}'
+    . 'if(!(sn&&sn.checked)){var any=false,sbad=false;Array.prototype.forEach.call(pills,function(ck){if(ck.checked){any=true;var row=document.getElementById("socin_"+ck.value);var inp=row&&row.querySelector("input");if(!inp||!inp.value.trim())sbad=true;}});if(!any||sbad)mark(sn);}'
     . 'if(bad){ev.preventDefault();bad.scrollIntoView({block:"center",behavior:"smooth"});}});'
     . '})();</script>';
 
