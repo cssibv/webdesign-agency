@@ -31,6 +31,13 @@ if (rate_blocked('form_' . client_ip(), 10, 3600)) {
 }
 rate_register('form_' . client_ip(), 3600);
 
+$cfg    = require __DIR__ . '/administrare/private/config.php';
+$thost  = strtolower(parse_url($cfg['base_url'] ?? 'https://smart-web.ro', PHP_URL_HOST) ?: 'smart-web.ro');
+$thosts = [$thost, 'www.' . $thost, 'localhost', '127.0.0.1'];
+if (!turnstile_ok($cfg['turnstile_secret'] ?? '', $_POST['cf-turnstile-response'] ?? '', client_ip(), $thosts, 'contact')) {
+  fail('Verificarea anti-spam a eșuat. Reîncarcă pagina și încearcă din nou.');
+}
+
 $nume    = cap(trim(strip_ctrl($_POST['nume'] ?? '')), 80);
 $email   = cap(trim(strip_ctrl($_POST['email'] ?? '')), 254);
 $telefon = cap(trim(strip_ctrl($_POST['telefon'] ?? '')), 40);
@@ -53,14 +60,6 @@ if ($dom === '' || $dom === false || !checkdnsrr($dom, 'MX')) {
 if ($firma !== '' && !preg_match('/^[\p{L}\p{N} .,&\'()\/-]+$/u', $firma)) fail('Numele firmei conține caractere nepermise.');
 if ($mesaj !== '' && !preg_match('/^[\p{L}\p{N}\p{P}\p{S}\s]*$/u', $mesaj)) fail('Mesajul conține caractere nepermise.');
 if ($consimt !== 'da') fail('Te rugăm să accepți prelucrarea datelor.');
-
-$cfg    = require __DIR__ . '/administrare/private/config.php';
-
-$thost  = strtolower(parse_url($cfg['base_url'] ?? 'https://smart-web.ro', PHP_URL_HOST) ?: 'smart-web.ro');
-$thosts = [$thost, 'www.' . $thost, 'localhost', '127.0.0.1'];
-if (!turnstile_ok($cfg['turnstile_secret'] ?? '', $_POST['cf-turnstile-response'] ?? '', client_ip(), $thosts, 'contact')) {
-  fail('Verificarea anti-spam a eșuat. Reîncarcă pagina și încearcă din nou.');
-}
 
 $token  = bin2hex(random_bytes(32));
 $expira = date('Y-m-d H:i:s', time() + 7 * 86400);
