@@ -9,7 +9,7 @@ function smtp_send(array $cfg, $to, $subject, $text, $replyTo = '', $html = '') 
 
   $ehlo = (strpos($from, '@') !== false) ? substr(strrchr($from, '@'), 1) : 'localhost';
   $transport = ($port === 465 ? 'ssl://' : 'tcp://') . $host . ':' . $port;
-  $ctx = stream_context_create(['ssl' => ['verify_peer' => false, 'verify_peer_name' => false]]);
+  $ctx = stream_context_create(['ssl' => ['verify_peer' => true, 'verify_peer_name' => true, 'SNI_enabled' => true, 'peer_name' => $host]]);
   $fp = @stream_socket_client($transport, $errno, $errstr, 20, STREAM_CLIENT_CONNECT, $ctx);
   if (!$fp) return false;
   stream_set_timeout($fp, 20);
