@@ -1,4 +1,10 @@
 <?php
+// Loghează eșecurile de email în private/mail.log (folder blocat web prin .htaccess).
+function mail_log($msg) {
+  $line = '[' . date('Y-m-d H:i:s') . '] ' . trim(preg_replace('/[\r\n]+/', ' ', (string)$msg)) . "\n";
+  @file_put_contents(__DIR__ . '/private/mail.log', $line, FILE_APPEND | LOCK_EX);
+}
+
 function smtp_send(array $cfg, $to, $subject, $text, $replyTo = '', $html = '') {
   $host = $cfg['smtp_host'] ?? '';
   $user = $cfg['smtp_user'] ?? '';
@@ -46,6 +52,8 @@ function smtp_send(array $cfg, $to, $subject, $text, $replyTo = '', $html = '') 
     $headers  = "From: $from\r\n";
     if ($replyTo !== '') $headers .= "Reply-To: $replyTo\r\n";
     $headers .= "To: $to\r\n";
+    $headers .= 'Date: ' . date('r') . "\r\n";
+    $headers .= 'Message-ID: <' . bin2hex(random_bytes(16)) . '@' . $ehlo . ">\r\n";
     $headers .= 'Subject: =?UTF-8?B?' . base64_encode($subject) . "?=\r\n";
     $headers .= "MIME-Version: 1.0\r\n";
 

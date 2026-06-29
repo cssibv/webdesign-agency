@@ -73,6 +73,7 @@ function pagina($titlu, $continut) {
      . '.char-counter.is-max{color:#c0392b;font-weight:600}'
      . '.social-inputs{display:flex;flex-direction:column;gap:.6rem;margin-top:.85rem}'
      . '.social-in{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}'
+     . '.social-in[hidden]{display:none}'
      . '.social-in .field__label{min-width:120px;margin:0}'
      . '.social-in input{flex:1;min-width:200px;padding:.55rem .8rem;border:1px solid var(--c-border);border-radius:var(--radius-sm);font:inherit;background:var(--c-bg-alt);color:var(--c-text)}'
      . '.field.err-field .color-list,.field.err-field .social-inputs,.field.err-field .choices{outline:2px dashed #e8a39a;outline-offset:6px;border-radius:12px}'
@@ -193,6 +194,7 @@ function colecteaza_brief() {
       $labels = ['Principală', 'Secundară'];
       $i = 0;
       foreach ((array)($_POST['culoare'] ?? []) as $hex) {
+        if ($i >= 5) break;
         $hex = (string)$hex;
         if (preg_match('/^#[0-9a-fA-F]{6}$/', $hex)) {
           $pal[] = ($labels[$i] ?? ('Culoarea ' . ($i + 1))) . ' ' . strtoupper($hex);
@@ -268,13 +270,13 @@ function brief_valid() {
 
   // Logo: dacă îl creăm noi, descrierea e obligatorie
   if (($_POST['brand_logo'] ?? '') === 'Nu, îl creați voi' && $nz($_POST['logo_descriere'] ?? '') === null) return false;
-  // Culori: dacă „le am", cel puțin o culoare validă aleasă
+  // Culori: dacă „le am", minim 2 culori valide (ca în UI)
   if (($_POST['brand_culori'] ?? '') === 'Da, le am') {
-    $any = false;
+    $n = 0;
     foreach ((array)($_POST['culoare'] ?? []) as $hex) {
-      if (preg_match('/^#[0-9a-fA-F]{6}$/', (string)$hex)) { $any = true; break; }
+      if (preg_match('/^#[0-9a-fA-F]{6}$/', (string)$hex)) $n++;
     }
-    if (!$any) return false;
+    if ($n < 2) return false;
   }
   // Social: ori „nu am conturi", ori cel puțin o platformă bifată cu handle completat
   if (empty($_POST['social_none'])) {
@@ -307,15 +309,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['brief'])) {
     $row = [$cid];
     foreach ($fields as $f) $row[] = $vals[$f];
     $sql = 'INSERT INTO brief (client_id, ' . implode(', ', $fields) . ') VALUES (?' . str_repeat(', ?', count($fields)) . ')';
-    db()->prepare($sql)->execute($row);
-    db()->prepare('INSERT INTO evenimente (client_id, tip, text) VALUES (?, ?, ?)')->execute([$cid, 'brief', 'A completat chestionarul de brief']);
-    db()->prepare('UPDATE clienti SET token_confirmare = NULL, token_expira = NULL WHERE id = ?')->execute([$cid]); // tokenul nu mai e folosibil după ce brief-ul e completat
+    try {
+      db()->beginTransaction();
+      db()->prepare($sql)->execute($row);
+      db()->prepare('INSERT INTO evenimente (client_id, tip, text) VALUES (?, ?, ?)')->execute([$cid, 'brief', 'A completat chestionarul de brief']);
+      db()->prepare('UPDATE clienti SET token_confirmare = NULL, token_expira = NULL WHERE id = ?')->execute([$cid]); // tokenul nu mai e folosibil după ce brief-ul e completat
+      db()->commit();
+    } catch (Throwable $ex) {
+      if (db()->inTransaction()) db()->rollBack();
+      mail_log("Salvare brief EȘUATĂ pentru lead #$cid (" . $client['email'] . "): " . $ex->getMessage());
+      $briefError = 'A apărut o eroare la salvare. Datele tale nu s-au pierdut — încearcă din nou peste un minut sau scrie-ne pe WhatsApp.';
+    }
+  }
+  if ($briefError === '') {
     $to = $cfg['notify_email'] ?? 'contact@smart-web.ro';
     $base = rtrim($cfg['base_url'] ?? 'https://smart-web.ro', '/');
     $briefInner = email_h('Brief completat')
       . email_p('Clientul <strong>' . email_esc($client['nume']) . '</strong> a completat chestionarul.')
       . email_button('Vezi în panou &rarr;', $base . '/administrare/index.php');
-    smtp_send($cfg, $to, '[SmartWeb] Brief completat: ' . hdr($client['nume']), 'Clientul ' . $client['nume'] . ' a completat chestionarul. Vezi detaliile în panou.', '', email_layout($cfg, $briefInner));
+    if (!smtp_send($cfg, $to, '[SmartWeb] Brief completat: ' . hdr($client['nume']), 'Clientul ' . $client['nume'] . ' a completat chestionarul. Vezi detaliile în panou.', '', email_layout($cfg, $briefInner))) {
+      mail_log("Notificare brief EȘUATĂ pentru lead #$cid. Brief salvat — verifică panoul.");
+    }
     pagina('Mulțumim', '<h2>Mulțumim! 🎉</h2><p>Am primit toate detaliile. Te contactăm în cel mai scurt timp ca să pornim.</p><p><a class="btn btn--primary" href="/">Înapoi pe site</a></p>');
   }
 }
