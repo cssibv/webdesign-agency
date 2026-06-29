@@ -1,8 +1,17 @@
 <?php
 ini_set('display_errors', '0'); // nu expune detalii de eroare vizitatorilor
+header('Referrer-Policy: no-referrer'); // tokenul din URL să nu se scurgă prin Referer
 require __DIR__ . '/administrare/db.php';
 require __DIR__ . '/administrare/mailer.php';
+require __DIR__ . '/administrare/throttle.php';
 $cfg = require __DIR__ . '/administrare/private/config.php';
+
+// Anti-sondare / anti-abuz pe IP (brute-force pe token e oricum imposibil — 256 biți).
+if (rate_blocked('confirma_' . client_ip(), 60, 3600)) {
+  http_response_code(429);
+  exit('Prea multe cereri. Te rugăm încearcă mai târziu.');
+}
+rate_register('confirma_' . client_ip(), 3600);
 
 function e($s) { return htmlspecialchars((string)$s, ENT_QUOTES, 'UTF-8'); }
 // Curăță CRLF din valorile ce ajung în header-e de email (anti header injection).
@@ -12,6 +21,7 @@ function pagina($titlu, $continut) {
   echo '<!DOCTYPE html><html lang="ro"><head><meta charset="UTF-8">';
   echo '<meta name="viewport" content="width=device-width, initial-scale=1.0">';
   echo '<meta name="robots" content="noindex, nofollow">';
+  echo '<meta name="referrer" content="no-referrer">';
   echo '<meta name="color-scheme" content="light dark">';
   echo '<title>' . e($titlu) . ' · Smart Web</title>';
   echo '<script>(function(){try{var s=localStorage.getItem("theme");var d=s?s==="dark":window.matchMedia("(prefers-color-scheme: dark)").matches;if(d)document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>';
@@ -299,6 +309,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['brief'])) {
     $sql = 'INSERT INTO brief (client_id, ' . implode(', ', $fields) . ') VALUES (?' . str_repeat(', ?', count($fields)) . ')';
     db()->prepare($sql)->execute($row);
     db()->prepare('INSERT INTO evenimente (client_id, tip, text) VALUES (?, ?, ?)')->execute([$cid, 'brief', 'A completat chestionarul de brief']);
+    db()->prepare('UPDATE clienti SET token_confirmare = NULL, token_expira = NULL WHERE id = ?')->execute([$cid]); // tokenul nu mai e folosibil după ce brief-ul e completat
     $to = $cfg['notify_email'] ?? 'contact@smart-web.ro';
     $base = rtrim($cfg['base_url'] ?? 'https://smart-web.ro', '/');
     $briefInner = email_h('Brief completat')
