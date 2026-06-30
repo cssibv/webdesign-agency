@@ -243,7 +243,7 @@ function colecteaza_brief() {
     'pagini'             => $multi('pagini'),
     'domeniu_dorit'      => $nz($_POST['domeniu_dorit'] ?? ''),
     'date_afisare'       => $dateAfisare,
-    'termen'             => !empty($_POST['termen_flexibil']) ? 'Flexibil' : $nz($_POST['termen'] ?? ''),
+    'termen'             => 'Aproximativ 3-5 zile lucrătoare',
     'plan_vizat'         => $nz($_POST['plan_vizat'] ?? ''),
     'alte_detalii'       => $nz($_POST['alte_detalii'] ?? ''),
   ];
@@ -262,7 +262,6 @@ function brief_valid() {
   foreach (['public_tinta','scop','pagini'] as $k) {
     if (!$hasMulti($k)) return false;
   }
-  if (empty($_POST['termen_flexibil']) && $nz($_POST['termen'] ?? '') === null) return false;
 
   // Telefon: format valid (aceeași regulă ca pe site)
   $tel = preg_replace('/\s+/', '', (string)($_POST['contact_telefon'] ?? ''));
@@ -344,14 +343,10 @@ if ($areBrief > 0) {
 }
 
 $tok = e($token);
-$today = date('Y-m-d');
-$flexChecked = !empty($_POST['termen_flexibil']) ? ' checked' : '';
-$termenVal = (isset($_POST['termen']) && empty($_POST['termen_flexibil'])) ? e($_POST['termen']) : '';
 $errHtml = $briefError !== '' ? '<div class="err">' . e($briefError) . '</div>' : '';
 
-$termenField = '<div class="field"><span class="field__label">Până când ai vrea să fie gata? <span class="req">*</span></span>'
-  . '<input type="date" name="termen" min="' . $today . '" value="' . $termenVal . '">'
-  . '<div class="choices" style="margin-top:.7rem"><label class="choice"><input type="checkbox" name="termen_flexibil" value="1"' . $flexChecked . '><span class="choice__b">Nu mă grăbesc / sunt flexibil</span></label></div>'
+$termenField = '<div class="field"><span class="field__label">Cât durează realizarea?</span>'
+  . '<p class="field__hint">După ce avem toate detaliile despre cum ți-ai dori să arate site-ul (texte, imagini și clipuri video), îl realizăm în aproximativ <strong>3-5 zile lucrătoare</strong>. Îți confirmăm termenul exact când pornim.</p>'
   . '</div>';
 
 // Sloturi de culoare (din POST la reîncărcare după eroare, altfel două implicite). Min 2, max 5.
@@ -446,8 +441,6 @@ $form = $errHtml
   . '<div class="field" style="margin-top:2.2rem"><button type="submit" class="btn btn--primary btn--lg">Trimite detaliile</button></div>'
   . '</form>'
   . '<script>(function(){var f=document.querySelector(".cf form");if(!f)return;'
-    . 'var flex=f.querySelector("input[name=termen_flexibil]"),dt=f.querySelector("input[name=termen]");'
-    . 'function sync(){if(flex&&dt){dt.disabled=flex.checked;if(flex.checked)dt.value="";}}if(flex){flex.addEventListener("change",sync);sync();}'
     . 'var lh=document.getElementById("logo_have"),lm=document.getElementById("logo_make");'
     . 'function syncLogo(){var c=f.querySelector("input[name=brand_logo]:checked"),v=c?c.value:"";if(lh)lh.hidden=(v!=="Da, îl am");if(lm)lm.hidden=(v!=="Nu, îl creați voi");}'
     . 'Array.prototype.forEach.call(f.querySelectorAll("input[name=brand_logo]"),function(r){r.addEventListener("change",syncLogo);});syncLogo();'
@@ -471,7 +464,6 @@ $form = $errHtml
     . 'f.addEventListener("change",function(e){var fl=e.target.closest(".field");if(fl)fl.classList.remove("err-field");});'
     . 'f.addEventListener("submit",function(ev){var bad=null;function mark(el){if(!el)return;var fl=el.closest?el.closest(".field"):el;if(fl){fl.classList.add("err-field");if(!bad)bad=fl;}}'
     . 'var g=f.querySelectorAll(".choices[data-req-group]");for(var i=0;i<g.length;i++){if(!g[i].querySelector("input:checked"))mark(g[i]);}'
-    . 'if(dt&&!(flex&&flex.checked)&&!dt.value)mark(dt);'
     . 'if(lm&&!lm.hidden){var ld=lm.querySelector("textarea");if(ld&&!ld.value.trim())mark(lm);}'
     . 'if(cb&&!cb.hidden){if(!clist||!clist.querySelector(".color-slot"))mark(cb);}'
     . 'if(!(sn&&sn.checked)){var any=false,sbad=false;Array.prototype.forEach.call(pills,function(ck){if(ck.checked){any=true;var row=document.getElementById("socin_"+ck.value);var inp=row&&row.querySelector("input");if(!inp||!inp.value.trim())sbad=true;}});if(!any||sbad)mark(sn);}'

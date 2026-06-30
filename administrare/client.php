@@ -112,7 +112,7 @@ $BRIEF_LABELS = [
   'pagini'             => 'Pagini dorite',
   'domeniu_dorit'      => 'Domeniu dorit',
   'date_afisare'       => 'Date de afișat',
-  'termen'             => 'Termen dorit',
+  'termen'             => 'Termen estimat',
   'plan_vizat'         => 'Plan vizat',
   'alte_detalii'       => 'Alte detalii',
 ];
