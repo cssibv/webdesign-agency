@@ -208,8 +208,12 @@ function colecteaza_brief() {
   }
   $brand = $bp ? implode('; ', $bp) : null;
   $texte = $nz($_POST['cont_texte'] ?? '');
+  $texteCont = $nz($_POST['texte_continut'] ?? '');
   $poze = $nz($_POST['cont_poze'] ?? '');
-  $continut = ($texte === null && $poze === null) ? null : ('Texte: ' . ($texte ?? '-') . '; Poze/imagini: ' . ($poze ?? '-'));
+  $pozeNote = $nz($_POST['poze_note'] ?? '');
+  $continut = ($texte === null && $poze === null && $texteCont === null && $pozeNote === null) ? null
+    : ('Texte: ' . ($texte ?? '-') . ($texteCont !== null ? ' | Indicații/conținut: ' . $texteCont : '')
+       . '; Poze/imagini: ' . ($poze ?? '-') . ($pozeNote !== null ? ' | Detalii poze: ' . $pozeNote : ''));
   $ct = $nz($_POST['contact_telefon'] ?? '');
   $ca = $nz($_POST['contact_adresa'] ?? '');
   $cprog = $nz($_POST['contact_program'] ?? '');
@@ -411,7 +415,16 @@ $form = $errHtml
     . '<input type="text" name="culori_note" value="' . old_v('culori_note') . '" maxlength="200" placeholder="Note (opțional): unde le folosești, nume de culori..." style="margin-top:.8rem;width:100%">'
   . '</div>'
   . f_pills('cont_texte', 'Ai textele pentru site?', ['Da, le am', 'Nu, mă ajutați voi'], false)
+  . '<div class="field"><label class="field__label" for="f_texte_continut">Textele site-ului <span class="hint">(opțional, dar ne ajută mult)</span></label>'
+    . '<span class="field__hint">Dacă ai textele, lipește-le aici. Dacă nu, spune-ne pe scurt ce vrei să transmită fiecare zonă: în prima secțiune (hero), la „Despre noi", la servicii etc. Le poți trimite și pe email la contact@smart-web.ro.</span>'
+    . '<textarea id="f_texte_continut" name="texte_continut" maxlength="2000">' . old_v('texte_continut') . '</textarea>'
+  . '</div>'
   . f_pills('cont_poze', 'Ai pozele sau imaginile?', ['Da, le am', 'Nu, mă ajutați voi'], false)
+  . '<div class="field cond" id="poze_have"' . ((($_POST['cont_poze'] ?? '') === 'Da, le am') ? '' : ' hidden') . '>'
+    . '<label class="field__label" for="f_poze_note">Trimite-ne pozele</label>'
+    . '<span class="field__hint">Trimite imaginile pe email la <strong>contact@smart-web.ro</strong> (scrie numele firmei în subiect). Aici poți nota ce reprezintă și unde ar trebui să apară pe site.</span>'
+    . '<textarea id="f_poze_note" name="poze_note" maxlength="600" placeholder="ex: poze cu echipa pentru „Despre noi", poze cu lucrări pentru portofoliu...">' . old_v('poze_note') . '</textarea>'
+  . '</div>'
   . '</section>'
 
   . '<section class="grp"><h3 class="grp__title">Site-ul dorit</h3>'
@@ -447,6 +460,9 @@ $form = $errHtml
     . 'var cb=document.getElementById("culori_box");'
     . 'function syncCul(){var c=f.querySelector("input[name=brand_culori]:checked"),v=c?c.value:"";if(cb)cb.hidden=(v!=="Da, le am");}'
     . 'Array.prototype.forEach.call(f.querySelectorAll("input[name=brand_culori]"),function(r){r.addEventListener("change",syncCul);});syncCul();'
+    . 'var ph=document.getElementById("poze_have");'
+    . 'function syncPoze(){var c=f.querySelector("input[name=cont_poze]:checked"),v=c?c.value:"";if(ph)ph.hidden=(v!=="Da, le am");}'
+    . 'Array.prototype.forEach.call(f.querySelectorAll("input[name=cont_poze]"),function(r){r.addEventListener("change",syncPoze);});syncPoze();'
     . 'var clist=document.getElementById("color_list"),cadd=document.getElementById("color_add");'
     . 'function colorState(){if(!clist)return;var n=clist.querySelectorAll(".color-slot").length;if(cadd)cadd.disabled=(n>=5);Array.prototype.forEach.call(clist.querySelectorAll(".color-del"),function(b){b.style.display=(n<=2?"none":"");});}'
     . 'if(clist){clist.addEventListener("input",function(e){if(e.target.type==="color"){var h=e.target.parentNode.querySelector(".hex");if(h)h.textContent=e.target.value.toUpperCase();}});'

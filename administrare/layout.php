@@ -7,8 +7,7 @@ $STATUSES = [
   'livrat_luna_gratis'   => 'Livrat (luna gratis)',
   'decizie_dupa_gratis'  => 'Decizie după luna gratis',
   'contract_semnat'      => 'Contract semnat',
-  'pierdut'              => 'Pierdut',
-  'client_plecat'        => 'Client plecat',
+  'pierdut_arhivat'      => 'Pierdut',
 ];
 $PLANS = ['start' => 'Start', 'business' => 'Business', 'pro' => 'Pro'];
 $PLATA = ['neinceput' => 'Neînceput', 'la_zi' => 'La zi', 'restant' => 'Restant'];
