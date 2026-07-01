@@ -85,6 +85,25 @@ try {
   fail('A apărut o eroare la salvare. Încearcă din nou sau scrie-ne pe WhatsApp.', 500);
 }
 
+// Notificare instant pe Telegram (via n8n) — best-effort, nu blochează răspunsul.
+$n8nUrl   = $cfg['n8n_webhook'] ?? 'https://ubuntu-server.tail3549b5.ts.net/webhook/smart-web-lead';
+$n8nToken = $cfg['n8n_token'] ?? '';
+if ($n8nUrl) {
+  $ch = curl_init($n8nUrl);
+  curl_setopt_array($ch, [
+    CURLOPT_POST           => true,
+    CURLOPT_POSTFIELDS     => http_build_query(['nume' => $nume, 'telefon' => $telefon, 'email' => $email, 'firma' => $firma, 'mesaj' => $mesaj]),
+    CURLOPT_HTTPHEADER     => $n8nToken !== '' ? ['X-Webhook-Token: ' . $n8nToken] : [],
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_TIMEOUT        => 5,
+    CURLOPT_CONNECTTIMEOUT => 4,
+  ]);
+  if (curl_exec($ch) === false) {
+    error_log('Forward n8n/Telegram eșuat pentru lead #' . $cid . ': ' . curl_error($ch));
+  }
+  curl_close($ch);
+}
+
 require __DIR__ . '/administrare/mailer.php';
 $base = rtrim($cfg['base_url'] ?? 'https://smart-web.ro', '/');
 
