@@ -325,6 +325,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['brief'])) {
     }
   }
   if ($briefError === '') {
+    // Forward brief la n8n pentru preprocesare AI (best-effort, non-blocant).
+    $n8nBrief = $cfg['n8n_brief_webhook'] ?? 'https://ubuntu-server.tail3549b5.ts.net/webhook/smart-web-brief';
+    if ($n8nBrief) {
+      $payloadN8n = json_encode(['client' => ['id' => $cid, 'nume' => $client['nume'], 'firma' => $client['firma'], 'email' => $client['email'], 'telefon' => $client['telefon']], 'brief' => $vals], JSON_UNESCAPED_UNICODE);
+      $chN8n = curl_init($n8nBrief);
+      curl_setopt_array($chN8n, [
+        CURLOPT_POST           => true,
+        CURLOPT_POSTFIELDS     => $payloadN8n,
+        CURLOPT_HTTPHEADER     => array_values(array_filter(['Content-Type: application/json', ($cfg['n8n_token'] ?? '') !== '' ? 'X-Webhook-Token: ' . $cfg['n8n_token'] : null])),
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_TIMEOUT        => 6,
+        CURLOPT_CONNECTTIMEOUT => 4,
+      ]);
+      if (curl_exec($chN8n) === false) {
+        mail_log('Forward brief n8n eșuat pentru lead #' . $cid . ': ' . curl_error($chN8n));
+      }
+      curl_close($chN8n);
+    }
     $to = $cfg['notify_email'] ?? 'contact@smart-web.ro';
     $base = rtrim($cfg['base_url'] ?? 'https://smart-web.ro', '/');
     $briefInner = email_h('Brief completat')
