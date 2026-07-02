@@ -422,7 +422,10 @@ $form = $errHtml
   . f_text('domeniu_activitate', 'Cu ce se ocupă firma ta?', true, false, 'ex: cabinet stomatologic, firmă de instalații...', 120)
   . f_text('servicii', 'Ce servicii sau produse oferi? (cele mai importante de promovat)', true, true, '', 300)
   . f_pills('public_tinta', 'Cine e clientul tău ideal?', $PUBLIC, true, 'Poți alege mai multe.')
-  . f_text('referinte', 'Site-uri care îți plac sau concurenți (linkuri)', false, true, '', 300)
+  . '<div class="field"><label class="field__label" for="f_referinte">Site-uri care îți plac sau concurenți <span class="hint">(opțional, dar ne ajută mult)</span></label>'
+    . '<span class="field__hint">Pune 2-3 linkuri către site-uri care îți plac (din orice domeniu) sau ale concurenților. Ne ajută mult să prindem stilul și direcția vizuală pe care ți-o dorești.</span>'
+    . '<textarea id="f_referinte" name="referinte" maxlength="300" placeholder="ex: https://exemplu.ro, https://alt-site.ro">' . old_v('referinte') . '</textarea>'
+  . '</div>'
   . '</section>'
 
   . '<section class="grp"><h3 class="grp__title">Conținut și identitate vizuală</h3>'
