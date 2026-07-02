@@ -40,9 +40,9 @@ function pagina($titlu, $continut) {
      . '.field__label{display:block;font-weight:600;color:var(--c-text);margin-bottom:.6rem}'
      . '.field__hint{display:block;color:var(--c-text-soft);font-size:.88rem;margin:-.35rem 0 .65rem}'
      . '.req{color:var(--c-accent)}.hint{font-weight:400;color:var(--c-text-soft);font-size:.9rem}'
-     . '.cf input[type=text],.cf textarea{width:100%;padding:.72rem .9rem;border:1px solid var(--c-border);border-radius:var(--radius-sm);font:inherit;background:var(--c-bg-alt);color:var(--c-text);transition:border-color .15s,box-shadow .15s}'
+     . '.cf input[type=text],.cf input[type=tel],.cf textarea{width:100%;padding:.72rem .9rem;border:1px solid var(--c-border);border-radius:var(--radius-sm);font:inherit;background:var(--c-bg-alt);color:var(--c-text);transition:border-color .15s,box-shadow .15s}'
      . '.cf textarea{min-height:92px;resize:vertical}'
-     . '.cf input[type=text]:focus,.cf textarea:focus{outline:0;border-color:var(--c-teal);box-shadow:0 0 0 3px rgba(26,169,160,.18)}'
+     . '.cf input[type=text]:focus,.cf input[type=tel]:focus,.cf textarea:focus{outline:0;border-color:var(--c-teal);box-shadow:0 0 0 3px rgba(26,169,160,.18)}'
      . '.cf input[type=date]{padding:.6rem .8rem;border:1px solid var(--c-border);border-radius:var(--radius-sm);font:inherit;background:var(--c-bg-alt);color:var(--c-text);max-width:260px}'
      . '.cf input[type=date]:focus{outline:0;border-color:var(--c-teal);box-shadow:0 0 0 3px rgba(26,169,160,.18)}'
      . '.cf input[type=date]:disabled{opacity:.45;cursor:not-allowed}'
@@ -57,6 +57,9 @@ function pagina($titlu, $continut) {
      . '.choice input:disabled+.choice__b{opacity:.4;cursor:not-allowed}'
      . '.hp{position:absolute;left:-9999px}'
      . '.field.err-field .field__label{color:#c0392b}'
+     . '.field.err-field input[type=text],.field.err-field input[type=tel],.field.err-field textarea{border-color:#e8a39a;box-shadow:0 0 0 3px rgba(232,163,154,.3)}'
+     . '.field__error{margin:.45rem 0 0;font-size:.85rem;font-weight:600;color:#c0392b}'
+     . '.field__error[hidden]{display:none}'
      . '.field.err-field .choices{outline:2px dashed #e8a39a;outline-offset:8px;border-radius:14px}'
      . '.color-list{display:flex;flex-direction:column;gap:.5rem;margin:.2rem 0 .7rem}'
      . '.color-slot{display:flex;align-items:center;gap:.7rem}'
@@ -122,6 +125,8 @@ $PLANURI = ['Start', 'Business', 'Pro', 'Nu sunt sigur, recomandați voi'];
 function old_v($k) { return e((string)($_POST[$k] ?? '')); }
 function old_in($k, $v) { $a = $_POST[$k] ?? []; if (!is_array($a)) $a = [$a]; return in_array($v, $a, true); }
 function old_is($k, $v) { return (string)($_POST[$k] ?? '') === $v; }
+// Clasă de evidențiere pentru câmpurile invalidate la validarea server-side
+function ecls($key) { global $briefErrs; return isset($briefErrs[$key]) ? ' err-field' : ''; }
 
 // Câmp text / textarea
 function f_text($name, $label, $req, $textarea = false, $ph = '', $maxlen = null) {
@@ -129,7 +134,7 @@ function f_text($name, $label, $req, $textarea = false, $ph = '', $maxlen = null
   $r = $req ? ' required' : '';
   $p = $ph !== '' ? ' placeholder="' . e($ph) . '"' : '';
   $m = $maxlen ? ' maxlength="' . (int)$maxlen . '"' : '';
-  $h = '<div class="field"><label class="field__label" for="f_' . e($name) . '">' . e($label) . $mark . '</label>';
+  $h = '<div class="field' . ecls($name) . '"><label class="field__label" for="f_' . e($name) . '">' . e($label) . $mark . '</label>';
   if ($textarea) {
     $h .= '<textarea id="f_' . e($name) . '" name="' . e($name) . '"' . $r . $p . $m . '>' . old_v($name) . '</textarea>';
   } else {
@@ -140,7 +145,7 @@ function f_text($name, $label, $req, $textarea = false, $ph = '', $maxlen = null
 
 // Grup de pastile selectabile (multi = checkbox, single = radio)
 function f_pills($name, $label, array $optiuni, $multi, $hint = '') {
-  $h = '<div class="field"><span class="field__label">' . e($label) . ' <span class="req">*</span></span>';
+  $h = '<div class="field' . ecls($name) . '"><span class="field__label">' . e($label) . ' <span class="req">*</span></span>';
   if ($hint !== '') $h .= '<span class="field__hint">' . e($hint) . '</span>';
   $h .= '<div class="choices" data-req-group="1">';
   foreach ($optiuni as $o) {
@@ -253,47 +258,50 @@ function colecteaza_brief() {
   ];
 }
 
-// Validare server-side a câmpurilor obligatorii
-function brief_valid() {
+// Validare server-side: întoarce câmpurile invalide sub forma [cheie => motiv]
+// ('gol' = obligatoriu necompletat, 'format' = completat dar în format greșit).
+function brief_errors() {
+  $errs = [];
   $nz = function ($v) { return trim((string)$v) === '' ? null : trim((string)$v); };
   $hasMulti = function ($k) {
     $a = $_POST[$k] ?? [];
     return is_array($a) && count(array_filter($a, function ($x) { return trim((string)$x) !== ''; })) > 0;
   };
   foreach (['domeniu_activitate','servicii','domeniu_dorit','contact_telefon','contact_adresa','contact_program','plan_vizat','brand_logo','brand_culori','cont_texte','cont_poze'] as $k) {
-    if ($nz($_POST[$k] ?? '') === null) return false;
+    if ($nz($_POST[$k] ?? '') === null) $errs[$k] = 'gol';
   }
   foreach (['public_tinta','scop','pagini'] as $k) {
-    if (!$hasMulti($k)) return false;
+    if (!$hasMulti($k)) $errs[$k] = 'gol';
   }
 
-  // Telefon: format valid (aceeași regulă ca pe site)
-  $tel = preg_replace('/\s+/', '', (string)($_POST['contact_telefon'] ?? ''));
-  if (!preg_match('/^(0\d{9}|(\+|00)\d{8,15})$/', $tel)) return false;
+  // Telefon: dacă e completat, verifică formatul curățând spații/liniuțe/paranteze (ca pe site).
+  $tel = preg_replace('/[^0-9+]/', '', (string)($_POST['contact_telefon'] ?? ''));
+  if ($tel !== '' && !preg_match('/^(0\d{9}|(\+|00)\d{8,15})$/', $tel)) $errs['contact_telefon'] = 'format';
 
   // Logo: dacă îl creăm noi, descrierea e obligatorie
-  if (($_POST['brand_logo'] ?? '') === 'Nu, îl creați voi' && $nz($_POST['logo_descriere'] ?? '') === null) return false;
+  if (($_POST['brand_logo'] ?? '') === 'Nu, îl creați voi' && $nz($_POST['logo_descriere'] ?? '') === null) $errs['logo_descriere'] = 'gol';
   // Culori: dacă „le am", minim 2 culori valide (ca în UI)
   if (($_POST['brand_culori'] ?? '') === 'Da, le am') {
     $n = 0;
     foreach ((array)($_POST['culoare'] ?? []) as $hex) {
       if (preg_match('/^#[0-9a-fA-F]{6}$/', (string)$hex)) $n++;
     }
-    if ($n < 2) return false;
+    if ($n < 2) $errs['culori'] = 'gol';
   }
   // Social: ori „nu am conturi", ori cel puțin o platformă bifată cu handle completat
   if (empty($_POST['social_none'])) {
     $sel = (array)($_POST['social'] ?? []);
-    if (count($sel) === 0) return false;
-    foreach ($sel as $k) {
-      if ($nz($_POST['social_h'][$k] ?? '') === null) return false;
+    if (count($sel) === 0) $errs['social'] = 'gol';
+    else foreach ($sel as $k) {
+      if ($nz($_POST['social_h'][$k] ?? '') === null) { $errs['social'] = 'gol'; break; }
     }
   }
-  return true;
+  return $errs;
 }
 
 $nume = e($client['firma'] ?: $client['nume']);
 $briefError = '';
+$briefErrs = [];
 
 // Salvarea brief-ului
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['brief'])) {
@@ -305,8 +313,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['brief'])) {
   if ((int) $stDup->fetchColumn() > 0) {
     pagina('Mulțumim', '<h2>Mulțumim! 🎉</h2><p>Am primit deja detaliile tale. Te contactăm în cel mai scurt timp ca să pornim.</p><p><a class="btn btn--primary" href="/">Înapoi pe site</a></p>');
   }
-  if (!brief_valid()) {
-    $briefError = 'Te rugăm completează toate câmpurile obligatorii (cele marcate cu *).';
+  $briefErrs = brief_errors();
+  if (!empty($briefErrs)) {
+    $briefError = (isset($briefErrs['contact_telefon']) && $briefErrs['contact_telefon'] === 'format')
+      ? 'Verifică numărul de telefon — folosește formatul 0712345678 sau +40712345678. Completează și restul câmpurilor marcate.'
+      : 'Te rugăm completează toate câmpurile obligatorii (cele marcate cu *) — le-am evidențiat mai jos.';
   } else {
     $vals = colecteaza_brief();
     $row = [$cid];
@@ -328,7 +339,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['brief'])) {
     // Forward brief la n8n pentru preprocesare AI (best-effort, non-blocant).
     $n8nBrief = $cfg['n8n_brief_webhook'] ?? 'https://ubuntu-server.tail3549b5.ts.net/webhook/smart-web-brief';
     if ($n8nBrief) {
-      $payloadN8n = json_encode(['client' => ['id' => $cid, 'nume' => $client['nume'], 'firma' => $client['firma'], 'email' => $client['email'], 'telefon' => $client['telefon']], 'brief' => $vals], JSON_UNESCAPED_UNICODE);
+      // Trimitem doar identificarea lead-ului (nume, firmă, email). Telefonul NU se trimite: cel de
+      // afișat pe site vine din brief (date_afisare); telefonul lead-ului rămâne doar în CRM.
+      $payloadN8n = json_encode(['client' => ['id' => $cid, 'nume' => $client['nume'], 'firma' => $client['firma'], 'email' => $client['email']], 'brief' => $vals], JSON_UNESCAPED_UNICODE);
       $chN8n = curl_init($n8nBrief);
       curl_setopt_array($chN8n, [
         CURLOPT_POST           => true,
@@ -419,13 +432,13 @@ $form = $errHtml
     . '<span class="field__hint">Pune un link (Google Drive, site etc.) sau scrie „îl trimit pe email la contact@smart-web.ro".</span>'
     . '<input type="text" id="f_logo_link" name="logo_link" value="' . old_v('logo_link') . '" maxlength="200" placeholder="link către logo sau «îl trimit pe email»">'
   . '</div>'
-  . '<div class="field cond" id="logo_make"' . ((($_POST['brand_logo'] ?? '') === 'Nu, îl creați voi') ? '' : ' hidden') . '>'
+  . '<div class="field cond' . ecls('logo_descriere') . '" id="logo_make"' . ((($_POST['brand_logo'] ?? '') === 'Nu, îl creați voi') ? '' : ' hidden') . '>'
     . '<label class="field__label" for="f_logo_descriere">Cum ți-ai dori să arate logo-ul? <span class="req">*</span></label>'
     . '<span class="field__hint">Descrie pe scurt: stil (modern, minimalist, clasic), simboluri sau elemente, ce mesaj să transmită, eventual culori preferate.</span>'
     . '<textarea id="f_logo_descriere" name="logo_descriere" maxlength="400">' . old_v('logo_descriere') . '</textarea>'
   . '</div>'
   . f_pills('brand_culori', 'Ai culori sau identitate de brand?', ['Da, le am', 'Nu, alegeți voi'], false)
-  . '<div class="field cond" id="culori_box"' . ((($_POST['brand_culori'] ?? '') === 'Da, le am') ? '' : ' hidden') . '>'
+  . '<div class="field cond' . ecls('culori') . '" id="culori_box"' . ((($_POST['brand_culori'] ?? '') === 'Da, le am') ? '' : ' hidden') . '>'
     . '<span class="field__label">Culorile tale de brand <span class="hint">(2–5 culori)</span></span>'
     . '<span class="field__hint">Apasă „Schimbă" ca să alegi fiecare culoare. Poți adăuga până la 5 și șterge cu ×.</span>'
     . '<div class="color-list" id="color_list">' . $colorSlots . '</div>'
@@ -449,12 +462,14 @@ $form = $errHtml
   . f_pills('scop', 'Ce vrei să obții cu site-ul?', $SCOP, true, 'Poți alege mai multe.')
   . f_pills('pagini', 'Ce pagini vrei pe site?', $PAGINI, true, 'Poți alege mai multe.')
   . f_text('domeniu_dorit', 'Ce nume de domeniu ți-ar plăcea?', true, false, 'ex: firma-mea.ro', 80)
-  . '<div class="field"><label class="field__label" for="f_contact_telefon">Telefon <span class="req">*</span></label>'
-    . '<input type="tel" id="f_contact_telefon" name="contact_telefon" value="' . old_v('contact_telefon') . '" maxlength="20" inputmode="tel" required pattern="0\d{9}|(\+|00)\d{8,15}" title="ex: 0712345678 sau +40712345678" placeholder="ex: 0712345678 sau +40712345678">'
+  . '<div class="field' . ecls('contact_telefon') . '"><label class="field__label" for="f_contact_telefon">Telefon <span class="req">*</span></label>'
+    . '<span class="field__hint">Numărul care va fi <strong>afișat pe site</strong> (poate fi altul decât cel cu care ne-ai contactat).</span>'
+    . '<input type="tel" id="f_contact_telefon" name="contact_telefon" value="' . old_v('contact_telefon') . '" maxlength="20" inputmode="tel" required title="ex: 0712345678 sau +40712345678" placeholder="ex: 0712345678 sau +40712345678">'
+    . '<p class="field__error" id="telError"' . ((isset($briefErrs['contact_telefon']) && $briefErrs['contact_telefon'] === 'format') ? '' : ' hidden') . '>Format invalid. Scrie-l ca 0712345678 sau +40712345678.</p>'
   . '</div>'
   . f_text('contact_adresa', 'Adresă', true, false, 'ex: Str. Lungă nr. 1, Brașov', 120)
   . f_text('contact_program', 'Program de lucru', true, false, 'ex: Luni–Vineri 9–17, Sâmbătă 9–13', 120)
-  . '<div class="field"><span class="field__label">Conturi de social media</span>'
+  . '<div class="field' . ecls('social') . '"><span class="field__label">Conturi de social media</span>'
     . '<span class="field__hint">Apasă rețelele pe care le ai și scrie link-ul. Dacă nu ai încă, apasă „Nu am conturi încă".</span>'
     . '<div class="choices">' . $socialPills
       . '<label class="choice"><input type="checkbox" id="social_none" name="social_none" value="1"' . (!empty($_POST['social_none']) ? ' checked' : '') . '><span class="choice__b">Nu am conturi încă</span></label>'
@@ -495,12 +510,18 @@ $form = $errHtml
     . 'if(sn)sn.addEventListener("change",function(){socialNone(sn.checked);});'
     . 'Array.prototype.forEach.call(pills,function(ck){showInput(ck.value,ck.checked);});if(sn&&sn.checked)socialNone(true);'
     . 'Array.prototype.forEach.call(f.querySelectorAll("textarea[maxlength]"),function(t){var max=t.getAttribute("maxlength");var c=document.createElement("p");c.className="char-counter";function upd(){c.textContent=t.value.length+"/"+max;c.className="char-counter"+(t.value.length>=(max-0)?" is-max":"");}t.parentNode.appendChild(c);t.addEventListener("input",upd);upd();});'
+    . 'var tel=document.getElementById("f_contact_telefon"),teo=document.getElementById("telError");'
+    . 'function telClean(v){return v.replace(/[^0-9+]/g,"");}'
+    . 'function telBad(){if(!tel)return false;var v=telClean(tel.value);return v!==""&&!/^(0\\d{9}|(\\+|00)\\d{8,15})$/.test(v);}'
+    . 'function telSync(){var bad=telBad();if(teo)teo.hidden=!bad;if(tel&&!bad){var fl=tel.closest(".field");if(fl)fl.classList.remove("err-field");}}'
+    . 'if(tel){tel.addEventListener("input",telSync);tel.addEventListener("blur",telSync);}'
     . 'f.addEventListener("change",function(e){var fl=e.target.closest(".field");if(fl)fl.classList.remove("err-field");});'
     . 'f.addEventListener("submit",function(ev){var bad=null;function mark(el){if(!el)return;var fl=el.closest?el.closest(".field"):el;if(fl){fl.classList.add("err-field");if(!bad)bad=fl;}}'
     . 'var g=f.querySelectorAll(".choices[data-req-group]");for(var i=0;i<g.length;i++){if(!g[i].querySelector("input:checked"))mark(g[i]);}'
     . 'if(lm&&!lm.hidden){var ld=lm.querySelector("textarea");if(ld&&!ld.value.trim())mark(lm);}'
     . 'if(cb&&!cb.hidden){if(!clist||!clist.querySelector(".color-slot"))mark(cb);}'
     . 'if(!(sn&&sn.checked)){var any=false,sbad=false;Array.prototype.forEach.call(pills,function(ck){if(ck.checked){any=true;var row=document.getElementById("socin_"+ck.value);var inp=row&&row.querySelector("input");if(!inp||!inp.value.trim())sbad=true;}});if(!any||sbad)mark(sn);}'
+    . 'if(telBad()){if(teo)teo.hidden=false;mark(tel);}'
     . 'if(bad){ev.preventDefault();bad.scrollIntoView({block:"center",behavior:"smooth"});}});'
     . '})();</script>';
 
