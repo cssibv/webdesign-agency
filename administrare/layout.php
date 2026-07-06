@@ -28,7 +28,10 @@ function head($title) {
   echo '<link rel="stylesheet" href="admin.css?v=' . filemtime(__DIR__ . '/admin.css') . '"></head><body>';
   echo '<header class="topbar"><a class="topbar__logo" href="index.php">Smart <span>Web</span> <small>Admin</small></a>';
   echo '<div class="topbar__right"><span class="topbar__user">' . e(current_user()) . '</span>';
-  echo '<a class="btn btn--ghost btn--sm" href="logout.php">Ieșire</a></div></header>';
+  echo '<form method="post" action="logout.php" style="margin:0">';
+  echo '<input type="hidden" name="csrf" value="' . e(csrf_token()) . '">';
+  echo '<button class="btn btn--ghost btn--sm" type="submit">Ieșire</button>';
+  echo '</form></div></header>';
   echo '<main class="wrap">';
 }
 
