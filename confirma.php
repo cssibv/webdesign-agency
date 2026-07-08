@@ -46,6 +46,10 @@ function pagina($titlu, $continut) {
      . '.cf input[type=date]{padding:.6rem .8rem;border:1px solid var(--c-border);border-radius:var(--radius-sm);font:inherit;background:var(--c-bg-alt);color:var(--c-text);max-width:260px}'
      . '.cf input[type=date]:focus{outline:0;border-color:var(--c-teal);box-shadow:0 0 0 3px rgba(26,169,160,.18)}'
      . '.cf input[type=date]:disabled{opacity:.45;cursor:not-allowed}'
+     . '.cf input[type=time]{padding:.55rem .7rem;border:1px solid var(--c-border);border-radius:var(--radius-sm);font:inherit;background:var(--c-bg-alt);color:var(--c-text)}'
+     . '.cf input[type=time]:focus{outline:0;border-color:var(--c-teal);box-shadow:0 0 0 3px rgba(26,169,160,.18)}'
+     . '.time-row{display:flex;flex-wrap:wrap;align-items:center;gap:.55rem}'
+     . '.time-row label{font-weight:600;color:var(--c-text-soft);font-size:.92rem}'
      . '.choices{display:flex;flex-wrap:wrap;gap:.6rem}'
      . '.choice{position:relative;display:inline-flex}'
      . '.choice input{position:absolute;opacity:0;width:0;height:0}'
@@ -221,7 +225,11 @@ function colecteaza_brief() {
        . '; Poze/imagini: ' . ($poze ?? '-') . ($pozeNote !== null ? ' | Detalii poze: ' . $pozeNote : ''));
   $ct = $nz($_POST['contact_telefon'] ?? '');
   $ca = $nz($_POST['contact_adresa'] ?? '');
-  $cprog = $nz($_POST['contact_program'] ?? '');
+  $ps = $nz($_POST['program_start'] ?? '');
+  $pe = $nz($_POST['program_end'] ?? '');
+  $reT = '/^([01]\d|2[0-3]):[0-5]\d$/';
+  $cprog = ($ps !== null && $pe !== null && preg_match($reT, $ps) && preg_match($reT, $pe))
+    ? ('Luni–Vineri: ' . $ps . '–' . $pe . '; Sâmbătă–Duminică: închis') : null;
   $cl = [];
   if ($ct !== null)    $cl[] = 'Telefon: ' . $ct;
   if ($ca !== null)    $cl[] = 'Adresă: ' . $ca;
@@ -267,7 +275,7 @@ function brief_errors() {
     $a = $_POST[$k] ?? [];
     return is_array($a) && count(array_filter($a, function ($x) { return trim((string)$x) !== ''; })) > 0;
   };
-  foreach (['domeniu_activitate','servicii','domeniu_dorit','contact_telefon','contact_adresa','contact_program','plan_vizat','brand_logo','brand_culori','cont_texte','cont_poze'] as $k) {
+  foreach (['domeniu_activitate','servicii','domeniu_dorit','contact_telefon','contact_adresa','plan_vizat','brand_logo','brand_culori','cont_texte','cont_poze'] as $k) {
     if ($nz($_POST[$k] ?? '') === null) $errs[$k] = 'gol';
   }
   foreach (['public_tinta','scop','pagini'] as $k) {
@@ -277,6 +285,13 @@ function brief_errors() {
   // Telefon: dacă e completat, verifică formatul curățând spații/liniuțe/paranteze (ca pe site).
   $tel = preg_replace('/[^0-9+]/', '', (string)($_POST['contact_telefon'] ?? ''));
   if ($tel !== '' && !preg_match('/^(0\d{9}|(\+|00)\d{8,15})$/', $tel)) $errs['contact_telefon'] = 'format';
+
+  // Program de lucru: ore valide HH:MM, iar inchiderea dupa deschidere (comparatie sir merge, e zero-padded)
+  $ps = trim((string)($_POST['program_start'] ?? ''));
+  $pe = trim((string)($_POST['program_end'] ?? ''));
+  $reT = '/^([01]\d|2[0-3]):[0-5]\d$/';
+  if ($ps === '' || $pe === '' || !preg_match($reT, $ps) || !preg_match($reT, $pe)) $errs['contact_program'] = 'gol';
+  elseif ($ps >= $pe) $errs['contact_program'] = 'format';
 
   // Logo: dacă îl creăm noi, descrierea e obligatorie
   if (($_POST['brand_logo'] ?? '') === 'Nu, îl creați voi' && $nz($_POST['logo_descriere'] ?? '') === null) $errs['logo_descriere'] = 'gol';
@@ -384,6 +399,19 @@ $termenField = '<div class="field"><span class="field__label">Cât durează real
   . '<p class="field__hint">După ce avem toate detaliile despre cum ți-ai dori să arate site-ul (texte, imagini și clipuri video), îl realizăm în aproximativ <strong>3-5 zile lucrătoare</strong>. Îți confirmăm termenul exact când pornim.</p>'
   . '</div>';
 
+// Program de lucru: selecție oră început / sfârșit (Luni–Vineri; sâmbătă–duminică închis pentru moment).
+$programField = '<div class="field' . ecls('contact_program') . '">'
+  . '<span class="field__label">Program de lucru <span class="hint">(Luni–Vineri)</span> <span class="req">*</span></span>'
+  . '<span class="field__hint">Sâmbătă și duminică: închis. Dacă ai alt program, spune-ne la „Alte detalii".</span>'
+  . '<div class="time-row">'
+  . '<label for="f_program_start">Deschis de la</label>'
+  . '<input type="time" id="f_program_start" name="program_start" value="' . old_v('program_start') . '" required>'
+  . '<label for="f_program_end">până la</label>'
+  . '<input type="time" id="f_program_end" name="program_end" value="' . old_v('program_end') . '" required>'
+  . '</div>'
+  . '<p class="field__error"' . ((isset($briefErrs['contact_program']) && $briefErrs['contact_program'] === 'format') ? '' : ' hidden') . '>Ora de închidere trebuie să fie după ora de deschidere.</p>'
+  . '</div>';
+
 // Sloturi de culoare (din POST la reîncărcare după eroare, altfel două implicite). Min 2, max 5.
 $initColors = [];
 if (isset($_POST['brand_culori'])) {
@@ -471,7 +499,7 @@ $form = $errHtml
     . '<p class="field__error" id="telError"' . ((isset($briefErrs['contact_telefon']) && $briefErrs['contact_telefon'] === 'format') ? '' : ' hidden') . '>Format invalid. Scrie-l ca 0712345678 sau +40712345678.</p>'
   . '</div>'
   . f_text('contact_adresa', 'Adresă', true, false, 'ex: Str. Lungă nr. 1, Brașov', 120)
-  . f_text('contact_program', 'Program de lucru', true, false, 'ex: Luni–Vineri 9–17, Sâmbătă 9–13', 120)
+  . $programField
   . '<div class="field' . ecls('social') . '"><span class="field__label">Conturi de social media</span>'
     . '<span class="field__hint">Apasă rețelele pe care le ai și scrie link-ul. Dacă nu ai încă, apasă „Nu am conturi încă".</span>'
     . '<div class="choices">' . $socialPills
