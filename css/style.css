@@ -343,10 +343,10 @@ ul { list-style: none; }
 }
 .hero__title {
   color: #fff;
-  font-size: clamp(1.8rem, 4.2vw, 2.5rem);
-  letter-spacing: -.5px;
-  margin-bottom: 2rem;
-  text-wrap: pretty;
+  font-size: clamp(2.1rem, 5.4vw, 3.1rem);
+  letter-spacing: -.02em;
+  margin-bottom: 1.6rem;
+  text-wrap: balance;
 }
 .hero__content .hl {
   color: var(--c-accent);
@@ -368,12 +368,6 @@ ul { list-style: none; }
   margin: 0 auto .9rem;
 }
 .hero__subtitle strong { color: #fff; }
-.hero__closer {
-  color: #fff;
-  font-weight: 700;
-  font-size: clamp(1.05rem, 2.4vw, 1.3rem);
-  margin: 0 auto 2.5rem;
-}
 
 .hero__actions {
   display: flex;
@@ -493,7 +487,14 @@ ul { list-style: none; }
 .why__points li strong { display: block; color: var(--c-primary); font-size: 1.05rem; }
 .why__points li p { margin: 0; font-size: .95rem; }
 
-.grid--services { grid-template-columns: 1fr; gap: 1rem; }
+.grid--services { grid-template-columns: repeat(auto-fit, minmax(220px, 340px)); gap: 1rem; justify-content: start; }
+.services-groups { display: grid; gap: clamp(1.8rem, 4vw, 2.8rem); }
+.svc-group__title {
+  display: flex; align-items: center; gap: .5rem;
+  font-size: 1.18rem; color: var(--c-primary);
+  margin: 0 0 1rem;
+}
+.svc-group__title span { font-size: 1.3rem; line-height: 1; }
 .service { padding: 1.25rem 1.3rem; }
 .service:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: var(--c-teal); }
 .service__icon {
@@ -507,7 +508,7 @@ ul { list-style: none; }
   font-size: 1.35rem;
   margin-bottom: .65rem;
 }
-.service h3 { margin-bottom: .3rem; font-size: 1.08rem; }
+.service h4 { margin-bottom: .3rem; font-size: 1.08rem; }
 .service p { margin: 0; font-size: .92rem; line-height: 1.5; }
 
 /* Secțiunea Servicii: compactă, să încapă pe un ecran de laptop */
@@ -951,7 +952,6 @@ a.work .work__body p { color: var(--c-teal-dark); font-weight: 600; }
 .post-card__tag { display: inline-block; font-size: .73rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--c-teal-dark); margin-bottom: .5rem; }
 
 @media (min-width: 560px) {
-  .grid--services    { grid-template-columns: repeat(2, 1fr); }
   .grid--portfolio   { grid-template-columns: repeat(2, 1fr); }
   .grid--testimonials{ grid-template-columns: repeat(2, 1fr); }
 }
@@ -965,7 +965,6 @@ a.work .work__body p { color: var(--c-teal-dark); font-weight: 600; }
 }
 
 @media (min-width: 992px) {
-  .grid--services    { grid-template-columns: repeat(4, 1fr); }
   .grid--portfolio   { grid-template-columns: repeat(3, 1fr); }
   .grid--testimonials{ grid-template-columns: repeat(3, 1fr); }
 }
