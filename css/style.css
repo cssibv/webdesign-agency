@@ -161,6 +161,7 @@ ul { list-style: none; }
 /* Utilitare */
 .text-accent { color: var(--c-accent); }
 .svg-sprite  { position: absolute; }
+.btn-row { display: flex; flex-wrap: wrap; gap: .75rem; justify-content: center; margin-top: 1.6rem; }
 
 .navbar {
   position: sticky;
