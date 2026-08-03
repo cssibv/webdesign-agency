@@ -1,0 +1,22 @@
+# Smart Web
+
+> Agenție de web design și SEO local din județul Brașov. Construim site-uri de prezentare pentru firme mici și locale (pensiuni, restaurante, magazine, servicii): gratuit la creare, apoi un abonament lunar pentru găzduire și mentenanță. Model „plătești doar dacă ești mulțumit".
+
+Smart Web (smart-web.ro) ajută IMM-urile din județul Brașov să fie găsite în Google și să atragă clienți online. Servicii: creare site de prezentare, SEO local (Google Business Profile, Google Maps, recenzii), design responsive mobil-first, formular de contact, certificat SSL, viteză mare, mentenanță lunară și statistici vizitatori. Pachete lunare: Start 299 RON, Business 549 RON, Pro 999 RON. Contact: contact@smart-web.ro, +40 752 288 401 (telefon și WhatsApp).
+
+## Pagini principale
+- [Acasă](https://smart-web.ro/): ofertă, servicii, pachete și prețuri, portofoliu, întrebări frecvente
+- [Blog](https://smart-web.ro/blog/): ghiduri despre site-uri de prezentare, prețuri și SEO local
+
+## Blog
+- [Ghid complet: site de prezentare pentru firma ta](https://smart-web.ro/blog/ghid-site-de-prezentare-firma/)
+- [Cât costă un site de prezentare în 2026?](https://smart-web.ro/blog/cat-costa-un-site-de-prezentare/)
+- [Ce trebuie să conțină un site de prezentare bun](https://smart-web.ro/blog/structura-site-de-prezentare/)
+- [SEO local Brașov: cum apari în Google](https://smart-web.ro/blog/seo-local-brasov/)
+- [Găzduire și mentenanță: ce include abonamentul lunar](https://smart-web.ro/blog/gazduire-si-mentenanta-site/)
+- [Greșeli frecvente la site-urile firmelor mici](https://smart-web.ro/blog/greseli-site-firme-mici/)
+
+## Contact
+- Email: contact@smart-web.ro
+- Telefon și WhatsApp: +40 752 288 401
+- Zonă deservită: județul Brașov (Brașov, Codlea, Săcele, Făgăraș, Râșnov, Zărnești, Predeal, Ghimbav, Bran)
