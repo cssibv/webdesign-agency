@@ -996,6 +996,10 @@ a.work .work__body p { color: var(--c-teal-dark); font-weight: 600; }
   .grid--testimonials{ grid-template-columns: repeat(3, 1fr); }
 }
 
+/* 4 pași: 2 pe rând pe tabletă, 4 pe rând pe desktop (evită orfanul 3+1) */
+@media (min-width: 560px) { .steps--4 { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 992px) { .steps--4 { grid-template-columns: repeat(4, 1fr); } }
+
 /* Ecrane foarte înguste: micșorăm logo-ul și butonul din antet ca să încapă (mai ales pe paginile de blog) */
 @media (max-width: 400px) {
   .navbar__logo { font-size: 1.15rem; }
