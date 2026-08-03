@@ -140,10 +140,10 @@ ul { list-style: none; }
 
 .btn--primary {
   background: var(--c-accent);
-  color: var(--c-primary-dark);
+  color: #021b36; /* bleumarin închis fix, contrast bun pe portocaliu în ambele teme (nu var --c-primary-dark, care se decolorează în dark mode) */
   box-shadow: 0 8px 20px rgba(252, 102, 24, .35);
 }
-.btn--primary:hover { background: var(--c-accent-dark); color: var(--c-primary-dark); transform: translateY(-2px); }
+.btn--primary:hover { background: var(--c-accent-dark); color: #021b36; transform: translateY(-2px); }
 
 .btn--ghost {
   background: transparent;
