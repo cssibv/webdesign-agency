@@ -217,6 +217,56 @@ ul { list-style: none; }
 }
 .navbar__menu a:hover { color: var(--c-teal-dark); }
 
+/* Dropdown „Servicii" */
+.navbar__item--has-menu { position: relative; }
+.navbar__submenu-toggle::after {
+  content: "";
+  display: inline-block;
+  width: .4em; height: .4em;
+  margin-left: .42em;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg) translateY(-2px);
+  vertical-align: middle;
+  transition: transform var(--t-fast);
+}
+.navbar__item--has-menu:hover .navbar__submenu-toggle::after,
+.navbar__item--has-menu:focus-within .navbar__submenu-toggle::after { transform: rotate(-135deg) translateY(-1px); }
+.navbar__submenu {
+  position: absolute;
+  top: calc(100% + .45rem);
+  left: 50%;
+  transform: translateX(-50%) translateY(6px);
+  min-width: 240px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: .45rem;
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--t-fast), transform var(--t-fast), visibility var(--t-fast);
+  z-index: 1001;
+}
+.navbar__submenu::before { content: ""; position: absolute; left: 0; right: 0; top: -.5rem; height: .5rem; }
+.navbar__item--has-menu:hover > .navbar__submenu,
+.navbar__item--has-menu:focus-within > .navbar__submenu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+.navbar__submenu a {
+  display: block;
+  padding: .6rem .8rem;
+  border-radius: var(--radius-sm);
+  font-size: .95rem;
+  white-space: nowrap;
+}
+.navbar__submenu a:hover { background: var(--c-bg-alt); color: var(--c-teal-dark); }
+
 .navbar__cta {
   background: var(--c-primary);
   color: #fff !important;
@@ -1036,6 +1086,25 @@ a.work .work__body p { color: var(--c-teal-dark); font-weight: 600; }
   .navbar__menu li:last-child { border-bottom: 0; }
   .navbar__menu a { display: block; padding: .95rem 0; font-size: 1.05rem; }
   .navbar__cta { text-align: center; margin-top: .8rem; }
+
+  /* Dropdown „Servicii" pe mobil: static, expandat, indentat */
+  .navbar__item--has-menu { position: static; }
+  .navbar__submenu-toggle::after { display: none; }
+  .navbar__submenu {
+    position: static;
+    transform: none;
+    opacity: 1;
+    visibility: visible;
+    min-width: 0;
+    gap: 0;
+    padding: 0 0 .4rem 1rem;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+  }
+  .navbar__submenu::before { display: none; }
+  .navbar__submenu li { border-bottom: 0; }
+  .navbar__submenu a { padding: .7rem 0; font-size: .98rem; color: var(--c-text-soft); }
 }
 
 /* ===================================================================
