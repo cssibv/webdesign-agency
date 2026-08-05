@@ -1,8 +1,5 @@
-# SmartWeb — securitate site public (smart-web.ro)
-
 Options -Indexes
 
-# Forțează HTTPS
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteCond %{HTTPS} off
@@ -14,16 +11,9 @@ Options -Indexes
   Header always set X-Frame-Options "SAMEORIGIN"
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
   Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
-  # HSTS — site-ul rulează pe HTTPS. Comentează dacă încă testezi fără SSL.
   Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
-
-  # Content-Security-Policy — TESTEAZĂ înainte de activare.
-  # Site-ul are <script> inline (JSON-LD, analytics, tema), deci e nevoie de
-  # 'unsafe-inline'. Ideal: mută scripturile inline în fișiere și scoate 'unsafe-inline'.
-  # Header always set Content-Security-Policy "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; connect-src 'self'; font-src 'self' data:; frame-ancestors 'self'; base-uri 'self'; form-action 'self'"
 </IfModule>
 
-# Compresie + cache
 <IfModule mod_deflate.c>
   AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript application/json image/svg+xml application/manifest+json
 </IfModule>
@@ -43,9 +33,16 @@ Options -Indexes
   </FilesMatch>
 </IfModule>
 
-<FilesMatch "\.(sql|md|log|ini|sh|bak|example\.php)$">
+<FilesMatch "\.(sql|md|log|ini|sh|bak|yml|yaml|example\.php)$">
   Require all denied
 </FilesMatch>
 
-# Blochează directoare de uz local (nu ar trebui urcate, dar defense-in-depth)
-#RedirectMatch 404 ^/(docs|\.claude|\.git)(/|$)
+<FilesMatch "^\.">
+  Require all denied
+</FilesMatch>
+
+<FilesMatch "^(_headers|_redirects)$">
+  Require all denied
+</FilesMatch>
+
+RedirectMatch 404 ^/(docs|\.claude|\.git|\.github)(/|$)
