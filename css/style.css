@@ -187,6 +187,7 @@ ul { list-style: none; }
   transition: min-height var(--t);
 }
 .navbar.is-scrolled .navbar__inner { min-height: 60px; }
+.navbar__actions { display: flex; align-items: center; gap: .5rem; }
 
 .navbar__logo {
   display: inline-flex;
@@ -1053,7 +1054,7 @@ a.work .work__body p { color: var(--c-teal-dark); font-weight: 600; }
 /* Ecrane foarte înguste: micșorăm logo-ul și butonul din antet ca să încapă (mai ales pe paginile de blog) */
 @media (max-width: 400px) {
   .navbar__logo { font-size: 1.15rem; }
-  .navbar__inner > .btn { padding: .5rem .85rem; font-size: .88rem; }
+  .navbar__inner > .btn, .navbar__actions > .btn { padding: .5rem .85rem; font-size: .88rem; }
 }
 
 @media (max-width: 1139px) {
