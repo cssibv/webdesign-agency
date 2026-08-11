@@ -9,6 +9,7 @@ Smart Web (smart-web.ro) ajută IMM-urile din județul Brașov să fie găsite �
 - [Blog](https://smart-web.ro/blog/): ghiduri despre site-uri de prezentare, prețuri și SEO local
 
 ## Blog
+- [Cum apari în ChatGPT și Google AI: ghid pentru firme mici](https://smart-web.ro/blog/cum-apari-in-chatgpt-google-ai/)
 - [Ghid complet: site de prezentare pentru firma ta](https://smart-web.ro/blog/ghid-site-de-prezentare-firma/)
 - [Cât costă un site de prezentare în 2026?](https://smart-web.ro/blog/cat-costa-un-site-de-prezentare/)
 - [Ce trebuie să conțină un site de prezentare bun](https://smart-web.ro/blog/structura-site-de-prezentare/)
