@@ -1279,3 +1279,7 @@ a.work .work__body p { color: var(--c-teal-dark); font-weight: 600; }
 
 .blog-empty { display: none; color: var(--c-text-soft); padding: 1.4rem 0; font-size: 1rem; }
 .blog-empty.is-visible { display: block; }
+
+/* Buton „înapoi la toate articolele" în paginile de articol */
+.article-back { margin-top: 2.4rem; gap: .55rem; }
+.article-back .article-back__arrow { font-size: 1.15em; line-height: 1; }
