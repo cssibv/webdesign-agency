@@ -1280,6 +1280,14 @@ a.work .work__body p { color: var(--c-teal-dark); font-weight: 600; }
 .blog-empty { display: none; color: var(--c-text-soft); padding: 1.4rem 0; font-size: 1rem; }
 .blog-empty.is-visible { display: block; }
 
-/* Buton „înapoi la toate articolele" în paginile de articol */
-.article-back { margin-top: 2.4rem; gap: .55rem; }
-.article-back .article-back__arrow { font-size: 1.15em; line-height: 1; }
+/* Buton „înapoi la blog" în header-ul paginilor de articol */
+.btn--back { gap: .4rem; }
+.btn--back .btn--back__arrow { font-size: 1.15em; line-height: 1; }
+/* Pe telefon nu încap 3 butoane lângă logo + CTA-ul lung: ascundem „Acasă" (logo-ul
+   duce oricum acasă) și reducem butonul de back la doar iconița „←". Doar în header-ul
+   articolelor (cel cu buton de back), nu și pe lista de blog. */
+@media (max-width: 540px) {
+  .navbar__actions:has(.btn--back) .btn--ghost:not(.btn--back) { display: none; }
+  .btn--back .btn--back__label { display: none; }
+  .btn--back { padding-left: .8rem; padding-right: .8rem; }
+}
