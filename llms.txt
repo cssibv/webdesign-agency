@@ -6,7 +6,15 @@ Smart Web (smart-web.ro) ajută IMM-urile din județul Brașov să fie găsite �
 
 ## Pagini principale
 - [Acasă](https://smart-web.ro/): ofertă, servicii, pachete și prețuri, portofoliu, întrebări frecvente
+- [Servicii](https://smart-web.ro/servicii/): toate serviciile agenției, cu pagini dedicate
 - [Blog](https://smart-web.ro/blog/): ghiduri despre site-uri de prezentare, prețuri și SEO local
+
+## Servicii
+- [Creare site de prezentare](https://smart-web.ro/servicii/creare-site-de-prezentare/)
+- [SEO local Brașov](https://smart-web.ro/servicii/seo-local-brasov/)
+- [Google Business Profile și Google Maps](https://smart-web.ro/servicii/google-business-profile-brasov/)
+- [Găzduire și mentenanță site](https://smart-web.ro/servicii/gazduire-si-mentenanta/)
+- [Site pentru pensiuni și cazare în Brașov](https://smart-web.ro/servicii/site-pensiune-brasov/)
 
 ## Blog
 - [Cum apari în ChatGPT și Google AI: ghid pentru firme locale](https://smart-web.ro/blog/cum-apari-in-chatgpt-google-ai/)
