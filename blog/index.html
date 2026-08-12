@@ -49,62 +49,92 @@
     <h1>Blog: site-uri de prezentare, prețuri și SEO local</h1>
     <p class="article__meta">Ghiduri practice pentru firme mici din județul Brașov, scrise din experiența reală a proiectelor.</p>
 
-    <div class="post-list">
-      <a class="post-card" href="../blog/cum-apari-in-chatgpt-google-ai/">
-        <span class="post-card__tag">Căutare AI</span>
-        <h3>Cum apari în ChatGPT și Google AI: ghid pentru firme mici</h3>
-        <p>Clienții întreabă tot mai des ChatGPT și văd răspunsul AI din Google. Cum îți optimizezi site-ul ca să fii firma recomandată, pas cu pas, pentru o firmă locală.</p>
-      </a>
-      <a class="post-card post-card--pillar" href="../blog/ghid-site-de-prezentare-firma/">
-        <span class="post-card__tag">Ghid pilon</span>
-        <h2>Ghid complet: cum să ai un site de prezentare pentru firma ta (2026)</h2>
-        <p>Tot ce trebuie să știi înainte să-ți faci un site: tipuri, structură, costuri, SEO local și greșeli de evitat. Punctul de pornire pentru toate celelalte articole.</p>
-      </a>
-      <a class="post-card" href="../blog/promovare-pensiune-brasov/">
-        <span class="post-card__tag">Turism</span>
-        <h3>Cum îți promovezi pensiunea online în zona Brașov</h3>
-        <p>Un site de prezentare cu rezervări directe, plus Google și Booking: pașii prin care o pensiune din zona Brașov atrage clienți online. Cu exemplu real.</p>
-      </a>
-      <a class="post-card" href="../blog/site-sau-pagina-facebook/">
-        <span class="post-card__tag">Strategie</span>
-        <h3>Ai nevoie de site dacă ai deja o pagină de Facebook?</h3>
-        <p>Facebook nu-ți aparține și nu te face găsit în Google. De ce ai nevoie și de site și cum se completează cele două.</p>
-      </a>
-      <a class="post-card" href="../blog/cat-costa-un-site-de-prezentare/">
-        <span class="post-card__tag">Prețuri</span>
-        <h3>Cât costă un site de prezentare în 2026?</h3>
-        <p>Prețuri reale pe piața din România, ce le influențează și costurile lunare pe care nimeni nu ți le spune la început.</p>
-      </a>
-      <a class="post-card" href="../blog/structura-site-de-prezentare/">
-        <span class="post-card__tag">Checklist</span>
-        <h3>Ce trebuie să conțină un site de prezentare bun</h3>
-        <p>Secțiunile obligatorii, în ordinea corectă, plus checklist-ul pe care îl folosim la fiecare proiect.</p>
-      </a>
-      <a class="post-card" href="../blog/seo-local-brasov/">
-        <span class="post-card__tag">SEO local</span>
-        <h3>SEO local pentru firme din Brașov: cum apari în Google</h3>
-        <p>Google Business Profile, recenzii și pașii prin care ajungi în rezultatele și harta locală.</p>
-      </a>
-      <a class="post-card" href="../blog/google-business-profile-brasov/">
-        <span class="post-card__tag">Google Maps</span>
-        <h3>Google Business Profile: cum apari pe Google Maps în Brașov (pas cu pas)</h3>
-        <p>Revendici, verifici și completezi fișa gratuită din Google, aduni recenzii și ajungi în „local pack". Pașii exacți pentru o firmă locală.</p>
-      </a>
-      <a class="post-card" href="../blog/recenzii-google/">
-        <span class="post-card__tag">Recenzii</span>
-        <h3>Recenzii Google: cum obții mai multe și de ce contează</h3>
-        <p>Cum ceri recenzii corect (link direct, momentul potrivit), cum răspunzi la cele negative și ce e interzis. Cel mai puternic semnal local.</p>
-      </a>
-      <a class="post-card" href="../blog/gazduire-si-mentenanta-site/">
-        <span class="post-card__tag">Mentenanță</span>
-        <h3>Găzduire și mentenanță: ce include abonamentul lunar și de ce contează</h3>
-        <p>Ce înseamnă de fapt abonamentul lunar și de ce un site „uitat" devine o problemă.</p>
-      </a>
-      <a class="post-card" href="../blog/greseli-site-firme-mici/">
-        <span class="post-card__tag">Greșeli</span>
-        <h3>Greșeli frecvente la site-urile firmelor mici (și cum le eviți)</h3>
-        <p>De la site-uri lente și neoptimizate pe mobil, la lipsa unui CTA clar. Le-am văzut pe toate.</p>
-      </a>
+    <div class="blog-filters" role="group" aria-label="Filtrează articolele pe categorii">
+      <button type="button" class="blog-filter is-active" data-filter="all" aria-pressed="true">Toate <span class="blog-filter__count">11</span></button>
+      <button type="button" class="blog-filter" data-filter="site" aria-pressed="false">Site de prezentare <span class="blog-filter__count">7</span></button>
+      <button type="button" class="blog-filter" data-filter="seo" aria-pressed="false">SEO &amp; Google <span class="blog-filter__count">5</span></button>
+      <button type="button" class="blog-filter" data-filter="preturi" aria-pressed="false">Prețuri <span class="blog-filter__count">2</span></button>
+    </div>
+
+    <div class="blog-layout">
+      <div>
+        <div class="post-list">
+          <a class="post-card" href="../blog/cum-apari-in-chatgpt-google-ai/" data-cat="seo">
+            <div class="post-card__meta"><span class="post-card__tag">Căutare AI</span><time class="post-card__date" datetime="2026-08-11">11 aug. 2026</time></div>
+            <h3>Cum apari în ChatGPT și Google AI: ghid pentru firme mici</h3>
+            <p>Clienții întreabă tot mai des ChatGPT și văd răspunsul AI din Google. Cum îți optimizezi site-ul ca să fii firma recomandată, pas cu pas, pentru o firmă locală.</p>
+          </a>
+          <a class="post-card post-card--pillar" href="../blog/ghid-site-de-prezentare-firma/" data-cat="site">
+            <div class="post-card__meta"><span class="post-card__tag">Ghid pilon</span><time class="post-card__date" datetime="2026-06-16">16 iun. 2026</time></div>
+            <h2>Ghid complet: cum să ai un site de prezentare pentru firma ta (2026)</h2>
+            <p>Tot ce trebuie să știi înainte să-ți faci un site: tipuri, structură, costuri, SEO local și greșeli de evitat. Punctul de pornire pentru toate celelalte articole.</p>
+          </a>
+          <a class="post-card" href="../blog/promovare-pensiune-brasov/" data-cat="seo site">
+            <div class="post-card__meta"><span class="post-card__tag">Turism</span><time class="post-card__date" datetime="2026-08-10">10 aug. 2026</time></div>
+            <h3>Cum îți promovezi pensiunea online în zona Brașov</h3>
+            <p>Un site de prezentare cu rezervări directe, plus Google și Booking: pașii prin care o pensiune din zona Brașov atrage clienți online. Cu exemplu real.</p>
+          </a>
+          <a class="post-card" href="../blog/site-sau-pagina-facebook/" data-cat="site">
+            <div class="post-card__meta"><span class="post-card__tag">Strategie</span><time class="post-card__date" datetime="2026-08-05">5 aug. 2026</time></div>
+            <h3>Ai nevoie de site dacă ai deja o pagină de Facebook?</h3>
+            <p>Facebook nu-ți aparține și nu te face găsit în Google. De ce ai nevoie și de site și cum se completează cele două.</p>
+          </a>
+          <a class="post-card" href="../blog/cat-costa-un-site-de-prezentare/" data-cat="site preturi">
+            <div class="post-card__meta"><span class="post-card__tag">Prețuri</span><time class="post-card__date" datetime="2026-08-03">3 aug. 2026</time></div>
+            <h3>Cât costă un site de prezentare în 2026?</h3>
+            <p>Prețuri reale pe piața din România, ce le influențează și costurile lunare pe care nimeni nu ți le spune la început.</p>
+          </a>
+          <a class="post-card" href="../blog/structura-site-de-prezentare/" data-cat="site">
+            <div class="post-card__meta"><span class="post-card__tag">Checklist</span><time class="post-card__date" datetime="2026-06-16">16 iun. 2026</time></div>
+            <h3>Ce trebuie să conțină un site de prezentare bun</h3>
+            <p>Secțiunile obligatorii, în ordinea corectă, plus checklist-ul pe care îl folosim la fiecare proiect.</p>
+          </a>
+          <a class="post-card" href="../blog/seo-local-brasov/" data-cat="seo">
+            <div class="post-card__meta"><span class="post-card__tag">SEO local</span><time class="post-card__date" datetime="2026-06-16">16 iun. 2026</time></div>
+            <h3>SEO local pentru firme din Brașov: cum apari în Google</h3>
+            <p>Google Business Profile, recenzii și pașii prin care ajungi în rezultatele și harta locală.</p>
+          </a>
+          <a class="post-card" href="../blog/google-business-profile-brasov/" data-cat="seo">
+            <div class="post-card__meta"><span class="post-card__tag">Google Maps</span><time class="post-card__date" datetime="2026-08-05">5 aug. 2026</time></div>
+            <h3>Google Business Profile: cum apari pe Google Maps în Brașov (pas cu pas)</h3>
+            <p>Revendici, verifici și completezi fișa gratuită din Google, aduni recenzii și ajungi în „local pack". Pașii exacți pentru o firmă locală.</p>
+          </a>
+          <a class="post-card" href="../blog/recenzii-google/" data-cat="seo">
+            <div class="post-card__meta"><span class="post-card__tag">Recenzii</span><time class="post-card__date" datetime="2026-08-05">5 aug. 2026</time></div>
+            <h3>Recenzii Google: cum obții mai multe și de ce contează</h3>
+            <p>Cum ceri recenzii corect (link direct, momentul potrivit), cum răspunzi la cele negative și ce e interzis. Cel mai puternic semnal local.</p>
+          </a>
+          <a class="post-card" href="../blog/gazduire-si-mentenanta-site/" data-cat="site preturi">
+            <div class="post-card__meta"><span class="post-card__tag">Mentenanță</span><time class="post-card__date" datetime="2026-06-16">16 iun. 2026</time></div>
+            <h3>Găzduire și mentenanță: ce include abonamentul lunar și de ce contează</h3>
+            <p>Ce înseamnă de fapt abonamentul lunar și de ce un site „uitat" devine o problemă.</p>
+          </a>
+          <a class="post-card" href="../blog/greseli-site-firme-mici/" data-cat="site">
+            <div class="post-card__meta"><span class="post-card__tag">Greșeli</span><time class="post-card__date" datetime="2026-06-16">16 iun. 2026</time></div>
+            <h3>Greșeli frecvente la site-urile firmelor mici (și cum le eviți)</h3>
+            <p>De la site-uri lente și neoptimizate pe mobil, la lipsa unui CTA clar. Le-am văzut pe toate.</p>
+          </a>
+        </div>
+        <p class="blog-empty" id="blogEmpty">Niciun articol în această categorie deocamdată.</p>
+      </div>
+
+      <aside class="blog-index" aria-label="Toate articolele">
+        <h2 class="blog-index__title">Toate articolele (11)</h2>
+        <ol class="blog-index__list">
+          <li class="blog-index__item" data-cat="seo"><a href="../blog/cum-apari-in-chatgpt-google-ai/"><span class="blog-index__num">01</span><span><span class="blog-index__name">Cum apari în ChatGPT și Google AI</span><span class="blog-index__date">11 aug. 2026</span></span></a></li>
+          <li class="blog-index__item" data-cat="seo site"><a href="../blog/promovare-pensiune-brasov/"><span class="blog-index__num">02</span><span><span class="blog-index__name">Promovare pensiune online în Brașov</span><span class="blog-index__date">10 aug. 2026</span></span></a></li>
+          <li class="blog-index__item" data-cat="site"><a href="../blog/site-sau-pagina-facebook/"><span class="blog-index__num">03</span><span><span class="blog-index__name">Site sau doar pagină de Facebook?</span><span class="blog-index__date">5 aug. 2026</span></span></a></li>
+          <li class="blog-index__item" data-cat="seo"><a href="../blog/google-business-profile-brasov/"><span class="blog-index__num">04</span><span><span class="blog-index__name">Google Business Profile pas cu pas</span><span class="blog-index__date">5 aug. 2026</span></span></a></li>
+          <li class="blog-index__item" data-cat="seo"><a href="../blog/recenzii-google/"><span class="blog-index__num">05</span><span><span class="blog-index__name">Recenzii Google: cum obții mai multe</span><span class="blog-index__date">5 aug. 2026</span></span></a></li>
+          <li class="blog-index__item" data-cat="site preturi"><a href="../blog/cat-costa-un-site-de-prezentare/"><span class="blog-index__num">06</span><span><span class="blog-index__name">Cât costă un site de prezentare</span><span class="blog-index__date">3 aug. 2026</span></span></a></li>
+          <li class="blog-index__item" data-cat="site"><a href="../blog/ghid-site-de-prezentare-firma/"><span class="blog-index__num">07</span><span><span class="blog-index__name">Ghid complet: site de prezentare</span><span class="blog-index__date">16 iun. 2026</span></span></a></li>
+          <li class="blog-index__item" data-cat="site"><a href="../blog/structura-site-de-prezentare/"><span class="blog-index__num">08</span><span><span class="blog-index__name">Ce conține un site de prezentare bun</span><span class="blog-index__date">16 iun. 2026</span></span></a></li>
+          <li class="blog-index__item" data-cat="seo"><a href="../blog/seo-local-brasov/"><span class="blog-index__num">09</span><span><span class="blog-index__name">SEO local pentru firme din Brașov</span><span class="blog-index__date">16 iun. 2026</span></span></a></li>
+          <li class="blog-index__item" data-cat="site preturi"><a href="../blog/gazduire-si-mentenanta-site/"><span class="blog-index__num">10</span><span><span class="blog-index__name">Găzduire și mentenanță lunară</span><span class="blog-index__date">16 iun. 2026</span></span></a></li>
+          <li class="blog-index__item" data-cat="site"><a href="../blog/greseli-site-firme-mici/"><span class="blog-index__num">11</span><span><span class="blog-index__name">Greșeli frecvente la site-urile firmelor mici</span><span class="blog-index__date">16 iun. 2026</span></span></a></li>
+        </ol>
+        <p class="blog-index__empty" id="blogIndexEmpty">Niciun articol în această categorie.</p>
+      </aside>
     </div>
 
     <div class="cta-box">
@@ -140,6 +170,30 @@
 
   <button class="cookie-fab" id="cookieReopen" type="button" aria-label="Setări cookie" title="Setări cookie">🍪</button>
 
+  <script>
+    (function () {
+      var filters = document.querySelectorAll('.blog-filter');
+      var cards = document.querySelectorAll('.post-card[data-cat]');
+      var items = document.querySelectorAll('.blog-index__item[data-cat]');
+      var emptyCards = document.getElementById('blogEmpty');
+      var emptyIndex = document.getElementById('blogIndexEmpty');
+      function match(el, f) { return f === 'all' || (' ' + el.getAttribute('data-cat') + ' ').indexOf(' ' + f + ' ') > -1; }
+      function apply(f) {
+        var shownCards = 0, shownItems = 0;
+        cards.forEach(function (c) { var m = match(c, f); c.classList.toggle('is-hidden', !m); if (m) shownCards++; });
+        items.forEach(function (c) { var m = match(c, f); c.classList.toggle('is-hidden', !m); if (m) shownItems++; });
+        if (emptyCards) emptyCards.classList.toggle('is-visible', shownCards === 0);
+        if (emptyIndex) emptyIndex.style.display = shownItems === 0 ? 'block' : 'none';
+      }
+      filters.forEach(function (b) {
+        b.addEventListener('click', function () {
+          filters.forEach(function (x) { x.classList.remove('is-active'); x.setAttribute('aria-pressed', 'false'); });
+          b.classList.add('is-active'); b.setAttribute('aria-pressed', 'true');
+          apply(b.getAttribute('data-filter'));
+        });
+      });
+    })();
+  </script>
   <script src="../js/analytics.js" defer></script>
 </body>
 </html>
