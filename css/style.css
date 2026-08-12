@@ -576,7 +576,7 @@ ul { list-style: none; }
 
 /* Varianta compactă a secțiunii „Ce facem": 3 piloni cu listă scurtă + linkuri interne */
 .services-groups--compact { grid-template-columns: 1fr; gap: 1.1rem; }
-@media (min-width: 860px) { .services-groups--compact { grid-template-columns: repeat(3, 1fr); gap: 1.2rem; align-items: start; } }
+@media (min-width: 860px) { .services-groups--compact { grid-template-columns: repeat(3, 1fr); gap: 1.2rem; align-items: stretch; } }
 .svc-pillar { background: var(--c-surface); border: 1px solid var(--c-border); border-radius: var(--radius); padding: 1.25rem 1.3rem; box-shadow: var(--shadow-sm); }
 .svc-pillar .svc-group__title { margin: 0 0 .8rem; padding-bottom: .75rem; border-bottom: 1px solid var(--c-border); font-size: 1.06rem; }
 .svc-list { list-style: none; margin: 0; padding: 0; display: grid; gap: .15rem; }
