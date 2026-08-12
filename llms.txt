@@ -17,6 +17,7 @@ Smart Web (smart-web.ro) ajută IMM-urile din județul Brașov să fie găsite �
 - [Site pentru pensiuni și cazare în Brașov](https://smart-web.ro/servicii/site-pensiune-brasov/)
 
 ## Blog
+- [AI pentru afacerea ta locală: 7 moduri practice cu ChatGPT](https://smart-web.ro/blog/ai-pentru-afacerea-ta-locala/)
 - [Cum apari în ChatGPT și Google AI: ghid pentru firme locale](https://smart-web.ro/blog/cum-apari-in-chatgpt-google-ai/)
 - [Ghid complet: site de prezentare pentru firma ta](https://smart-web.ro/blog/ghid-site-de-prezentare-firma/)
 - [Cât costă un site de prezentare în 2026?](https://smart-web.ro/blog/cat-costa-un-site-de-prezentare/)
