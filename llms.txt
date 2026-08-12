@@ -1,6 +1,6 @@
 # Smart Web
 
-> Agenție de web design și SEO local din județul Brașov. Construim site-uri de prezentare pentru firme mici și locale (pensiuni, restaurante, magazine, servicii): gratuit la creare, apoi un abonament lunar pentru găzduire și mentenanță. Model „plătești doar dacă ești mulțumit".
+> Agenție de web design și SEO local din județul Brașov. Construim site-uri de prezentare pentru firme locale (pensiuni, restaurante, magazine, servicii): gratuit la creare, apoi un abonament lunar pentru găzduire și mentenanță. Model „plătești doar dacă ești mulțumit".
 
 Smart Web (smart-web.ro) ajută IMM-urile din județul Brașov să fie găsite în Google și să atragă clienți online. Servicii: creare site de prezentare, SEO local (Google Business Profile, Google Maps, recenzii), design responsive mobil-first, formular de contact, certificat SSL, viteză mare, mentenanță lunară și statistici vizitatori. Pachete lunare: Start 299 RON, Business 549 RON, Pro 999 RON. Contact: contact@smart-web.ro, +40 752 288 401 (telefon și WhatsApp).
 
@@ -9,7 +9,7 @@ Smart Web (smart-web.ro) ajută IMM-urile din județul Brașov să fie găsite �
 - [Blog](https://smart-web.ro/blog/): ghiduri despre site-uri de prezentare, prețuri și SEO local
 
 ## Blog
-- [Cum apari în ChatGPT și Google AI: ghid pentru firme mici](https://smart-web.ro/blog/cum-apari-in-chatgpt-google-ai/)
+- [Cum apari în ChatGPT și Google AI: ghid pentru firme locale](https://smart-web.ro/blog/cum-apari-in-chatgpt-google-ai/)
 - [Ghid complet: site de prezentare pentru firma ta](https://smart-web.ro/blog/ghid-site-de-prezentare-firma/)
 - [Cât costă un site de prezentare în 2026?](https://smart-web.ro/blog/cat-costa-un-site-de-prezentare/)
 - [Ce trebuie să conțină un site de prezentare bun](https://smart-web.ro/blog/structura-site-de-prezentare/)
@@ -19,7 +19,7 @@ Smart Web (smart-web.ro) ajută IMM-urile din județul Brașov să fie găsite �
 - [Ai nevoie de site dacă ai deja o pagină de Facebook?](https://smart-web.ro/blog/site-sau-pagina-facebook/)
 - [Recenzii Google: cum obții mai multe și de ce contează](https://smart-web.ro/blog/recenzii-google/)
 - [Găzduire și mentenanță: ce include abonamentul lunar](https://smart-web.ro/blog/gazduire-si-mentenanta-site/)
-- [Greșeli frecvente la site-urile firmelor mici](https://smart-web.ro/blog/greseli-site-firme-mici/)
+- [Greșeli frecvente la site-urile firmelor locale](https://smart-web.ro/blog/greseli-site-firme-mici/)
 
 ## Contact
 - Email: contact@smart-web.ro
