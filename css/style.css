@@ -574,6 +574,25 @@ ul { list-style: none; }
 .service h4 { margin-bottom: .3rem; font-size: 1.08rem; }
 .service p { margin: 0; font-size: .92rem; line-height: 1.5; }
 
+/* Varianta compactă a secțiunii „Ce facem": 3 piloni cu listă scurtă + linkuri interne */
+.services-groups--compact { grid-template-columns: 1fr; gap: 1.1rem; }
+@media (min-width: 860px) { .services-groups--compact { grid-template-columns: repeat(3, 1fr); gap: 1.2rem; align-items: start; } }
+.svc-pillar { background: var(--c-surface); border: 1px solid var(--c-border); border-radius: var(--radius); padding: 1.25rem 1.3rem; box-shadow: var(--shadow-sm); }
+.svc-pillar .svc-group__title { margin: 0 0 .8rem; padding-bottom: .75rem; border-bottom: 1px solid var(--c-border); font-size: 1.06rem; }
+.svc-list { list-style: none; margin: 0; padding: 0; display: grid; gap: .15rem; }
+.svc-item {
+  display: grid; grid-template-columns: auto 1fr auto; gap: .7rem; align-items: center;
+  padding: .55rem .5rem; border-radius: var(--radius-sm); color: inherit;
+  transition: background var(--t-fast);
+}
+a.svc-item:hover { background: var(--c-bg-alt); }
+.svc-item__icon { display: grid; place-items: center; width: 34px; height: 34px; flex-shrink: 0; border-radius: 9px; background: var(--c-bg-alt); font-size: 1.05rem; transition: background var(--t-fast); }
+a.svc-item:hover .svc-item__icon { background: rgba(252, 102, 24, .15); }
+.svc-item__name { display: block; font-size: .95rem; font-weight: 600; color: var(--c-primary); line-height: 1.25; }
+.svc-item__desc { display: block; font-size: .82rem; color: var(--c-text-soft); line-height: 1.4; margin-top: .12rem; }
+.svc-item__arrow { color: var(--c-teal-dark); font-weight: 700; opacity: 0; transform: translateX(-5px); transition: opacity var(--t-fast), transform var(--t-fast); }
+a.svc-item:hover .svc-item__arrow { opacity: 1; transform: none; }
+
 /* Secțiunea Servicii: compactă, să încapă pe un ecran de laptop */
 #servicii { padding-block: clamp(2.2rem, 4vw, 3.2rem); }
 #servicii .section__head { margin-bottom: clamp(1.2rem, 3vw, 2rem); }
