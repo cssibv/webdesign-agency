@@ -157,6 +157,9 @@ ul { list-style: none; }
 
 .btn--whatsapp { background: var(--c-whatsapp); color: #fff; }
 .btn--whatsapp:hover { background: #1eb858; color: #fff; transform: translateY(-2px); }
+/* Underline la hover: doar textul de la WhatsApp (nu emoji-ul) + butonul de trimitere formular */
+.btn--whatsapp:hover .btn__txt,
+.btn[type="submit"]:hover { text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1.5px; }
 
 .btn--lg    { padding: 1.05rem 2rem; font-size: 1.08rem; }
 .btn--block { width: 100%; }
