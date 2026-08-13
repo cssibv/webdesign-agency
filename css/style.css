@@ -1323,6 +1323,107 @@ a.work .work__body p { color: var(--c-teal-dark); font-weight: 600; }
 .blog-empty { display: none; color: var(--c-text-soft); padding: 1.4rem 0; font-size: 1rem; }
 .blog-empty.is-visible { display: block; }
 
+/* Articol featured (ghidul pilon) scos din grilă, cap de listă distinct.
+   .post-featured__cover e slotul de imagine: acum un cover de brand din CSS,
+   se poate înlocui cu un <img> mai târziu fără alt redesign. */
+.post-featured {
+  display: grid; grid-template-columns: 1fr; overflow: hidden;
+  background: var(--c-surface); border: 1px solid var(--c-border);
+  border-radius: var(--radius); box-shadow: var(--shadow-sm);
+  margin-bottom: var(--gap); color: inherit;
+  transition: transform var(--t), box-shadow var(--t), border-color var(--t);
+}
+.post-featured:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: var(--c-teal); color: inherit; }
+@media (min-width: 720px) { .post-featured { grid-template-columns: 300px 1fr; } }
+.post-featured__cover {
+  min-height: 172px; display: grid; place-items: center; color: #fff;
+  background: linear-gradient(135deg, var(--c-primary), var(--c-primary-dark));
+  position: relative;
+}
+.post-featured__cover::after {
+  content: ""; position: absolute; inset: 0;
+  background: radial-gradient(120% 90% at 85% 15%, rgba(252, 102, 24, .35), transparent 60%);
+}
+.post-featured__cover svg { width: 60px; height: 60px; opacity: .95; position: relative; z-index: 1; }
+.post-featured__body { padding: clamp(1.4rem, 3vw, 2.1rem); }
+.post-featured__pill {
+  display: inline-flex; align-items: center; gap: .4rem;
+  font-size: .72rem; font-weight: 800; text-transform: uppercase; letter-spacing: .7px;
+  color: #fff; background: var(--c-teal); padding: .3rem .7rem; border-radius: 999px; margin-bottom: .85rem;
+}
+.post-featured h2 { font-size: clamp(1.4rem, 3.2vw, 1.95rem); line-height: 1.18; color: var(--c-primary); margin: 0 0 .5rem; }
+.post-featured p { color: var(--c-text-soft); font-size: 1rem; margin: 0 0 1rem; }
+.post-featured__more { display: inline-flex; align-items: center; gap: .35rem; font-weight: 700; color: var(--c-teal-dark); transition: gap var(--t-fast); }
+.post-featured:hover .post-featured__more { gap: .6rem; }
+.post-featured__meta { display: flex; align-items: center; gap: .55rem; margin-top: .95rem; font-size: .8rem; color: var(--c-text-soft); }
+
+/* Chip de categorie umplut, colorat pe categorie (înlocuiește textul portocaliu simplu) */
+.post-card__tag, .blog-index__cat {
+  display: inline-flex; align-items: center;
+  font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .5px;
+  padding: .26rem .6rem; border-radius: 999px;
+  background: rgba(252, 102, 24, .13); color: var(--c-teal-dark);
+}
+.post-card[data-cat~="site"] .post-card__tag { background: rgba(74, 144, 217, .15); color: var(--c-primary); }
+.post-card[data-cat~="preturi"] .post-card__tag { background: rgba(31, 138, 76, .16); color: #1f8a4c; }
+.post-card[data-cat~="seo"] .post-card__tag { background: rgba(252, 102, 24, .14); color: var(--c-teal-dark); }
+[data-theme="dark"] .post-card[data-cat~="preturi"] .post-card__tag { color: #5cc98a; }
+
+/* Timp de citire în meta-ul cardului */
+.post-card__info { display: inline-flex; align-items: center; gap: .5rem; white-space: nowrap; }
+.post-card__read { font-size: .8rem; color: var(--c-text-soft); }
+.post-card__read::before { content: "·"; margin-right: .5rem; color: var(--c-text-soft); }
+
+/* Rail dreapta: din clonă a listei -> panou „Începe de aici" + CTA */
+.blog-aside__cta {
+  margin-top: 1rem; padding: 1.1rem 1.15rem; border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, var(--c-primary), var(--c-primary-dark)); color: #fff;
+}
+.blog-aside__cta p { font-size: .92rem; color: #d6e6f5; margin: 0 0 .8rem; line-height: 1.45; }
+.blog-aside__cta .btn { width: 100%; justify-content: center; }
+
+/* ---- Pagina de articol: meta bogat, cuprins, share, autor, articole similare ---- */
+/* Meta sub H1: chip categorie + dată + timp de citire */
+.article__meta { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem .7rem; }
+.article__meta .post-card__tag { margin: 0; }
+.article__meta .sep { color: var(--c-text-soft); opacity: .55; }
+
+/* Cuprinsul (.toc) e deja stilizat; numerotăm și îl facem mai aerisit */
+.toc ol { list-style: decimal; }
+.toc li { padding-left: .2rem; }
+.toc a { text-decoration: none; }
+.toc a:hover { text-decoration: underline; }
+
+/* Share (WhatsApp / Facebook / copiere link) */
+.article-share { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; margin: 2.4rem 0 0; padding-top: 1.4rem; border-top: 1px solid var(--c-border); }
+.article-share__label { font-size: .9rem; font-weight: 600; color: var(--c-text-soft); margin-right: .2rem; }
+.article-share__btn {
+  display: inline-flex; align-items: center; gap: .4rem; cursor: pointer;
+  font-family: inherit; font-size: .85rem; font-weight: 600; color: var(--c-primary);
+  background: var(--c-bg-alt); border: 1px solid var(--c-border); border-radius: 999px;
+  padding: .45rem .85rem; transition: border-color var(--t-fast), color var(--t-fast), background var(--t-fast);
+}
+.article-share__btn svg { width: 16px; height: 16px; }
+.article-share__btn:hover { border-color: var(--c-teal); color: var(--c-teal-dark); }
+.article-share__btn.is-copied { border-color: var(--c-whatsapp); color: var(--c-whatsapp); }
+
+/* Bloc autor (E-E-A-T): monogram + rol + micro-bio. Fără poză, dar pregătit. */
+.article-author { display: flex; gap: 1rem; align-items: flex-start; margin-top: 2.2rem; padding: 1.3rem 1.4rem; background: var(--c-bg-alt); border: 1px solid var(--c-border); border-radius: var(--radius); }
+.article-author__avatar { flex-shrink: 0; width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; font-size: 1.05rem; letter-spacing: .5px; color: #fff; background: linear-gradient(135deg, var(--c-primary), var(--c-teal)); }
+.article-author__name { font-weight: 700; color: var(--c-primary); margin: 0 0 .2rem; }
+.article-author__bio { font-size: .95rem; color: var(--c-text-soft); margin: 0; line-height: 1.55; }
+.article-author__bio a { color: var(--c-teal-dark); }
+
+/* Articole similare */
+.related { margin-top: 2.8rem; }
+.related > h2 { font-size: clamp(1.3rem, 3vw, 1.6rem); margin-bottom: 1.1rem; text-align: left; }
+.related__grid { display: grid; gap: 1rem; grid-template-columns: 1fr; }
+@media (min-width: 620px) { .related__grid { grid-template-columns: repeat(3, 1fr); } }
+.related__card { display: block; padding: 1.1rem 1.2rem; background: var(--c-surface); border: 1px solid var(--c-border); border-radius: var(--radius-sm); box-shadow: var(--shadow-sm); color: inherit; transition: transform var(--t-fast), border-color var(--t-fast), box-shadow var(--t-fast); }
+.related__card:hover { transform: translateY(-3px); border-color: var(--c-teal); box-shadow: var(--shadow-md); color: inherit; }
+.related__card .post-card__tag { margin-bottom: .5rem; }
+.related__card h3 { font-size: 1rem; line-height: 1.35; color: var(--c-primary); margin: 0; }
+
 /* Buton „înapoi la blog" în header-ul paginilor de articol */
 .btn--back { gap: .4rem; }
 .btn--back .btn--back__arrow { font-size: 1.15em; line-height: 1; }
