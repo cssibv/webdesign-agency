@@ -1429,8 +1429,11 @@ a.work .work__body p { color: var(--c-teal-dark); font-weight: 600; }
 .related__card h3 { font-size: 1rem; line-height: 1.35; color: var(--c-primary); margin: 0; }
 
 /* Buton „înapoi la blog" în header-ul paginilor de articol */
-.btn--back { gap: .4rem; }
-.btn--back .btn--back__arrow { font-size: 1.15em; line-height: 1; }
+.btn--back { gap: 0; }
+/* săgeată la aceeași mărime ca textul + spațiu subliniabil între ele, ca underline-ul de la
+   hover să fie o linie continuă (nu întreruptă/decalată între „←" și „Blog") */
+.btn--back .btn--back__arrow { font-size: 1em; line-height: 1; }
+.btn--back .btn--back__arrow::after { content: "\2002"; }
 /* Pe telefon nu încap 3 butoane lângă logo + CTA-ul lung: ascundem „Acasă" (logo-ul
    duce oricum acasă) și reducem butonul de back la doar iconița „←". Doar în header-ul
    articolelor (cel cu buton de back), nu și pe lista de blog. */
