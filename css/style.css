@@ -447,6 +447,8 @@ ul { list-style: none; }
   border-color: rgba(255, 255, 255, .4);
 }
 .hero__actions .btn--ghost:hover { background: rgba(255, 255, 255, .12); color: #fff; }
+/* Underline la hover pe butoanele CTA din hero (la fel ca navbar/footer) */
+.hero__actions .btn:hover { text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1.5px; }
 
 .hero__trust {
   display: flex;
