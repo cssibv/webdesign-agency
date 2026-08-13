@@ -152,6 +152,9 @@ ul { list-style: none; }
 }
 .btn--ghost:hover { border-color: var(--c-teal); color: var(--c-teal-dark); transform: translateY(-2px); }
 
+/* Underline sub butoanele din navbar la hover (aspect mai profesional) */
+.navbar__actions .btn:hover { text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1.5px; }
+
 .btn--whatsapp { background: var(--c-whatsapp); color: #fff; }
 .btn--whatsapp:hover { background: #1eb858; color: #fff; transform: translateY(-2px); }
 
