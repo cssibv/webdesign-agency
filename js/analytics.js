@@ -23,8 +23,17 @@
     return GA_MEASUREMENT_ID && GA_MEASUREMENT_ID.indexOf('XXXX') === -1;
   }
 
+  function isLocalEnv() {
+    if (location.protocol === 'file:') return true;
+    var h = location.hostname;
+    return h === 'localhost' || h === '127.0.0.1' || h === '::1' ||
+      h === '0.0.0.0' || h.slice(-6) === '.local' ||
+      /^192\.168\./.test(h) || /^10\./.test(h) ||
+      /^172\.(1[6-9]|2\d|3[01])\./.test(h);
+  }
+
   function loadGA() {
-    if (gaLoaded || !idIsConfigured()) return;
+    if (gaLoaded || !idIsConfigured() || isLocalEnv()) return;
     gaLoaded = true;
 
     var s = document.createElement('script');
