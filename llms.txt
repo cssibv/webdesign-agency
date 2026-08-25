@@ -17,6 +17,7 @@ Smart Web (smart-web.ro) ajută IMM-urile din județul Brașov să fie găsite �
 - [Site pentru pensiuni și cazare în Brașov](https://smart-web.ro/servicii/site-pensiune-brasov/)
 
 ## Blog
+- [Site pentru cabinet stomatologic în Brașov: ce trebuie să aibă](https://smart-web.ro/blog/site-cabinet-stomatologic-brasov/)
 - [Site pentru service auto în Brașov: ce trebuie să aibă](https://smart-web.ro/blog/site-service-auto-brasov/)
 - [Rezervări directe fără comision: cum scapi de taxa Booking](https://smart-web.ro/blog/rezervari-directe-fara-comision/)
 - [Site pentru restaurant în Brașov: ce trebuie să aibă](https://smart-web.ro/blog/site-restaurant-brasov/)
