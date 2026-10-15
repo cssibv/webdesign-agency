@@ -1073,7 +1073,7 @@ a.work .work__body p { color: var(--c-teal-dark); font-weight: 600; }
 }
 
 @media (min-width: 992px) {
-  .grid--portfolio   { grid-template-columns: repeat(3, 1fr); }
+  .grid--portfolio   { grid-template-columns: repeat(4, 1fr); }
   .grid--testimonials{ grid-template-columns: repeat(3, 1fr); }
 }
 
