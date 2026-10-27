@@ -52,3 +52,7 @@ Smart Web (smart-web.ro) ajută IMM-urile din județul Brașov să fie găsite �
 - Email: contact@smart-web.ro
 - Telefon și WhatsApp: +40 752 288 401
 - Zonă deservită: județul Brașov (Brașov, Codlea, Săcele, Făgăraș, Râșnov, Zărnești, Predeal, Ghimbav, Bran)
+
+## Zonă deservită
+
+- [Creare site și SEO local în județul Brașov](https://smart-web.ro/zona-deservita/): Brașov, Săcele, Codlea, Râșnov, Bran, Predeal, Zărnești, Ghimbav, Făgăraș
