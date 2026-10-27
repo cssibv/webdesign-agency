@@ -32,19 +32,32 @@
       /^172\.(1[6-9]|2\d|3[01])\./.test(h);
   }
 
-  function loadGA() {
+  // Consent Mode v2: fără acord nu se setează cookie-uri; după „Accept” se activează statistica completă.
+  function loadGA(granted) {
     if (gaLoaded || !idIsConfigured() || isLocalEnv()) return;
     gaLoaded = true;
+
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { window.dataLayer.push(arguments); };
+    window.gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: granted ? 'granted' : 'denied'
+    });
+    window.gtag('js', new Date());
+    window.gtag('config', GA_MEASUREMENT_ID);
 
     var s = document.createElement('script');
     s.async = true;
     s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_MEASUREMENT_ID;
     document.head.appendChild(s);
+  }
 
-    window.dataLayer = window.dataLayer || [];
-    window.gtag = function () { window.dataLayer.push(arguments); };
-    window.gtag('js', new Date());
-    window.gtag('config', GA_MEASUREMENT_ID);
+  function updateConsent(granted) {
+    if (typeof window.gtag === 'function') {
+      window.gtag('consent', 'update', { analytics_storage: granted ? 'granted' : 'denied' });
+    }
   }
 
   function trackEvent(name, params) {
@@ -55,13 +68,12 @@
 
   window.bwTrack = trackEvent;
 
-  function grant() { setConsent('granted'); hideBanner(); loadGA(); }
-  function deny()  { setConsent('denied');  hideBanner(); }
+  function grant() { setConsent('granted'); hideBanner(); updateConsent(true); }
+  function deny()  { setConsent('denied');  hideBanner(); updateConsent(false); }
 
   var consent = getConsent();
-  if (consent === 'granted') {
-    loadGA();
-  } else if (consent !== 'denied') {
+  loadGA(consent === 'granted');
+  if (consent !== 'granted' && consent !== 'denied') {
     showBanner();
   }
 
