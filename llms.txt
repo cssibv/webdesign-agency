@@ -56,3 +56,8 @@ Smart Web (smart-web.ro) ajută IMM-urile din județul Brașov să fie găsite �
 ## Zonă deservită
 
 - [Creare site și SEO local în județul Brașov](https://smart-web.ro/zona-deservita/): Brașov, Săcele, Codlea, Râșnov, Bran, Predeal, Zărnești, Ghimbav, Făgăraș
+
+## Studii de caz
+
+- [CSSI Brașov: site, blog, SEO și Google Ads](https://smart-web.ro/portofoliu/cssi/)
+- [GAV Auto: site pentru service auto în Brașov](https://smart-web.ro/portofoliu/gav-auto/)
