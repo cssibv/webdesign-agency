@@ -27,6 +27,12 @@ function head($title) {
   echo '<link rel="stylesheet" href="../assets/fonts/fonts.css">';
   echo '<link rel="stylesheet" href="admin.css?v=' . filemtime(__DIR__ . '/admin.css') . '"></head><body>';
   echo '<header class="topbar"><a class="topbar__logo" href="index.php">Smart <span>Web</span> <small>Admin</small></a>';
+  $pagina = basename($_SERVER['SCRIPT_NAME'] ?? '');
+  echo '<nav class="topbar__nav">';
+  foreach (['index.php' => 'Clienți', 'factura.php' => 'Factură', 'servicii.php' => 'Prețuri'] as $href => $txt) {
+    echo '<a href="' . $href . '"' . ($pagina === $href ? ' class="is-active"' : '') . '>' . $txt . '</a>';
+  }
+  echo '</nav>';
   echo '<div class="topbar__right"><span class="topbar__user">' . e(current_user()) . '</span>';
   echo '<form method="post" action="logout.php" style="margin:0">';
   echo '<input type="hidden" name="csrf" value="' . e(csrf_token()) . '">';

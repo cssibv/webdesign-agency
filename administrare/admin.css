@@ -36,6 +36,11 @@ h2 { font-size: 1.15rem; margin: 1.8rem 0 .7rem; letter-spacing: -.3px; }
 .topbar__logo span { color: var(--accent); }
 .topbar__logo small { font-size: .7rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: #9fc0dd; }
 .topbar__right { display: flex; align-items: center; gap: .9rem; font-size: .9rem; }
+.topbar__nav { display: flex; gap: .3rem; margin-right: auto; margin-left: 1.6rem; }
+.topbar__nav a { color: #cfe0ef; font-weight: 600; font-size: .9rem; padding: .35rem .7rem; border-radius: 8px; }
+.topbar__nav a:hover { background: rgba(255,255,255,.1); color: #fff; }
+.topbar__nav a.is-active { background: rgba(255,255,255,.16); color: #fff; }
+@media (max-width: 640px) { .topbar__nav { margin-left: .6rem; } .topbar__nav a { padding: .3rem .45rem; font-size: .82rem; } }
 .topbar__user { color: #dbe7f3; display: inline-flex; align-items: center; gap: .45rem; font-weight: 500; }
 .topbar__user::before { content: ''; width: 26px; height: 26px; border-radius: 50%; background: linear-gradient(135deg, var(--teal), var(--accent)); display: inline-block; }
 
