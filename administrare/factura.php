@@ -142,8 +142,8 @@ head('Factură nouă');
   <div class="inv" id="page">
     <header>
       <div class="brand">
-        <img src="../assets/img/favicon.svg" alt="">
-        <div><b>Smart Web</b><span>Web design, SEO local și promovare online</span></div>
+        <img src="logo-factura.svg" alt="Smart Web">
+        <span>Web design, SEO local și promovare online</span>
       </div>
       <div class="doc">
         <h2>FACTURĂ</h2>

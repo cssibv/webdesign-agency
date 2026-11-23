@@ -54,8 +54,8 @@
   background: #fff; color: var(--text); box-shadow: 0 6px 30px rgba(4,38,74,.18); font-size: 9.5pt; line-height: 1.45; }
 .inv * { margin: 0; padding: 0; }
 .inv header { display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 7mm; border-bottom: 2.5px solid var(--navy); }
-.inv .brand { display: flex; align-items: center; gap: 10px; }
-.inv .brand img { width: 44px; height: 44px; }
+.inv .brand { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+.inv .brand img { width: 150px; height: auto; display: block; }
 .inv .brand b { display: block; font-size: 15pt; color: var(--navy); letter-spacing: -0.2px; }
 .inv .brand span { color: var(--soft); font-size: 8.5pt; }
 .inv .doc { text-align: right; }
