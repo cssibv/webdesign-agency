@@ -68,7 +68,12 @@
 
   window.bwTrack = trackEvent;
 
-  function grant() { setConsent('granted'); hideBanner(); updateConsent(true); }
+  function grant() {
+    var already = getConsent() === 'granted';
+    setConsent('granted'); hideBanner(); updateConsent(true);
+    // the page was loaded without consent: count it now, otherwise a one-page visit is never recorded
+    if (!already) trackEvent('page_view', { page_location: location.href, page_title: document.title });
+  }
   function deny()  { setConsent('denied');  hideBanner(); updateConsent(false); }
 
   var consent = getConsent();
